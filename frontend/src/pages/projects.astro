@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getProjects } from '../lib/strapi';
+
+const { projects, source } = await getProjects();
+
+// Categories filter list
+const categories = ['All', ...new Set(projects.map((p) => p.category))];
+---
+
+<Layout
+  title="Enterprise Projects & Case Studies | NovaSphere"
+  description="Explore production case studies, cloud architectures, and digital experience platforms engineered by Eka Prasetyo."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+    
+    <!-- Page Header -->
+    <div class="max-w-3xl space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nova-cyan/10 border border-nova-cyan/30 text-nova-cyan text-xs font-mono">
+        <span>Portfolio & Engineering Showcase</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+        Enterprise Case Studies
+      </h1>
+      <p class="text-slate-300 text-base leading-relaxed">
+        High-scale platforms engineered with modern headless ecosystems, low-latency edge caching, and resilient database architectures.
+      </p>
+      <div class="flex items-center gap-4 text-xs font-mono text-slate-400 pt-2">
+        <span>Source: <strong class="text-emerald-400 uppercase">{source}</strong></span>
+        <span>•</span>
+        <span>Total Records: <strong class="text-white">{projects.length}</strong></span>
+      </div>
+    </div>
+
+    <!-- Category Filter Bar -->
+    <div class="flex flex-wrap items-center gap-2 pb-4 border-b border-white/5">
+      {categories.map((cat, idx) => (
+        <button
+          type="button"
+          class={`px-4 py-2 rounded-xl text-xs font-medium transition-all ${
+            idx === 0
+              ? 'bg-nova-indigo/30 text-white border border-nova-indigo/50 shadow-sm'
+              : 'bg-dark-900/60 text-slate-400 hover:text-white hover:bg-white/5 border border-white/5'
+          }`}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+
+  </div>
+</Layout>

@@ -1,0 +1,124 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const navItems = [
+  { name: 'Overview', href: '/' },
+  { name: 'Architecture', href: '/architecture' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'Engineering Blog', href: '/blog' },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-panel border-b border-white/10" id="main-header">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-nova-indigo via-nova-violet to-nova-cyan p-[1px] shadow-lg shadow-nova-indigo/20 group-hover:shadow-nova-cyan/40 transition-all duration-300">
+        <div class="w-full h-full bg-dark-950 rounded-[11px] flex items-center justify-center">
+          <svg class="w-5 h-5 text-nova-cyan group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-nova-cyan">
+          NovaSphere<span class="text-nova-violet">.io</span>
+        </span>
+        <span class="text-[10px] font-mono tracking-widest text-nova-cyan/80 uppercase">
+          Astro × Strapi × Supabase
+        </span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="hidden md:flex items-center gap-1 bg-dark-900/60 p-1.5 rounded-full border border-white/5 backdrop-blur-md">
+      {navItems.map((item) => {
+        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        return (
+          <a
+            href={item.href}
+            class={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+              isActive
+                ? 'bg-gradient-to-r from-nova-indigo/30 to-nova-violet/30 text-white border border-nova-indigo/40 shadow-sm shadow-nova-indigo/30'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            {item.name}
+          </a>
+        );
+      })}
+    </nav>
+
+    <!-- Right Actions -->
+    <div class="flex items-center gap-3">
+      <!-- Live Status Pill -->
+      <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="w-2 h-2 rounded-full bg-emerald-400 -ml-4"></span>
+        <span>Vercel Edge Live</span>
+      </div>
+
+      <!-- GitHub Profile Link -->
+      <a
+        href="https://github.com/eka0789"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/10 hover:border-nova-cyan/50 shadow-md transition-all duration-300 hover:scale-105"
+      >
+        <svg class="w-4 h-4 text-slate-200" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+        </svg>
+        <span>eka0789</span>
+      </a>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden p-2 rounded-lg bg-dark-900 border border-white/10 text-slate-300 hover:text-white"
+        aria-label="Toggle menu"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown -->
+  <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-b border-white/10 bg-dark-950/95 backdrop-blur-xl">
+    <div class="flex flex-col space-y-2">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class="px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-white/5"
+        >
+          {item.name}
+        </a>
+      ))}
+      <a
+        href="https://github.com/eka0789"
+        target="_blank"
+        class="flex items-center gap-2 px-3 py-2 rounded-lg text-nova-cyan bg-nova-cyan/10 border border-nova-cyan/20"
+      >
+        <span>GitHub @eka0789</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  }
+</script>

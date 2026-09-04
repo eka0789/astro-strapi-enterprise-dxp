@@ -1,0 +1,58 @@
+---
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'NovaSphere | Enterprise Astro + Strapi + Supabase DXP',
+  description = 'High performance enterprise Digital Experience Platform built with Astro v5, Strapi Headless CMS, Supabase PostgreSQL, and Vercel Edge Deployment.',
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-dark-950 text-slate-100 antialiased selection:bg-nova-indigo selection:text-white relative">
+    <!-- Ambient glowing backdrop effect -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-nova-indigo/15 via-nova-cyan/10 to-transparent blur-3xl opacity-70"></div>
+      <div class="absolute top-[600px] -left-40 w-[600px] h-[600px] bg-nova-violet/10 blur-3xl rounded-full opacity-50"></div>
+      <div class="absolute top-[1200px] -right-40 w-[700px] h-[700px] bg-nova-cyan/10 blur-3xl rounded-full opacity-40"></div>
+    </div>
+
+    <!-- Background Grid Pattern -->
+    <div class="fixed inset-0 bg-grid-pattern opacity-40 pointer-events-none z-0"></div>
+
+    <div class="relative z-10 flex flex-col min-h-screen">
+      <Navbar currentPath={currentPath} />
+      <main class="flex-grow pt-20">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

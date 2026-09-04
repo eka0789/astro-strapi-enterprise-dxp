@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getArticles } from '../../lib/strapi';
+
+const { articles, source } = await getArticles();
+---
+
+<Layout
+  title="Engineering Insights & Architecture Blog | NovaSphere"
+  description="Technical insights on Astro, Strapi Headless CMS, Supabase, PostgreSQL, and Vercel edge deployment by Eka Prasetyo."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+    
+    <!-- Page Header -->
+    <div class="max-w-3xl space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nova-violet/10 border border-nova-violet/30 text-nova-violet text-xs font-mono">
+        <span>Architectural Publications</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+        Engineering Insights
+      </h1>
+      <p class="text-slate-300 text-base leading-relaxed">
+        Deep technical articles exploring edge rendering, high-throughput Postgres clustering, headless CMS workflows, and DevOps automation.
+      </p>
+      <div class="flex items-center gap-4 text-xs font-mono text-slate-400 pt-2">
+        <span>CMS Pipeline: <strong class="text-emerald-400 uppercase">{source}</strong></span>
+        <span>•</span>
+        <span>Articles: <strong class="text-white">{articles.length}</strong></span>
+      </div>
+    </div>
+
+    <!-- Articles Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {articles.map((article) => (
+        <ArticleCard article={article} />
+      ))}
+    </div>
+
+  </div>
+</Layout>

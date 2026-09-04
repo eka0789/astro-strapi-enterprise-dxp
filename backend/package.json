@@ -1,0 +1,27 @@
+{
+  "name": "novasphere-backend-strapi",
+  "private": true,
+  "version": "1.0.0",
+  "description": "NovaSphere Headless CMS powered by Strapi and Supabase PostgreSQL",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "@strapi/strapi": "^4.25.0",
+    "@strapi/plugin-users-permissions": "^4.25.0",
+    "@strapi/plugin-i18n": "^4.25.0",
+    "better-sqlite3": "8.6.0",
+    "pg": "^8.11.3",
+    "pg-connection-string": "^2.6.2"
+  },
+  "author": "Eka Prasetyo <eka0789@gmail.com>",
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

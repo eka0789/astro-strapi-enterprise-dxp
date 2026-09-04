@@ -1,0 +1,115 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getArticles } from '../../lib/strapi';
+import type { Article } from '../../lib/types';
+
+export async function getStaticPaths() {
+  const { articles } = await getArticles();
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+---
+
+<Layout
+  title={`${article.title} | NovaSphere Architecture`}
+  description={article.excerpt}
+>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+    
+    <!-- Breadcrumb & Category -->
+    <div class="flex items-center gap-3 text-xs font-mono text-slate-400">
+      <a href="/blog" class="text-nova-cyan hover:underline">&larr; Back to Engineering Blog</a>
+      <span>/</span>
+      <span class="px-2.5 py-0.5 rounded bg-nova-violet/10 text-nova-violet border border-nova-violet/20">{article.category}</span>
+    </div>
+
+    <!-- Title & Metadata -->
+    <header class="space-y-6">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
+        {article.title}
+      </h1>
+
+      <p class="text-lg text-slate-300 leading-relaxed font-light">
+        {article.excerpt}
+      </p>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 py-4 border-y border-white/10 text-xs text-slate-400 font-mono">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-nova-indigo to-nova-cyan flex items-center justify-center font-bold text-white text-xs">
+            EP
+          </div>
+          <div>
+            <span class="text-white font-semibold block">{article.author}</span>
+            <span class="text-slate-400 text-[11px]">Senior Fullstack & Solution Architect</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <span>{article.readingTime}</span>
+          <span>•</span>
+          <span>{article.publishedAt || 'Published 2026'}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Featured Cover Image -->
+    <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative h-72 sm:h-96">
+      <img
+        src={article.coverUrl}
+        alt={article.title}
+        class="w-full h-full object-cover"
+      />
+    </div>
+
+    <!-- Article Body -->
+    <div class="prose prose-invert max-w-none space-y-6 text-slate-300 leading-relaxed text-base font-normal">
+      <div class="whitespace-pre-line">
+        {article.content}
+      </div>
+    </div>
+
+    <!-- Tags -->
+    {article.tags && article.tags.length > 0 && (
+      <div class="pt-8 border-t border-white/10 flex items-center gap-2">
+        <span class="text-xs font-mono text-slate-500 uppercase">Tags:</span>
+        <div class="flex flex-wrap gap-1.5">
+          {article.tags.map((tag) => (
+            <span class="text-xs font-mono px-2.5 py-1 rounded-lg bg-dark-900 border border-white/10 text-slate-300">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Author Bio Card -->
+    <div class="p-6 rounded-2xl glass-card border border-white/10 flex flex-col sm:flex-row items-center gap-6 mt-12">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-nova-indigo via-nova-violet to-nova-cyan p-[1px] shrink-0">
+        <div class="w-full h-full bg-dark-950 rounded-[15px] flex items-center justify-center text-xl font-bold text-nova-cyan">
+          EP
+        </div>
+      </div>
+      <div class="space-y-1 text-center sm:text-left">
+        <h3 class="text-base font-bold text-white">Eka Prasetyo</h3>
+        <p class="text-xs text-nova-cyan font-mono">Senior Fullstack Engineer & Solution Architect</p>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Specializing in enterprise cloud architecture, low-latency edge rendering, high-throughput database systems, and headless content orchestration.
+        </p>
+        <div class="pt-2">
+          <a href="https://github.com/eka0789" target="_blank" class="text-xs font-medium text-slate-200 hover:text-nova-cyan inline-flex items-center gap-1">
+            <span>github.com/eka0789</span> &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </article>
+</Layout>

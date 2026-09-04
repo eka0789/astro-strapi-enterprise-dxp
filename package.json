@@ -1,0 +1,23 @@
+{
+  "name": "novasphere-enterprise-dxp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise DXP platform architected with Astro v5, Strapi Headless CMS, Supabase PostgreSQL, and Vercel Edge",
+  "author": "Eka Prasetyo <eka0789@gmail.com> (https://github.com/eka0789)",
+  "license": "MIT",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run develop",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "check": "cd frontend && npx astro check",
+    "seed:db": "node backend/scripts/seed.js"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x"
+  }
+}
