@@ -2,79 +2,82 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="relative border-t border-white/10 bg-dark-950 pt-16 pb-12 overflow-hidden">
-  <!-- Glow Accent -->
-  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-nova-indigo/10 blur-3xl pointer-events-none"></div>
+<footer class="relative border-t border-white/[0.08] bg-dark-950/95 pt-20 pb-12 overflow-hidden">
+  <!-- Glowing Bottom Accent Ribbon -->
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-36 bg-gradient-to-r from-nova-indigo/15 via-nova-cyan/15 to-nova-violet/15 blur-3xl pointer-events-none"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/5">
-      <!-- Brand column -->
-      <div class="md:col-span-2 space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 pb-16 border-b border-white/[0.07]">
+      
+      <!-- Brand Column -->
+      <div class="md:col-span-2 space-y-5">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-nova-indigo to-nova-cyan p-[1px]">
-            <div class="w-full h-full bg-dark-950 rounded-[7px] flex items-center justify-center">
-              <svg class="w-4 h-4 text-nova-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-nova-cyan via-nova-indigo to-nova-violet p-[1.5px]">
+            <div class="w-full h-full bg-dark-950 rounded-[10px] flex items-center justify-center">
+              <svg class="w-4 h-4 text-nova-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                 <polyline points="2 17 12 22 22 17"></polyline>
                 <polyline points="2 12 12 17 22 12"></polyline>
               </svg>
             </div>
           </div>
-          <span class="text-xl font-bold tracking-tight text-white">NovaSphere Architecture</span>
+          <span class="text-xl font-extrabold tracking-tight text-white">NovaSphere Architecture</span>
         </div>
-        <p class="text-slate-400 text-sm max-w-md leading-relaxed">
-          Production-grade Digital Experience Platform (DXP) engineering benchmark combining Astro v5 Island Architecture, Strapi Headless CMS, Supabase PostgreSQL, and Vercel edge deployment.
+        <p class="text-slate-400 text-xs sm:text-sm max-w-md leading-relaxed">
+          Production-grade Digital Experience Platform (DXP) reference architecture combining Astro v5 Island Architecture, Strapi Headless CMS, Supabase PostgreSQL with Supavisor connection pooling, and Vercel edge caching.
         </p>
-        <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
-          <span class="inline-flex items-center gap-1.5 text-emerald-400">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            All Edge Systems Nominal
+        <div class="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-400 pt-1">
+          <span class="inline-flex items-center gap-2 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Global Edge PoPs Nominal
           </span>
           <span>•</span>
-          <span>Lead: Eka Prasetyo</span>
+          <span class="text-slate-300">Lead: Eka Prasetyo (@eka0789)</span>
         </div>
       </div>
 
       <!-- Navigation Column -->
-      <div class="space-y-3">
-        <h4 class="text-xs font-mono uppercase tracking-widest text-nova-cyan font-semibold">Platform & Docs</h4>
-        <ul class="space-y-2 text-sm text-slate-400">
-          <li><a href="/" class="hover:text-white transition-colors">Overview</a></li>
-          <li><a href="/architecture" class="hover:text-white transition-colors">System Architecture</a></li>
-          <li><a href="/projects" class="hover:text-white transition-colors">Case Studies & Projects</a></li>
-          <li><a href="/blog" class="hover:text-white transition-colors">Engineering Insights</a></li>
+      <div class="space-y-4">
+        <h4 class="text-xs font-mono uppercase tracking-widest text-nova-cyan font-bold">Platform Blueprint</h4>
+        <ul class="space-y-2.5 text-xs sm:text-sm text-slate-400">
+          <li><a href="/" class="hover:text-nova-cyan transition-colors flex items-center gap-1.5">&rarr; Overview</a></li>
+          <li><a href="/architecture" class="hover:text-nova-cyan transition-colors flex items-center gap-1.5">&rarr; System Architecture</a></li>
+          <li><a href="/projects" class="hover:text-nova-cyan transition-colors flex items-center gap-1.5">&rarr; Enterprise Projects</a></li>
+          <li><a href="/blog" class="hover:text-nova-cyan transition-colors flex items-center gap-1.5">&rarr; Engineering Blog</a></li>
         </ul>
       </div>
 
       <!-- Tech Stack Column -->
-      <div class="space-y-3">
-        <h4 class="text-xs font-mono uppercase tracking-widest text-nova-violet font-semibold">Ecosystem</h4>
-        <ul class="space-y-2 text-sm text-slate-400">
-          <li class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-nova-cyan"></span>
-            Astro v5 (Islands & SSR)
+      <div class="space-y-4">
+        <h4 class="text-xs font-mono uppercase tracking-widest text-nova-violet font-bold">Core Ecosystem</h4>
+        <ul class="space-y-2.5 text-xs sm:text-sm text-slate-400">
+          <li class="flex items-center gap-2.5">
+            <span class="w-2 h-2 rounded-full bg-nova-cyan shadow-sm shadow-nova-cyan"></span>
+            <span>Astro v5 (Islands & SSR)</span>
           </li>
-          <li class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-nova-indigo"></span>
-            Strapi v5 (Headless CMS)
+          <li class="flex items-center gap-2.5">
+            <span class="w-2 h-2 rounded-full bg-nova-indigo shadow-sm shadow-nova-indigo"></span>
+            <span>Strapi v5 (Headless CMS)</span>
           </li>
-          <li class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            Supabase (PostgreSQL 15+)
+          <li class="flex items-center gap-2.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400"></span>
+            <span>Supabase (PostgreSQL 15+)</span>
           </li>
-          <li class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
-            Vercel (Global Edge Network)
+          <li class="flex items-center gap-2.5">
+            <span class="w-2 h-2 rounded-full bg-white shadow-sm shadow-white"></span>
+            <span>Vercel (Global Edge Network)</span>
           </li>
         </ul>
       </div>
     </div>
 
-    <!-- Bottom credits -->
+    <!-- Bottom Credits & Links -->
     <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-      <p>© {currentYear} NovaSphere. Designed & Architected by <a href="https://github.com/eka0789" class="text-slate-300 hover:text-nova-cyan font-medium">Eka Prasetyo (@eka0789)</a>.</p>
-      <div class="flex items-center gap-6">
-        <a href="https://github.com/eka0789" target="_blank" class="hover:text-nova-cyan transition-colors">GitHub Repository</a>
+      <p>© {currentYear} NovaSphere. Designed & Architected by <a href="https://github.com/eka0789" target="_blank" class="text-slate-300 hover:text-nova-cyan font-bold transition-colors">Eka Prasetyo (@eka0789)</a>.</p>
+      <div class="flex flex-wrap items-center gap-6">
+        <a href="https://github.com/eka0789/astro-strapi-enterprise-dxp" target="_blank" class="hover:text-nova-cyan transition-colors flex items-center gap-1">
+          <span>GitHub Repo</span>
+        </a>
         <a href="/architecture" class="hover:text-nova-cyan transition-colors">Architecture Blueprints</a>
         <a href="/api/health" class="hover:text-nova-cyan transition-colors font-mono">/api/health</a>
       </div>

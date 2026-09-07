@@ -32,27 +32,45 @@ const currentPath = Astro.url.pathname;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="bg-dark-950 text-slate-100 antialiased selection:bg-nova-indigo selection:text-white relative">
-    <!-- Ambient glowing backdrop effect -->
+  <body class="bg-dark-950 text-slate-100 antialiased selection:bg-nova-cyan selection:text-dark-950 relative overflow-x-hidden">
+    
+    <!-- Dynamic Ambient Glowing Meshes & Moving Lights -->
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-nova-indigo/15 via-nova-cyan/10 to-transparent blur-3xl opacity-70"></div>
-      <div class="absolute top-[600px] -left-40 w-[600px] h-[600px] bg-nova-violet/10 blur-3xl rounded-full opacity-50"></div>
-      <div class="absolute top-[1200px] -right-40 w-[700px] h-[700px] bg-nova-cyan/10 blur-3xl rounded-full opacity-40"></div>
+      <!-- Glow top center -->
+      <div class="absolute -top-48 left-1/2 -translate-x-1/2 w-[1100px] h-[580px] bg-radial-hero blur-3xl opacity-80 animate-pulse-glow"></div>
+      <!-- Glow left orb -->
+      <div class="absolute top-[480px] -left-64 w-[650px] h-[650px] bg-nova-violet/15 blur-[120px] rounded-full opacity-60 animate-float-slow"></div>
+      <!-- Glow right orb -->
+      <div class="absolute top-[900px] -right-64 w-[750px] h-[750px] bg-nova-cyan/12 blur-[140px] rounded-full opacity-50 animate-float-delayed"></div>
+      <!-- Glow bottom orb -->
+      <div class="absolute bottom-20 left-1/3 w-[600px] h-[400px] bg-nova-indigo/15 blur-[130px] rounded-full opacity-40"></div>
     </div>
 
-    <!-- Background Grid Pattern -->
-    <div class="fixed inset-0 bg-grid-pattern opacity-40 pointer-events-none z-0"></div>
+    <!-- Cyberpunk Subtle Grid -->
+    <div class="fixed inset-0 bg-grid-cyber opacity-35 pointer-events-none z-0"></div>
+
+    <!-- Interactive Mouse Follower Glow (Client Script) -->
+    <div id="ambient-cursor" class="fixed w-[420px] h-[420px] rounded-full bg-gradient-to-r from-nova-cyan/10 via-nova-indigo/10 to-transparent blur-[80px] pointer-events-none -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out z-0 hidden md:block"></div>
 
     <div class="relative z-10 flex flex-col min-h-screen">
       <Navbar currentPath={currentPath} />
-      <main class="flex-grow pt-20">
+      <main class="flex-grow pt-24">
         <slot />
       </main>
       <Footer />
     </div>
+
+    <script>
+      const cursor = document.getElementById('ambient-cursor');
+      if (cursor && window.matchMedia('(pointer: fine)').matches) {
+        window.addEventListener('mousemove', (e) => {
+          cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+        });
+      }
+    </script>
   </body>
 </html>

@@ -8,45 +8,45 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<article class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group border border-white/5 hover:border-nova-cyan/40 transition-all duration-300">
+<article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between group border border-white/[0.08] hover:border-nova-cyan/50 transition-all duration-500 shadow-xl hover:shadow-nova-cyan/15 hover:-translate-y-1.5">
   
-  <!-- Image Container -->
-  <div class="relative h-52 overflow-hidden bg-dark-900">
+  <!-- Image Banner with Gradient Overlay -->
+  <div class="relative h-60 overflow-hidden bg-dark-900">
     <img
       src={project.coverUrl}
       alt={project.title}
       loading="lazy"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+      class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
     />
     <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/40 to-transparent"></div>
     
-    <!-- Category Badge -->
+    <!-- Category Pill Badge -->
     <div class="absolute top-4 left-4">
-      <span class="px-3 py-1 rounded-full text-[11px] font-mono font-medium bg-dark-950/80 text-nova-cyan border border-nova-cyan/30 backdrop-blur-md">
+      <span class="px-3.5 py-1 rounded-full text-[11px] font-mono font-bold bg-dark-950/90 text-nova-cyan border border-nova-cyan/40 backdrop-blur-md shadow-lg">
         {project.category}
       </span>
     </div>
 
-    <!-- Client Tag -->
+    <!-- Client and Featured Tag -->
     <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-      <span class="text-xs font-medium text-slate-300">
+      <span class="text-xs font-semibold text-slate-200 bg-dark-950/80 px-2.5 py-1 rounded-lg border border-white/10 backdrop-blur-sm">
         {project.client}
       </span>
       {project.featured && (
-        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-300 border border-amber-500/30">
-          Featured
+        <span class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1 backdrop-blur-sm">
+          <span>★</span> Featured
         </span>
       )}
     </div>
   </div>
 
   <!-- Content Section -->
-  <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+  <div class="p-7 flex-grow flex flex-col justify-between space-y-5">
     <div>
-      <h3 class="text-xl font-bold text-white group-hover:text-nova-cyan transition-colors mb-2">
+      <h3 class="text-xl font-extrabold text-white group-hover:text-nova-cyan transition-colors mb-2 leading-snug">
         {project.title}
       </h3>
-      <p class="text-xs text-nova-violet font-medium mb-3">
+      <p class="text-xs font-semibold text-nova-violet mb-3">
         {project.tagline}
       </p>
       <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
@@ -54,28 +54,28 @@ const { project } = Astro.props;
       </p>
     </div>
 
-    <!-- Metrics Strip -->
+    <!-- Live Telemetry Metrics Strip -->
     {project.metrics && Object.keys(project.metrics).length > 0 && (
-      <div class="grid grid-cols-3 gap-2 py-3 px-3 rounded-xl bg-dark-950/70 border border-white/5 font-mono text-center">
+      <div class="grid grid-cols-3 gap-2 py-3 px-3.5 rounded-2xl bg-dark-950/90 border border-white/5 font-mono text-center shadow-inner">
         {Object.entries(project.metrics).slice(0, 3).map(([key, val]) => (
           <div>
             <span class="block text-[9px] uppercase tracking-wider text-slate-500">{key}</span>
-            <span class="text-xs font-bold text-emerald-400">{val}</span>
+            <span class="text-xs font-extrabold text-emerald-400">{val}</span>
           </div>
         ))}
       </div>
     )}
 
-    <!-- Tech Stack & Links -->
-    <div class="pt-3 border-t border-white/5 flex items-center justify-between">
-      <div class="flex flex-wrap gap-1">
+    <!-- Tech Stack Pill Ribbon & Action Link -->
+    <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+      <div class="flex flex-wrap gap-1.5">
         {project.techStack.slice(0, 3).map((tech) => (
-          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-300 border border-white/5">
+          <span class="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-white/[0.04] text-slate-300 border border-white/10">
             {tech}
           </span>
         ))}
         {project.techStack.length > 3 && (
-          <span class="text-[10px] font-mono px-1.5 py-0.5 text-slate-500">
+          <span class="text-[10px] font-mono px-2 py-1 text-slate-400 font-semibold">
             +{project.techStack.length - 3}
           </span>
         )}
@@ -85,11 +85,11 @@ const { project } = Astro.props;
         href={project.externalUrl || `https://github.com/eka0789`}
         target="_blank"
         rel="noopener noreferrer"
-        class="text-xs font-medium text-slate-300 hover:text-nova-cyan flex items-center gap-1 transition-colors"
+        class="text-xs font-bold text-slate-300 hover:text-nova-cyan flex items-center gap-1.5 transition-colors group/link"
       >
-        <span>Repo</span>
-        <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+        <span>Inspect</span>
+        <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
         </svg>
       </a>
     </div>

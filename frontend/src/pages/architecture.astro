@@ -9,45 +9,46 @@ import SystemFlowVisualizer from '../components/SystemFlowVisualizer.astro';
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
     
-    <!-- Header -->
+    <!-- Page Header -->
     <div class="max-w-4xl space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nova-indigo/10 border border-nova-indigo/30 text-nova-cyan text-xs font-mono">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-nova-indigo/10 border border-nova-indigo/30 text-nova-cyan text-xs font-mono shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-nova-cyan animate-pulse"></span>
         <span>Solution Architect & Senior Fullstack Blueprint</span>
       </div>
-      <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+      <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight">
         Enterprise Architecture Specification
       </h1>
       <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
-        Engineered by <strong>Eka Prasetyo</strong> to solve the modern frontend trilemma: instantaneous edge delivery, scalable content authoring workflows, and robust relational transactional data modeling.
+        Engineered by <strong>Eka Prasetyo (@eka0789)</strong> to solve the modern frontend trilemma: instantaneous edge delivery, scalable content authoring workflows, and robust relational transactional data modeling.
       </p>
     </div>
 
-    <!-- Live System Topology -->
+    <!-- Live System Topology Interactive Visualizer -->
     <SystemFlowVisualizer />
 
     <!-- Section 1: Executive Summary & Design Decisions -->
-    <section class="glass-card rounded-2xl p-8 border border-white/10 space-y-6">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-lg bg-nova-cyan/20 text-nova-cyan flex items-center justify-center font-mono font-bold text-sm">01</span>
-        <h2 class="text-2xl font-bold text-white">Architectural Principles & Design Philosophy</h2>
+    <section class="glass-card rounded-3xl p-8 sm:p-10 border border-white/[0.08] space-y-6 shadow-2xl">
+      <div class="flex items-center gap-3.5">
+        <span class="w-9 h-9 rounded-xl bg-nova-cyan/20 text-nova-cyan flex items-center justify-center font-mono font-black text-sm border border-nova-cyan/30">01</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white">Architectural Principles & Design Philosophy</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-300">
-        <div class="p-5 rounded-xl bg-dark-900/80 border border-white/5 space-y-2">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-300 pt-2">
+        <div class="p-6 rounded-2xl bg-dark-900/90 border border-white/5 space-y-2.5 hover:border-nova-cyan/40 transition-colors">
           <h3 class="font-bold text-nova-cyan font-mono text-xs uppercase tracking-wider">Edge-First Rendering</h3>
           <p class="text-xs text-slate-400 leading-relaxed">
             Content is served via static HTML at the edge by default. Astro partial prerendering hydrates interactive components strictly on user demand, dropping client-side JS by up to 90%.
           </p>
         </div>
 
-        <div class="p-5 rounded-xl bg-dark-900/80 border border-white/5 space-y-2">
+        <div class="p-6 rounded-2xl bg-dark-900/90 border border-white/5 space-y-2.5 hover:border-nova-indigo/40 transition-colors">
           <h3 class="font-bold text-nova-indigo font-mono text-xs uppercase tracking-wider">Decoupled Headless CMS</h3>
           <p class="text-xs text-slate-400 leading-relaxed">
             Content governance is strictly decoupled from presentation. Strapi v5 manages editorial workflows, roles, and lifecycles without leaking backend rendering burdens to users.
           </p>
         </div>
 
-        <div class="p-5 rounded-xl bg-dark-900/80 border border-white/5 space-y-2">
+        <div class="p-6 rounded-2xl bg-dark-900/90 border border-white/5 space-y-2.5 hover:border-emerald-400/40 transition-colors">
           <h3 class="font-bold text-emerald-400 font-mono text-xs uppercase tracking-wider">High-Throughput Pooling</h3>
           <p class="text-xs text-slate-400 leading-relaxed">
             Supabase PostgreSQL is bridged using the Supavisor connection pooler on port 6543, eliminating database connection exhaustion under bursty serverless or container traffic.
@@ -57,10 +58,10 @@ import SystemFlowVisualizer from '../components/SystemFlowVisualizer.astro';
     </section>
 
     <!-- Section 2: Data Flow & Webhook Synchronization -->
-    <section class="glass-card rounded-2xl p-8 border border-white/10 space-y-6">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-lg bg-nova-indigo/20 text-nova-indigo flex items-center justify-center font-mono font-bold text-sm">02</span>
-        <h2 class="text-2xl font-bold text-white">Event-Driven Content Invalidation Flow</h2>
+    <section class="glass-card rounded-3xl p-8 sm:p-10 border border-white/[0.08] space-y-6 shadow-2xl">
+      <div class="flex items-center gap-3.5">
+        <span class="w-9 h-9 rounded-xl bg-nova-indigo/20 text-nova-indigo flex items-center justify-center font-mono font-black text-sm border border-nova-indigo/30">02</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white">Event-Driven Content Invalidation Flow</h2>
       </div>
 
       <p class="text-sm text-slate-300 leading-relaxed">
@@ -68,7 +69,7 @@ import SystemFlowVisualizer from '../components/SystemFlowVisualizer.astro';
       </p>
 
       <!-- Flow Chart ASCII / Code Representation -->
-      <div class="bg-dark-950 p-6 rounded-xl border border-white/5 font-mono text-xs text-slate-300 overflow-x-auto space-y-4">
+      <div class="bg-dark-950/95 p-6 rounded-2xl border border-white/5 font-mono text-xs text-slate-300 overflow-x-auto space-y-3 shadow-inner">
         <div class="text-slate-400">
           [ Content Editor ] 
           ──(1. Publish Event)──&gt; [ Strapi v5 Admin ] 
@@ -87,38 +88,38 @@ import SystemFlowVisualizer from '../components/SystemFlowVisualizer.astro';
     </section>
 
     <!-- Section 3: Supabase Database Schema & RLS Security -->
-    <section class="glass-card rounded-2xl p-8 border border-white/10 space-y-6">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono font-bold text-sm">03</span>
-        <h2 class="text-2xl font-bold text-white">Supabase PostgreSQL Schema & Security Blueprint</h2>
+    <section class="glass-card rounded-3xl p-8 sm:p-10 border border-white/[0.08] space-y-6 shadow-2xl">
+      <div class="flex items-center gap-3.5">
+        <span class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono font-black text-sm border border-emerald-500/30">03</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white">Supabase PostgreSQL Schema & Security Blueprint</h2>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-xs font-mono">
-        <div class="p-5 rounded-xl bg-dark-950 border border-white/5 space-y-3">
+        <div class="p-6 rounded-2xl bg-dark-950/90 border border-white/5 space-y-3 shadow-inner">
           <div class="text-nova-cyan font-bold uppercase tracking-wider">Database Tables (DDL)</div>
           <ul class="space-y-2 text-slate-300">
-            <li class="p-2 rounded bg-white/[0.02] border border-white/5">
+            <li class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
               <span class="text-white font-bold">public.projects</span>: id (UUID), title, slug, client, metrics (JSONB), tech_stack (JSONB), featured (BOOLEAN)
             </li>
-            <li class="p-2 rounded bg-white/[0.02] border border-white/5">
+            <li class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
               <span class="text-white font-bold">public.articles</span>: id (UUID), title, slug, excerpt, content (TEXT), tags (JSONB), author, reading_time
             </li>
-            <li class="p-2 rounded bg-white/[0.02] border border-white/5">
+            <li class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
               <span class="text-white font-bold">public.services</span>: id (UUID), name, slug, tagline, deliverables (JSONB), sort_order (INT)
             </li>
           </ul>
         </div>
 
-        <div class="p-5 rounded-xl bg-dark-950 border border-white/5 space-y-3">
+        <div class="p-6 rounded-2xl bg-dark-950/90 border border-white/5 space-y-3 shadow-inner">
           <div class="text-emerald-400 font-bold uppercase tracking-wider">Row Level Security (RLS) & Pooling</div>
           <ul class="space-y-2 text-slate-300">
-            <li class="p-2 rounded bg-white/[0.02] border border-white/5">
+            <li class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
               <span class="text-white font-bold">RLS Policies</span>: Read-only access enabled for anonymous queries (`FOR SELECT TO anon USING (true)`).
             </li>
-            <li class="p-2 rounded bg-white/[0.02] border border-white/5">
+            <li class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
               <span class="text-white font-bold">Connection Port 6543</span>: Routed through Supavisor Transaction Pooler for zero cold-start exhaustion.
             </li>
-            <li class="p-2 rounded bg-white/[0.02] border border-white/5">
+            <li class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
               <span class="text-white font-bold">Direct SSL Enforced</span>: TLS 1.3 enforced for all database read/write queries.
             </li>
           </ul>
@@ -127,18 +128,18 @@ import SystemFlowVisualizer from '../components/SystemFlowVisualizer.astro';
     </section>
 
     <!-- Section 4: Vercel Production Deployment Runbook -->
-    <section class="glass-card rounded-2xl p-8 border border-white/10 space-y-6">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-lg bg-nova-violet/20 text-nova-violet flex items-center justify-center font-mono font-bold text-sm">04</span>
-        <h2 class="text-2xl font-bold text-white">Vercel Deployment Architecture & Configuration</h2>
+    <section class="glass-card rounded-3xl p-8 sm:p-10 border border-white/[0.08] space-y-6 shadow-2xl">
+      <div class="flex items-center gap-3.5">
+        <span class="w-9 h-9 rounded-xl bg-nova-violet/20 text-nova-violet flex items-center justify-center font-mono font-black text-sm border border-nova-violet/30">04</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white">Vercel Deployment Architecture & Configuration</h2>
       </div>
 
       <div class="space-y-4 text-xs font-mono text-slate-300">
-        <p class="text-sm font-sans text-slate-300">
+        <p class="text-sm font-sans text-slate-300 leading-relaxed">
           The Astro frontend uses the official <code>@astrojs/vercel</code> adapter with <code>output: 'hybrid'</code>. Static pages are pre-rendered during build, while dynamic API endpoints and on-demand pages execute on Vercel Edge Serverless functions.
         </p>
 
-        <div class="p-4 rounded-xl bg-dark-950 border border-white/5">
+        <div class="p-5 rounded-2xl bg-dark-950/95 border border-white/5 shadow-inner">
           <div class="text-slate-400 mb-2">// vercel.json configuration overview</div>
           <pre class="text-slate-200"><code>{`{
   "framework": "astro",
@@ -161,16 +162,20 @@ import SystemFlowVisualizer from '../components/SystemFlowVisualizer.astro';
     </section>
 
     <!-- Section 5: Telemetry API & Live Health Check -->
-    <section class="glass-card rounded-2xl p-8 border border-white/10 space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-xl font-bold text-white">Live System Telemetry</h3>
-        <a href="/api/health" target="_blank" class="px-3 py-1 rounded-lg bg-nova-cyan/10 border border-nova-cyan/20 text-nova-cyan text-xs font-mono hover:bg-nova-cyan/20 transition-colors">
-          View JSON Endpoint &rarr;
-        </a>
+    <section class="glass-card rounded-3xl p-8 sm:p-10 border border-white/[0.08] space-y-4 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="space-y-1 text-center sm:text-left">
+        <h3 class="text-xl font-bold text-white">Live System Telemetry API Endpoint</h3>
+        <p class="text-xs text-slate-400">
+          Query the active operational status of the Astro runtime, Strapi headless CMS connection, and Supabase database health in real time.
+        </p>
       </div>
-      <p class="text-xs text-slate-400">
-        Query the active operational status of the Astro runtime, Strapi headless CMS connection, and Supabase database health in real time.
-      </p>
+      <a 
+        href="/api/health" 
+        target="_blank" 
+        class="px-5 py-3 rounded-xl bg-nova-cyan/10 border border-nova-cyan/30 text-nova-cyan text-xs font-mono font-bold hover:bg-nova-cyan/20 transition-all duration-300 shadow-md whitespace-nowrap"
+      >
+        View JSON Endpoint &rarr;
+      </a>
     </section>
 
   </div>

@@ -22,89 +22,97 @@ const { article } = Astro.props;
   title={`${article.title} | NovaSphere Architecture`}
   description={article.excerpt}
 >
-  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+  <!-- Interactive Reading Progress Indicator on top -->
+  <div id="reading-progress" class="fixed top-20 left-0 right-0 h-1 bg-gradient-to-r from-nova-cyan via-nova-indigo to-nova-violet z-40 origin-left scale-x-0 transition-transform duration-75"></div>
+
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
     
     <!-- Breadcrumb & Category -->
     <div class="flex items-center gap-3 text-xs font-mono text-slate-400">
-      <a href="/blog" class="text-nova-cyan hover:underline">&larr; Back to Engineering Blog</a>
+      <a href="/blog" class="text-nova-cyan hover:underline flex items-center gap-1">
+        <span>&larr;</span> Back to Engineering Blog
+      </a>
       <span>/</span>
-      <span class="px-2.5 py-0.5 rounded bg-nova-violet/10 text-nova-violet border border-nova-violet/20">{article.category}</span>
+      <span class="px-3 py-0.5 rounded-full bg-nova-violet/15 text-nova-violet-glow border border-nova-violet/30 font-bold">{article.category}</span>
     </div>
 
     <!-- Title & Metadata -->
     <header class="space-y-6">
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
         {article.title}
       </h1>
 
-      <p class="text-lg text-slate-300 leading-relaxed font-light">
+      <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-light">
         {article.excerpt}
       </p>
 
-      <div class="flex flex-wrap items-center justify-between gap-4 py-4 border-y border-white/10 text-xs text-slate-400 font-mono">
+      <div class="flex flex-wrap items-center justify-between gap-4 py-5 border-y border-white/10 text-xs text-slate-400 font-mono">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-nova-indigo to-nova-cyan flex items-center justify-center font-bold text-white text-xs">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-nova-cyan via-nova-indigo to-nova-violet flex items-center justify-center font-bold text-white text-xs shadow-md">
             EP
           </div>
           <div>
-            <span class="text-white font-semibold block">{article.author}</span>
+            <span class="text-white font-bold block text-sm">{article.author}</span>
             <span class="text-slate-400 text-[11px]">Senior Fullstack & Solution Architect</span>
           </div>
         </div>
 
         <div class="flex items-center gap-4">
-          <span>{article.readingTime}</span>
+          <span class="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-300">{article.readingTime}</span>
           <span>•</span>
           <span>{article.publishedAt || 'Published 2026'}</span>
         </div>
       </div>
     </header>
 
-    <!-- Featured Cover Image -->
-    <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative h-72 sm:h-96">
+    <!-- Featured Cover Image with Neon Border -->
+    <div class="rounded-3xl overflow-hidden border border-white/10 shadow-2xl relative h-72 sm:h-96 md:h-[420px]">
       <img
         src={article.coverUrl}
         alt={article.title}
         class="w-full h-full object-cover"
       />
+      <div class="absolute inset-0 bg-gradient-to-t from-dark-950/60 via-transparent to-transparent"></div>
     </div>
 
-    <!-- Article Body -->
-    <div class="prose prose-invert max-w-none space-y-6 text-slate-300 leading-relaxed text-base font-normal">
-      <div class="whitespace-pre-line">
-        {article.content}
-      </div>
-    </div>
-
-    <!-- Tags -->
-    {article.tags && article.tags.length > 0 && (
-      <div class="pt-8 border-t border-white/10 flex items-center gap-2">
-        <span class="text-xs font-mono text-slate-500 uppercase">Tags:</span>
-        <div class="flex flex-wrap gap-1.5">
-          {article.tags.map((tag) => (
-            <span class="text-xs font-mono px-2.5 py-1 rounded-lg bg-dark-900 border border-white/10 text-slate-300">
-              #{tag}
-            </span>
-          ))}
+    <!-- Article Content Body -->
+    <div class="glass-card rounded-3xl p-8 sm:p-12 border border-white/[0.08] shadow-2xl">
+      <div class="prose prose-invert max-w-none space-y-6 text-slate-300 leading-relaxed text-base font-normal">
+        <div class="whitespace-pre-line text-slate-300 leading-relaxed text-base sm:text-lg">
+          {article.content}
         </div>
       </div>
-    )}
 
-    <!-- Author Bio Card -->
-    <div class="p-6 rounded-2xl glass-card border border-white/10 flex flex-col sm:flex-row items-center gap-6 mt-12">
-      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-nova-indigo via-nova-violet to-nova-cyan p-[1px] shrink-0">
-        <div class="w-full h-full bg-dark-950 rounded-[15px] flex items-center justify-center text-xl font-bold text-nova-cyan">
+      <!-- Tags Strip -->
+      {article.tags && article.tags.length > 0 && (
+        <div class="pt-10 mt-10 border-t border-white/10 flex flex-wrap items-center gap-2">
+          <span class="text-xs font-mono text-slate-500 uppercase tracking-wider font-bold">Topics:</span>
+          <div class="flex flex-wrap gap-2">
+            {article.tags.map((tag) => (
+              <span class="text-xs font-mono px-3 py-1 rounded-xl bg-dark-950 border border-white/10 text-slate-300 shadow-sm">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Author Bio Card with Social Badge -->
+    <div class="p-8 rounded-3xl glass-card border border-white/10 flex flex-col sm:flex-row items-center gap-6 shadow-2xl">
+      <div class="w-18 h-18 rounded-2xl bg-gradient-to-tr from-nova-cyan via-nova-indigo to-nova-violet p-[2px] shrink-0 shadow-lg">
+        <div class="w-full h-full bg-dark-950 rounded-[14px] flex items-center justify-center text-2xl font-black text-nova-cyan p-4">
           EP
         </div>
       </div>
-      <div class="space-y-1 text-center sm:text-left">
-        <h3 class="text-base font-bold text-white">Eka Prasetyo</h3>
-        <p class="text-xs text-nova-cyan font-mono">Senior Fullstack Engineer & Solution Architect</p>
-        <p class="text-xs text-slate-400 leading-relaxed">
+      <div class="space-y-1.5 text-center sm:text-left">
+        <h3 class="text-lg font-bold text-white">Eka Prasetyo</h3>
+        <p class="text-xs text-nova-cyan font-mono font-semibold">Senior Fullstack Engineer & Solution Architect</p>
+        <p class="text-xs text-slate-400 leading-relaxed max-w-xl">
           Specializing in enterprise cloud architecture, low-latency edge rendering, high-throughput database systems, and headless content orchestration.
         </p>
         <div class="pt-2">
-          <a href="https://github.com/eka0789" target="_blank" class="text-xs font-medium text-slate-200 hover:text-nova-cyan inline-flex items-center gap-1">
+          <a href="https://github.com/eka0789" target="_blank" class="text-xs font-bold text-slate-200 hover:text-nova-cyan inline-flex items-center gap-1.5 transition-colors">
             <span>github.com/eka0789</span> &rarr;
           </a>
         </div>
@@ -112,4 +120,15 @@ const { article } = Astro.props;
     </div>
 
   </article>
+
+  <script>
+    const progress = document.getElementById('reading-progress');
+    if (progress) {
+      window.addEventListener('scroll', () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progressRatio = totalHeight > 0 ? window.scrollY / totalHeight : 0;
+        progress.style.transform = `scaleX(${Math.min(Math.max(progressRatio, 0), 1)})`;
+      });
+    }
+  </script>
 </Layout>

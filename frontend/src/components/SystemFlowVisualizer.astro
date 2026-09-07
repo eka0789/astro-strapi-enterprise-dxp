@@ -1,100 +1,128 @@
 ---
-// Interactive Animated System Topology Visualizer
+// Interactive Animated System Topology Visualizer with moving packets
 ---
 
-<div class="glass-card rounded-2xl p-6 lg:p-8 border border-white/10 relative overflow-hidden">
+<div class="glass-card rounded-3xl p-6 sm:p-8 lg:p-10 border border-white/10 relative overflow-hidden shadow-2xl">
   
-  <!-- Section Title -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/5">
-    <div>
-      <span class="text-xs font-mono uppercase tracking-wider text-nova-cyan font-semibold">Live Pipeline Topology</span>
-      <h3 class="text-xl font-bold text-white mt-1">End-to-End Enterprise Flow</h3>
+  <!-- Ambient background glow behind visualizer -->
+  <div class="absolute -top-20 right-10 w-80 h-80 bg-nova-cyan/15 blur-[90px] rounded-full pointer-events-none"></div>
+  <div class="absolute -bottom-20 left-10 w-80 h-80 bg-nova-violet/15 blur-[90px] rounded-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/[0.08] relative z-10">
+    <div class="space-y-1">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-nova-cyan animate-pulse"></span>
+        <span class="text-xs font-mono uppercase tracking-widest text-nova-cyan font-bold">Interactive Telemetry Diagram</span>
+      </div>
+      <h3 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">End-to-End Edge Architecture Topology</h3>
     </div>
-    <div class="flex items-center gap-2">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        Streaming Pulse Active
+    
+    <div class="flex items-center gap-3">
+      <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+        </span>
+        Packet Flow Active
       </span>
     </div>
   </div>
 
-  <!-- Interactive Nodes Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 py-8 relative">
+  <!-- 4 Interactive Flow Nodes -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-5 py-8 relative z-10">
     
-    <!-- Node 1: Client Edge Entry -->
-    <div class="relative p-5 rounded-xl bg-dark-900/90 border border-nova-cyan/30 flex flex-col justify-between space-y-3 shadow-lg shadow-nova-cyan/5">
+    <!-- Node 1: Vercel Edge -->
+    <div class="group relative p-6 rounded-2xl bg-dark-900/90 border border-white/10 hover:border-nova-cyan/60 transition-all duration-300 flex flex-col justify-between space-y-4 hover:scale-[1.02] shadow-xl hover:shadow-nova-cyan/20">
       <div class="flex items-center justify-between">
-        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-nova-cyan/10 text-nova-cyan border border-nova-cyan/20">Stage 01</span>
-        <span class="w-2.5 h-2.5 rounded-full bg-nova-cyan animate-pulse"></span>
+        <span class="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-lg bg-nova-cyan/10 text-nova-cyan border border-nova-cyan/30">
+          Stage 01 • Edge
+        </span>
+        <div class="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center text-nova-cyan">
+          🌐
+        </div>
       </div>
       <div>
-        <h4 class="font-bold text-white text-sm">Vercel Edge Network</h4>
-        <p class="text-[11px] text-slate-400 mt-1">300+ Edge PoPs • Anycast Routing • Brotli & Smart Cache</p>
+        <h4 class="font-bold text-white text-base group-hover:text-nova-cyan transition-colors">Vercel Edge Network</h4>
+        <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">300+ Edge PoPs • Anycast DNS • Brotli Compression & Smart CDN Caching</p>
       </div>
-      <div class="pt-2 border-t border-white/5 flex items-center justify-between font-mono text-[10px]">
-        <span class="text-slate-500">Latency</span>
+      <div class="pt-3 border-t border-white/5 flex items-center justify-between font-mono text-[11px]">
+        <span class="text-slate-500">Latency:</span>
         <span class="text-emerald-400 font-bold">&lt; 15ms</span>
       </div>
     </div>
 
-    <!-- Node 2: Astro Island Frontend -->
-    <div class="relative p-5 rounded-xl bg-dark-900/90 border border-nova-indigo/30 flex flex-col justify-between space-y-3 shadow-lg shadow-nova-indigo/5">
+    <!-- Node 2: Astro v5 Islands -->
+    <div class="group relative p-6 rounded-2xl bg-dark-900/90 border border-white/10 hover:border-nova-indigo/60 transition-all duration-300 flex flex-col justify-between space-y-4 hover:scale-[1.02] shadow-xl hover:shadow-nova-indigo/20">
       <div class="flex items-center justify-between">
-        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-nova-indigo/10 text-nova-indigo border border-nova-indigo/20">Stage 02</span>
-        <span class="w-2.5 h-2.5 rounded-full bg-nova-indigo animate-pulse"></span>
+        <span class="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-lg bg-nova-indigo/10 text-nova-indigo border border-nova-indigo/30">
+          Stage 02 • Core
+        </span>
+        <div class="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center text-nova-indigo">
+          🚀
+        </div>
       </div>
       <div>
-        <h4 class="font-bold text-white text-sm">Astro v5 Hybrid Engine</h4>
-        <p class="text-[11px] text-slate-400 mt-1">Static HTML by default • Islands on-demand • Partial Prerender</p>
+        <h4 class="font-bold text-white text-base group-hover:text-nova-indigo transition-colors">Astro v5 Hybrid</h4>
+        <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Pure Static HTML by default • Partial Prerendering • On-Demand Islands</p>
       </div>
-      <div class="pt-2 border-t border-white/5 flex items-center justify-between font-mono text-[10px]">
-        <span class="text-slate-500">JS Baseline</span>
+      <div class="pt-3 border-t border-white/5 flex items-center justify-between font-mono text-[11px]">
+        <span class="text-slate-500">JS Baseline:</span>
         <span class="text-nova-cyan font-bold">0 KB Payload</span>
       </div>
     </div>
 
-    <!-- Node 3: Strapi Headless CMS -->
-    <div class="relative p-5 rounded-xl bg-dark-900/90 border border-nova-violet/30 flex flex-col justify-between space-y-3 shadow-lg shadow-nova-violet/5">
+    <!-- Node 3: Strapi CMS -->
+    <div class="group relative p-6 rounded-2xl bg-dark-900/90 border border-white/10 hover:border-nova-violet/60 transition-all duration-300 flex flex-col justify-between space-y-4 hover:scale-[1.02] shadow-xl hover:shadow-nova-violet/20">
       <div class="flex items-center justify-between">
-        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-nova-violet/10 text-nova-violet border border-nova-violet/20">Stage 03</span>
-        <span class="w-2.5 h-2.5 rounded-full bg-nova-violet animate-pulse"></span>
+        <span class="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-lg bg-nova-violet/10 text-nova-violet border border-nova-violet/30">
+          Stage 03 • Governance
+        </span>
+        <div class="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center text-nova-violet">
+          📝
+        </div>
       </div>
       <div>
-        <h4 class="font-bold text-white text-sm">Strapi v5 CMS Gateway</h4>
-        <p class="text-[11px] text-slate-400 mt-1">REST & GraphQL APIs • Deploy Webhooks • Multi-Role RBAC</p>
+        <h4 class="font-bold text-white text-base group-hover:text-nova-violet transition-colors">Strapi Headless CMS</h4>
+        <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Dynamic Content Types • Multi-role RBAC • Deploy Hook Event Invalidation</p>
       </div>
-      <div class="pt-2 border-t border-white/5 flex items-center justify-between font-mono text-[10px]">
-        <span class="text-slate-500">Event Hook</span>
-        <span class="text-nova-violet font-bold">Auto Invalidation</span>
+      <div class="pt-3 border-t border-white/5 flex items-center justify-between font-mono text-[11px]">
+        <span class="text-slate-500">Event Hook:</span>
+        <span class="text-nova-violet font-bold">Auto Invalidate</span>
       </div>
     </div>
 
-    <!-- Node 4: Supabase PostgreSQL -->
-    <div class="relative p-5 rounded-xl bg-dark-900/90 border border-emerald-500/30 flex flex-col justify-between space-y-3 shadow-lg shadow-emerald-500/5">
+    <!-- Node 4: Supabase Postgres -->
+    <div class="group relative p-6 rounded-2xl bg-dark-900/90 border border-white/10 hover:border-emerald-500/60 transition-all duration-300 flex flex-col justify-between space-y-4 hover:scale-[1.02] shadow-xl hover:shadow-emerald-500/20">
       <div class="flex items-center justify-between">
-        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Stage 04</span>
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+          Stage 04 • Storage
+        </span>
+        <div class="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center text-emerald-400">
+          🗄️
+        </div>
       </div>
       <div>
-        <h4 class="font-bold text-white text-sm">Supabase PostgreSQL</h4>
-        <p class="text-[11px] text-slate-400 mt-1">Supavisor Transaction Pooler • Row Level Security • Point-in-Time</p>
+        <h4 class="font-bold text-white text-base group-hover:text-emerald-400 transition-colors">Supabase PostgreSQL</h4>
+        <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Supavisor Transaction Pooler • Row-Level Security • JSONB Schema Support</p>
       </div>
-      <div class="pt-2 border-t border-white/5 flex items-center justify-between font-mono text-[10px]">
-        <span class="text-slate-500">Capacity</span>
-        <span class="text-emerald-400 font-bold">10k+ QPS</span>
+      <div class="pt-3 border-t border-white/5 flex items-center justify-between font-mono text-[11px]">
+        <span class="text-slate-500">Connection Pool:</span>
+        <span class="text-emerald-400 font-bold">Port 6543 (10k+ QPS)</span>
       </div>
     </div>
 
   </div>
 
-  <!-- Bottom Console Status -->
-  <div class="mt-4 p-3.5 rounded-xl bg-dark-950/80 border border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-400 gap-2">
+  <!-- Telemetry Console Footer -->
+  <div class="p-4 rounded-2xl bg-dark-950/90 border border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-300 gap-3 relative z-10">
     <div class="flex items-center gap-3">
-      <span class="text-nova-cyan font-semibold">SYNCHRONIZED:</span>
-      <span>Vercel Deploy Hook &lt;--&gt; Strapi Lifecycle &lt;--&gt; Supabase Pooler (6543)</span>
+      <span class="px-2 py-0.5 rounded bg-nova-cyan/20 text-nova-cyan font-bold text-[10px]">REALTIME</span>
+      <span>Vercel Edge Hook &harr; Strapi Webhooks &harr; Supabase Pooler (6543)</span>
     </div>
-    <div class="text-emerald-400 text-[11px]">
-      Verified by Senior Solution Architect
+    <div class="text-emerald-400 text-[11px] font-semibold flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+      <span>Architect Verified: Eka Prasetyo (@eka0789)</span>
     </div>
   </div>
 

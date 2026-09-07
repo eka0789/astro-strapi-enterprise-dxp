@@ -6,19 +6,19 @@ const pillars = [
     role: 'Frontend Layer',
     title: 'Astro v5 Islands & Partial Hydration',
     description: 'Renders static HTML by default at the edge. Hydrates only isolated client components when in viewport, reducing client-side JS by up to 90%.',
-    icon: 'astro',
-    color: 'from-orange-500 to-amber-500',
-    borderColor: 'hover:border-amber-500/50',
+    icon: '🚀',
+    borderGlow: 'hover:border-amber-400/50 hover:shadow-amber-400/10',
+    tagColor: 'text-amber-400',
     tags: ['Astro Islands', 'Hybrid Rendering', 'Zero JS Baseline', 'Tailwind CSS'],
-    status: 'Zero JS Payload',
+    status: '0 KB Default JS',
   },
   {
-    role: 'Content & Governance Layer',
+    role: 'Content Governance Layer',
     title: 'Strapi v5 Headless CMS',
     description: 'Decoupled authoring environment exposing GraphQL & REST endpoints. Dispatches instant build webhooks upon content publishing.',
-    icon: 'strapi',
-    color: 'from-indigo-500 to-purple-600',
-    borderColor: 'hover:border-indigo-500/50',
+    icon: '📝',
+    borderGlow: 'hover:border-nova-indigo/50 hover:shadow-nova-indigo/10',
+    tagColor: 'text-nova-indigo',
     tags: ['REST & GraphQL', 'Role-Based Access', 'Automated Webhooks', 'Dynamic Schema'],
     status: 'Event-Driven Bus',
   },
@@ -26,60 +26,64 @@ const pillars = [
     role: 'Data Persistence Layer',
     title: 'Supabase PostgreSQL & Vector',
     description: 'High availability relational Postgres with Supavisor transaction connection pooling, Row Level Security (RLS), and sub-millisecond query caching.',
-    icon: 'supabase',
-    color: 'from-emerald-500 to-teal-500',
-    borderColor: 'hover:border-emerald-500/50',
-    tags: ['PgBouncer/Supavisor', 'Row-Level Security', 'ACID Compliant', 'Automated Backups'],
+    icon: '🗄️',
+    borderGlow: 'hover:border-emerald-400/50 hover:shadow-emerald-400/10',
+    tagColor: 'text-emerald-400',
+    tags: ['Supavisor Pooler', 'Row-Level Security', 'ACID Compliant', 'Automated Backups'],
     status: '10k+ QPS Pooler',
   },
   {
     role: 'Delivery & Edge Layer',
     title: 'Vercel Global Edge Network',
     description: 'Multi-region serverless and edge compute with automatic TLS, Brotli compression, and distributed CDN spanning over 300 points of presence.',
-    icon: 'vercel',
-    color: 'from-cyan-500 to-blue-600',
-    borderColor: 'hover:border-cyan-500/50',
+    icon: '🌐',
+    borderGlow: 'hover:border-nova-cyan/50 hover:shadow-nova-cyan/10',
+    tagColor: 'text-nova-cyan',
     tags: ['Edge Middleware', 'Smart CDN Caching', 'Instant Previews', 'Zero Cold Start'],
     status: 'Global Sub-30ms',
   },
 ];
 ---
 
-<section class="py-20 relative overflow-hidden bg-dark-950/60 border-y border-white/5">
+<section class="py-24 relative overflow-hidden bg-dark-950/70 border-y border-white/5">
+  <!-- Subtle ambient glow background -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] bg-gradient-to-r from-nova-indigo/10 via-nova-cyan/10 to-nova-violet/10 blur-[130px] pointer-events-none"></div>
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     
-    <!-- Section Header -->
-    <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nova-indigo/10 border border-nova-indigo/30 text-nova-cyan text-xs font-mono">
-        <span>Solution Architecture Blueprint</span>
+    <!-- Section Header with Badge -->
+    <div class="text-center max-w-3xl mx-auto space-y-4 mb-20">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-nova-indigo/10 border border-nova-indigo/30 text-nova-cyan text-xs font-mono shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-nova-cyan animate-ping"></span>
+        <span>Solution Architecture Matrix</span>
       </div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
         The Four Pillars of the <br />
         <span class="bg-clip-text text-transparent bg-gradient-to-r from-nova-cyan via-nova-indigo to-nova-violet">
           NovaSphere Enterprise Platform
         </span>
       </h2>
-      <p class="text-slate-400 text-base leading-relaxed">
-        Designed from first principles to decouple content authoring velocity from client rendering latency, securing optimal Core Web Vitals and resilient scalability.
+      <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+        Designed from first principles to decouple content authoring velocity from client rendering latency, securing pristine Core Web Vitals and resilient scalability.
       </p>
     </div>
 
     <!-- 4 Pillars Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {pillars.map((pillar, idx) => (
-        <div class={`glass-card rounded-2xl p-6 relative flex flex-col justify-between group ${pillar.borderColor} transition-all duration-300`}>
-          <div class="space-y-4">
+        <div class={`glass-card rounded-3xl p-7 relative flex flex-col justify-between group ${pillar.borderGlow} transition-all duration-500 shadow-xl hover:-translate-y-2`}>
+          <div class="space-y-5">
             <!-- Header with step counter and badge -->
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono font-bold text-slate-500">0{idx + 1}</span>
-              <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-300">
-                {pillar.status}
-              </span>
+              <div class="w-10 h-10 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-lg">
+                {pillar.icon}
+              </div>
+              <span class="text-xs font-mono font-extrabold text-slate-500">0{idx + 1}</span>
             </div>
 
             <!-- Role and Title -->
             <div>
-              <p class="text-xs font-mono text-nova-cyan uppercase tracking-wider mb-1">{pillar.role}</p>
+              <p class="text-[11px] font-mono text-nova-cyan uppercase tracking-wider mb-1.5 font-bold">{pillar.role}</p>
               <h3 class="text-lg font-bold text-white group-hover:text-nova-cyan transition-colors">
                 {pillar.title}
               </h3>
@@ -90,11 +94,18 @@ const pillars = [
             </p>
           </div>
 
-          <!-- Tags -->
-          <div class="pt-6 mt-6 border-t border-white/5">
+          <!-- Tags & Status -->
+          <div class="pt-6 mt-6 border-t border-white/5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-500">Benchmark</span>
+              <span class="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-lg bg-white/[0.04] border border-white/10 text-white">
+                {pillar.status}
+              </span>
+            </div>
+
             <div class="flex flex-wrap gap-1.5">
               {pillar.tags.map((tag) => (
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-dark-900 text-slate-300 border border-white/5">
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-dark-900 text-slate-300 border border-white/5">
                   {tag}
                 </span>
               ))}
@@ -104,20 +115,20 @@ const pillars = [
       ))}
     </div>
 
-    <!-- Metrics Row -->
-    <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Live Telemetry KPI Metrics Row -->
+    <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
       {architectureMetrics.map((metric) => (
-        <div class="p-5 rounded-xl bg-dark-900/60 border border-white/5 flex flex-col justify-between hover:border-white/10 transition-colors">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-mono text-slate-400">{metric.label}</span>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        <div class="p-6 rounded-2xl glass-card border border-white/[0.08] flex flex-col justify-between hover:border-nova-cyan/40 transition-all duration-300 hover:shadow-lg hover:shadow-nova-cyan/10">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono text-slate-400 uppercase tracking-wider">{metric.label}</span>
+            <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
               {metric.badge}
             </span>
           </div>
-          <div class="text-2xl font-extrabold text-white font-mono my-1 tracking-tight">
+          <div class="text-3xl font-black text-white font-mono my-1 tracking-tight">
             {metric.value}
           </div>
-          <p class="text-[11px] text-slate-500 leading-normal">
+          <p class="text-xs text-slate-400 leading-relaxed mt-2">
             {metric.description}
           </p>
         </div>

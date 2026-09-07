@@ -17,31 +17,33 @@ const categories = ['All', ...new Set(projects.map((p) => p.category))];
     
     <!-- Page Header -->
     <div class="max-w-3xl space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nova-cyan/10 border border-nova-cyan/30 text-nova-cyan text-xs font-mono">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-nova-cyan/10 border border-nova-cyan/30 text-nova-cyan text-xs font-mono shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-nova-cyan animate-pulse"></span>
         <span>Portfolio & Engineering Showcase</span>
       </div>
-      <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+      <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight">
         Enterprise Case Studies
       </h1>
-      <p class="text-slate-300 text-base leading-relaxed">
+      <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
         High-scale platforms engineered with modern headless ecosystems, low-latency edge caching, and resilient database architectures.
       </p>
       <div class="flex items-center gap-4 text-xs font-mono text-slate-400 pt-2">
-        <span>Source: <strong class="text-emerald-400 uppercase">{source}</strong></span>
+        <span>Source Pipeline: <strong class="text-emerald-400 uppercase">{source}</strong></span>
         <span>•</span>
-        <span>Total Records: <strong class="text-white">{projects.length}</strong></span>
+        <span>Total Showcase Records: <strong class="text-white">{projects.length}</strong></span>
       </div>
     </div>
 
-    <!-- Category Filter Bar -->
-    <div class="flex flex-wrap items-center gap-2 pb-4 border-b border-white/5">
+    <!-- Category Filter Bar (Client interactive simulation) -->
+    <div class="flex flex-wrap items-center gap-2 pb-6 border-b border-white/[0.08]" id="filter-bar">
       {categories.map((cat, idx) => (
         <button
           type="button"
-          class={`px-4 py-2 rounded-xl text-xs font-medium transition-all ${
+          data-category={cat}
+          class={`filter-btn px-5 py-2.5 rounded-2xl text-xs font-semibold transition-all duration-300 ${
             idx === 0
-              ? 'bg-nova-indigo/30 text-white border border-nova-indigo/50 shadow-sm'
-              : 'bg-dark-900/60 text-slate-400 hover:text-white hover:bg-white/5 border border-white/5'
+              ? 'bg-gradient-to-r from-nova-indigo via-nova-violet to-nova-cyan text-white shadow-lg shadow-nova-indigo/25 border border-white/20'
+              : 'bg-dark-900/80 text-slate-400 hover:text-white hover:bg-white/[0.08] border border-white/10'
           }`}
         >
           {cat}
@@ -50,11 +52,38 @@ const categories = ['All', ...new Set(projects.map((p) => p.category))];
     </div>
 
     <!-- Projects Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="projects-grid">
       {projects.map((project) => (
-        <ProjectCard project={project} />
+        <div class="project-item" data-category={project.category}>
+          <ProjectCard project={project} />
+        </div>
       ))}
     </div>
 
   </div>
+
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectItems = document.querySelectorAll('.project-item');
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const category = btn.getAttribute('data-category');
+        
+        filterBtns.forEach((b) => {
+          b.className = 'filter-btn px-5 py-2.5 rounded-2xl text-xs font-semibold transition-all duration-300 bg-dark-900/80 text-slate-400 hover:text-white hover:bg-white/[0.08] border border-white/10';
+        });
+        btn.className = 'filter-btn px-5 py-2.5 rounded-2xl text-xs font-semibold transition-all duration-300 bg-gradient-to-r from-nova-indigo via-nova-violet to-nova-cyan text-white shadow-lg shadow-nova-indigo/25 border border-white/20';
+
+        projectItems.forEach((item) => {
+          const itemCat = item.getAttribute('data-category');
+          if (category === 'All' || itemCat === category) {
+            (item as HTMLElement).style.display = 'block';
+          } else {
+            (item as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
 </Layout>

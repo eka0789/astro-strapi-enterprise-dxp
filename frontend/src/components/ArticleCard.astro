@@ -8,32 +8,32 @@ interface Props {
 const { article } = Astro.props;
 ---
 
-<article class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group border border-white/5 hover:border-nova-violet/40 transition-all duration-300">
-  <!-- Image Banner -->
-  <div class="relative h-48 overflow-hidden bg-dark-900">
+<article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between group border border-white/[0.08] hover:border-nova-violet/50 transition-all duration-500 shadow-xl hover:shadow-nova-violet/15 hover:-translate-y-1.5">
+  <!-- Image Banner with Gradient Overlay -->
+  <div class="relative h-52 overflow-hidden bg-dark-900">
     <img
       src={article.coverUrl}
       alt={article.title}
       loading="lazy"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
     />
     <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/30 to-transparent"></div>
     <div class="absolute top-4 left-4 flex gap-2">
-      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-dark-950/80 text-nova-violet border border-nova-violet/30 backdrop-blur-md">
+      <span class="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-dark-950/90 text-nova-violet border border-nova-violet/40 backdrop-blur-md shadow-md">
         {article.category}
       </span>
     </div>
     <div class="absolute bottom-3 right-4">
-      <span class="text-[10px] font-mono text-slate-300 bg-dark-900/80 px-2 py-0.5 rounded">
+      <span class="text-[11px] font-mono text-slate-300 bg-dark-900/80 px-2.5 py-1 rounded-lg border border-white/10 backdrop-blur-sm">
         {article.readingTime}
       </span>
     </div>
   </div>
 
-  <!-- Content -->
-  <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+  <!-- Content Section -->
+  <div class="p-7 flex-grow flex flex-col justify-between space-y-5">
     <div>
-      <h3 class="text-lg font-bold text-white group-hover:text-nova-violet transition-colors mb-2 leading-snug">
+      <h3 class="text-lg font-extrabold text-white group-hover:text-nova-violet transition-colors mb-2 leading-snug">
         <a href={`/blog/${article.slug}`}>
           {article.title}
         </a>
@@ -45,20 +45,20 @@ const { article } = Astro.props;
 
     <!-- Author & Read More Link -->
     <div class="pt-4 border-t border-white/5 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-nova-indigo to-nova-cyan flex items-center justify-center text-[10px] font-bold text-white">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-nova-indigo to-nova-cyan flex items-center justify-center text-[10px] font-extrabold text-white shadow-md">
           EP
         </div>
-        <span class="text-xs font-medium text-slate-300">{article.author}</span>
+        <span class="text-xs font-semibold text-slate-300">{article.author}</span>
       </div>
 
       <a
         href={`/blog/${article.slug}`}
-        class="text-xs font-semibold text-nova-cyan group-hover:text-white flex items-center gap-1 transition-colors"
+        class="text-xs font-bold text-nova-cyan group-hover:text-white flex items-center gap-1.5 transition-colors group/btn"
       >
         <span>Read Article</span>
-        <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        <svg class="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
         </svg>
       </a>
     </div>
