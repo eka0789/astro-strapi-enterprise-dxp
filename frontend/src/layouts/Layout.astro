@@ -1,6 +1,7 @@
 ---
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import Omnibar from '../components/Omnibar.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -63,6 +64,9 @@ const currentPath = Astro.url.pathname;
       </main>
       <Footer />
     </div>
+
+    <!-- Global Omnibar Modal (Cmd+K) -->
+    <Omnibar />
 
     <script>
       const cursor = document.getElementById('ambient-cursor');

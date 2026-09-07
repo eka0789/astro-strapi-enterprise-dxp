@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import ArchitectureMatrix from '../components/ArchitectureMatrix.astro';
 import SystemFlowVisualizer from '../components/SystemFlowVisualizer.astro';
+import EdgeBenchmarkSimulator from '../components/EdgeBenchmarkSimulator.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { getProjects, getArticles, getServices } from '../lib/strapi';
@@ -23,8 +24,9 @@ const recentArticles = articles.slice(0, 3);
   <Hero source={projectSource} />
 
   <!-- Main System Flow Visualizer -->
-  <section class="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
     <SystemFlowVisualizer />
+    <EdgeBenchmarkSimulator />
   </section>
 
   <!-- Four Pillars Architecture Matrix -->

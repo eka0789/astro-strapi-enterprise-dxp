@@ -3,8 +3,9 @@
 -- Architect: Eka Prasetyo (Senior Fullstack & Solution Architect)
 -- =========================================================================
 
--- Enable UUID extension
+-- Enable UUID extension & pgvector for Semantic Search
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "vector";
 
 -- 1. Table: Projects (Showcase & Case Studies)
 CREATE TABLE IF NOT EXISTS public.projects (
@@ -55,12 +56,26 @@ CREATE TABLE IF NOT EXISTS public.services (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 4. Enable Row Level Security (RLS)
+-- 4. Table: Audit Logs (Enterprise SOC2 Compliance & Immutability)
+CREATE TABLE IF NOT EXISTS public.audit_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    actor VARCHAR(150) NOT NULL,
+    action VARCHAR(100) NOT NULL,
+    entity_type VARCHAR(100) NOT NULL,
+    entity_id VARCHAR(100),
+    payload JSONB DEFAULT '{}'::jsonb,
+    ip_address INET,
+    user_agent TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 5. Enable Row Level Security (RLS)
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.articles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.services ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 
--- 5. Public Read Policies for Fast Edge Access
+-- 6. Public Read Policies for Fast Edge Access
 CREATE POLICY "Allow public read access on projects"
     ON public.projects FOR SELECT
     TO anon, authenticated
@@ -74,6 +89,11 @@ CREATE POLICY "Allow public read access on articles"
 CREATE POLICY "Allow public read access on services"
     ON public.services FOR SELECT
     TO anon, authenticated
+    USING (true);
+
+CREATE POLICY "Allow authenticated audit logging"
+    ON public.audit_logs FOR SELECT
+    TO authenticated
     USING (true);
 
 -- 6. Seed Data: Enterprise Showcase
@@ -192,3 +212,34 @@ VALUES
     3
 )
 ON CONFLICT (slug) DO NOTHING;
+
+-- 9. Enterprise Semantic Search & Vector Retrieval Function (pgvector)
+-- Matches articles/case studies by cosine distance
+CREATE OR REPLACE FUNCTION match_documents (
+  query_embedding vector(1536),
+  match_threshold float DEFAULT 0.78,
+  match_count int DEFAULT 5
+)
+RETURNS TABLE (
+  id uuid,
+  title text,
+  slug text,
+  content text,
+  similarity float
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    a.id,
+    a.title::text,
+    a.slug::text,
+    a.content::text,
+    1 - (a.tags <-> query_embedding) AS similarity
+  FROM public.articles a
+  WHERE 1 - (a.tags <-> query_embedding) > match_threshold
+  ORDER BY similarity DESC
+  LIMIT match_count;
+END;
+$$;

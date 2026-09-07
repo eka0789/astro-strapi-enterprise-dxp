@@ -8,6 +8,7 @@ const { currentPath = '/' } = Astro.props;
 const navItems = [
   { name: 'Overview', href: '/', badge: null },
   { name: 'Architecture', href: '/architecture', badge: 'C4' },
+  { name: 'Telemetry', href: '/telemetry', badge: 'Live SRE' },
   { name: 'Projects', href: '/projects', badge: null },
   { name: 'Engineering Blog', href: '/blog', badge: 'Insights' },
 ];
@@ -76,6 +77,20 @@ const navItems = [
 
       <!-- Right Action Toolbar -->
       <div class="flex items-center gap-3">
+        <!-- Quick Omnibar Trigger Button (Cmd+K) -->
+        <button
+          type="button"
+          onclick="window.openOmnibar && window.openOmnibar()"
+          class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-dark-900 border border-white/10 hover:border-nova-cyan/50 text-slate-300 hover:text-white transition-all text-xs font-mono shadow-sm group"
+        >
+          <svg class="w-3.5 h-3.5 text-nova-cyan group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" stroke-width="2"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line>
+          </svg>
+          <span class="hidden xl:inline text-slate-400">Search</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-white/10 text-[10px] text-slate-300 font-bold border border-white/10">⌘K</kbd>
+        </button>
+
         <!-- Live Edge Status Pill -->
         <a 
           href="/api/health" 

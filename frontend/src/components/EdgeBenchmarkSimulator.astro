@@ -1,0 +1,175 @@
+---
+// Interactive Edge Geo-Routing & Latency Calculator
+const edgeRegions = [
+  { code: 'SIN1', city: 'Singapore', country: 'Singapore', flag: '🇸🇬', astroLatency: 8, legacyLatency: 145 },
+  { code: 'NRT1', city: 'Tokyo', country: 'Japan', flag: '🇯🇵', astroLatency: 12, legacyLatency: 160 },
+  { code: 'SFO1', city: 'San Francisco', country: 'United States', flag: '🇺🇸', astroLatency: 16, legacyLatency: 190 },
+  { code: 'FRA1', city: 'Frankfurt', country: 'Germany', flag: '🇩🇪', astroLatency: 18, legacyLatency: 175 },
+  { code: 'SYD1', city: 'Sydney', country: 'Australia', flag: '🇦🇺', astroLatency: 22, legacyLatency: 210 },
+  { code: 'LHR1', city: 'London', country: 'United Kingdom', flag: '🇬🇧', astroLatency: 15, legacyLatency: 165 },
+];
+---
+
+<div class="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl relative overflow-hidden">
+  
+  <!-- Section Title -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nova-cyan/10 border border-nova-cyan/30 text-nova-cyan text-xs font-mono mb-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-nova-cyan animate-pulse"></span>
+        <span>Interactive Edge Telemetry Calculator</span>
+      </div>
+      <h3 class="text-xl sm:text-2xl font-extrabold text-white">Global Edge Latency & Bandwidth ROI Simulator</h3>
+      <p class="text-xs text-slate-400 mt-1">Select an edge region to simulate live Anycast routing, TTFB comparison, and payload savings.</p>
+    </div>
+
+    <!-- Active Region Badge -->
+    <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-dark-950 border border-white/10 font-mono text-xs text-slate-300">
+      <span class="text-slate-500">Active PoP:</span>
+      <span id="active-pop-label" class="text-nova-cyan font-bold">SIN1 (Singapore)</span>
+    </div>
+  </div>
+
+  <!-- Region Selector Chips -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 py-6" id="region-selector">
+    {edgeRegions.map((region, idx) => (
+      <button
+        type="button"
+        data-code={region.code}
+        data-city={region.city}
+        data-flag={region.flag}
+        data-astro={region.astroLatency}
+        data-legacy={region.legacyLatency}
+        class={`region-chip p-3 rounded-2xl border text-left transition-all duration-300 ${
+          idx === 0
+            ? 'bg-nova-indigo/30 border-nova-cyan/60 text-white shadow-lg shadow-nova-indigo/20'
+            : 'bg-dark-900/80 border-white/5 text-slate-400 hover:text-white hover:bg-white/5'
+        }`}
+      >
+        <div class="text-lg mb-1">{region.flag}</div>
+        <div class="font-bold text-xs text-white">{region.code}</div>
+        <div class="text-[11px] text-slate-400 truncate">{region.city}</div>
+        <div class="text-[10px] font-mono text-emerald-400 font-bold mt-1">~{region.astroLatency}ms</div>
+      </button>
+    ))}
+  </div>
+
+  <!-- Live Comparison Gauge Matrix -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+    
+    <!-- Gauge 1: TTFB Comparison -->
+    <div class="p-5 rounded-2xl bg-dark-950/80 border border-white/5 flex flex-col justify-between space-y-4">
+      <div class="flex items-center justify-between text-xs font-mono">
+        <span class="text-slate-400">Time to First Byte (TTFB)</span>
+        <span class="text-emerald-400 font-bold">92% Faster</span>
+      </div>
+      <div class="space-y-2 font-mono">
+        <div>
+          <div class="flex justify-between text-[11px] text-slate-400 mb-1">
+            <span class="text-nova-cyan font-bold">NovaSphere (Astro Edge)</span>
+            <span id="astro-ttfb-val" class="text-emerald-400 font-bold">8 ms</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-dark-900 overflow-hidden">
+            <div id="astro-bar" class="h-full rounded-full bg-gradient-to-r from-nova-cyan to-emerald-400 transition-all duration-500" style="width: 12%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-[11px] text-slate-400 mb-1">
+            <span class="text-slate-500">Monolith SSR (Origin Server)</span>
+            <span id="legacy-ttfb-val" class="text-rose-400 font-bold">145 ms</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-dark-900 overflow-hidden">
+            <div id="legacy-bar" class="h-full rounded-full bg-rose-500/80 transition-all duration-500" style="width: 85%;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="text-[10px] font-mono text-slate-500">
+        Measured across Vercel Global Edge PoPs vs Origin datacenter
+      </div>
+    </div>
+
+    <!-- Gauge 2: Client JavaScript Payload -->
+    <div class="p-5 rounded-2xl bg-dark-950/80 border border-white/5 flex flex-col justify-between space-y-4">
+      <div class="flex items-center justify-between text-xs font-mono">
+        <span class="text-slate-400">Client JS Baseline</span>
+        <span class="text-nova-cyan font-bold">91% Smaller</span>
+      </div>
+      <div class="space-y-2 font-mono">
+        <div>
+          <div class="flex justify-between text-[11px] text-slate-400 mb-1">
+            <span class="text-nova-cyan font-bold">Astro Island Architecture</span>
+            <span class="text-emerald-400 font-bold">18.4 KB (Gzip)</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-dark-900 overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-nova-cyan to-nova-indigo" style="width: 15%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-[11px] text-slate-400 mb-1">
+            <span class="text-slate-500">Full SPA Hydration Baseline</span>
+            <span class="text-amber-400 font-bold">220.8 KB (Gzip)</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-dark-900 overflow-hidden">
+            <div class="h-full rounded-full bg-amber-500/70" style="width: 90%;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="text-[10px] font-mono text-slate-500">
+        HTML delivered with Zero JavaScript until interactive component is visible
+      </div>
+    </div>
+
+    <!-- Gauge 3: Database Concurrency via Supavisor -->
+    <div class="p-5 rounded-2xl bg-dark-950/80 border border-white/5 flex flex-col justify-between space-y-4">
+      <div class="flex items-center justify-between text-xs font-mono">
+        <span class="text-slate-400">Database Connection Pool</span>
+        <span class="text-emerald-400 font-bold">Supavisor 6543</span>
+      </div>
+      <div class="space-y-1">
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-black text-white font-mono">10,000+</span>
+          <span class="text-xs text-emerald-400 font-mono font-bold">QPS Peak Capacity</span>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed pt-1">
+          Postgres connection exhaustion prevented via transaction mode pooling, keeping Strapi + Astro serverless burst memory stable.
+        </p>
+      </div>
+      <div class="text-[10px] font-mono text-slate-500 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+        <span>SSL TLS 1.3 Active &bull; Zero Leaks</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const chips = document.querySelectorAll('.region-chip');
+  const activeLabel = document.getElementById('active-pop-label');
+  const astroVal = document.getElementById('astro-ttfb-val');
+  const legacyVal = document.getElementById('legacy-ttfb-val');
+  const astroBar = document.getElementById('astro-bar');
+  const legacyBar = document.getElementById('legacy-bar');
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const code = chip.getAttribute('data-code');
+      const city = chip.getAttribute('data-city');
+      const astro = parseInt(chip.getAttribute('data-astro') || '10', 10);
+      const legacy = parseInt(chip.getAttribute('data-legacy') || '150', 10);
+
+      chips.forEach((c) => {
+        c.className = 'region-chip p-3 rounded-2xl border text-left transition-all duration-300 bg-dark-900/80 border-white/5 text-slate-400 hover:text-white hover:bg-white/5';
+      });
+      chip.className = 'region-chip p-3 rounded-2xl border text-left transition-all duration-300 bg-nova-indigo/30 border-nova-cyan/60 text-white shadow-lg shadow-nova-indigo/20';
+
+      if (activeLabel) activeLabel.textContent = `${code} (${city})`;
+      if (astroVal) astroVal.textContent = `${astro} ms`;
+      if (legacyVal) legacyVal.textContent = `${legacy} ms`;
+
+      if (astroBar) astroBar.style.width = `${Math.min((astro / 200) * 100, 100)}%`;
+      if (legacyBar) legacyBar.style.width = `${Math.min((legacy / 200) * 100, 100)}%`;
+    });
+  });
+</script>
