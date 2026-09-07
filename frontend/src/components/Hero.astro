@@ -1,6 +1,6 @@
 ---
 interface Props {
-  source?: 'strapi' | 'fallback';
+  source?: 'supabase' | 'strapi' | 'fallback';
 }
 
 const { source = 'fallback' } = Astro.props;
@@ -98,8 +98,8 @@ const { source = 'fallback' } = Astro.props;
         <!-- Telemetry Status Bar -->
         <div class="pt-4 border-t border-white/5 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-400 font-mono">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-nova-cyan"></span>
-            <span>CMS Connection: <strong class="text-slate-200">{source === 'strapi' ? 'Strapi API Live' : 'Embedded Resilient Fixture'}</strong></span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400"></span>
+            <span>Database Pipeline: <strong class="text-slate-200">{source === 'supabase' ? 'Supabase Live Connected' : (source === 'strapi' ? 'Strapi CMS API Live' : 'Embedded Resilient Fixture')}</strong></span>
           </div>
           <div>
             <span>Edge TTFB: <strong class="text-emerald-400">&lt;28ms Global</strong></span>
