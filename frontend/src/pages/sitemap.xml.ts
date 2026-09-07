@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getArticles } from '../lib/strapi';
 import type { Article } from '../lib/types';
 
-export const prerender = false;
+export const prerender = true;
 
 export const GET: APIRoute = async ({ site, url }) => {
   const baseUrl = site ? site.toString() : `${url.protocol}//${url.host}`;
