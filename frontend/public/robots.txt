@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://astro-strapi-enterprise-dxp.vercel.app/sitemap.xml

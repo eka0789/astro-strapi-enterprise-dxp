@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="404 - Page Not Found | NovaSphere"
+  description="The requested enterprise route does not exist or has been relocated."
+>
+  <div class="min-h-[70vh] flex items-center justify-center px-4 py-20 relative">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="w-[500px] h-[300px] bg-nova-cyan/15 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="glass-card rounded-3xl p-8 sm:p-14 text-center max-w-xl border border-white/10 shadow-2xl relative z-10 space-y-6">
+      <div class="w-16 h-16 rounded-2xl bg-nova-cyan/10 border border-nova-cyan/30 text-nova-cyan flex items-center justify-center text-2xl font-mono mx-auto">
+        404
+      </div>
+
+      <div class="space-y-2">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Route Node Unavailable</h1>
+        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+          The requested edge path could not be resolved by Vercel Edge routing or may have been purged in the latest deployment cycle.
+        </p>
+      </div>
+
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a
+          href="/"
+          class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-nova-indigo to-nova-cyan text-white text-xs font-bold shadow-lg shadow-nova-indigo/30 hover:opacity-95 transition-all"
+        >
+          Return to Overview
+        </a>
+        <a
+          href="/architecture"
+          class="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-all"
+        >
+          View System Architecture
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
