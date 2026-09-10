@@ -1,6 +1,21 @@
 const parse = require('pg-connection-string').parse;
 
 module.exports = ({ env }) => {
+  // Local development fallback: run the CMS + admin on an embedded SQLite
+  // file by setting DATABASE_CLIENT=sqlite (no cloud credentials needed).
+  if (env('DATABASE_CLIENT', 'postgres') === 'sqlite') {
+    return {
+      connection: {
+        client: 'sqlite',
+        connection: {
+          filename: env('DATABASE_FILENAME', '.tmp/data.db'),
+        },
+        useNullAsDefault: true,
+        debug: false,
+      },
+    };
+  }
+
   const connectionString = env('DATABASE_URL');
   
   if (connectionString) {
