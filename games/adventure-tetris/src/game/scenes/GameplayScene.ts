@@ -55,6 +55,10 @@ export class GameplayScene extends Phaser.Scene {
   private boardY = 0;
   private scaleS = 1;
   private pauseOverlay: Phaser.GameObjects.Container | null = null;
+  private isMobile = false;
+  private touchControls: Phaser.GameObjects.Container[] = [];
+  private touchZones: Array<{ x: number; y: number; w: number; h: number }> = [];
+  private holdRepeatEvents: Phaser.Time.TimerEvent[] = [];
 
   constructor() {
     super({ key: 'GameplayScene' });
@@ -75,13 +79,8 @@ export class GameplayScene extends Phaser.Scene {
 
     makeWorldBackground(this, world.theme.bgTop, world.theme.bgBottom, world.theme.particle);
 
-    // layout
-    const w = this.scale.width;
-    const h = this.scale.height;
-    const isMobile = w < 720;
-    this.scaleS = Math.min((h - (isMobile ? 150 : 150)) / BOARD_H, (w - (isMobile ? 20 : 300)) / BOARD_W, 1.35);
-    this.boardX = isMobile ? (w - BOARD_W * this.scaleS) / 2 : (w + 40 - BOARD_W * this.scaleS) / 2;
-    this.boardY = isMobile ? 60 : 110;
+    // layout (mobile-aware, recomputed on resize)
+    this.computeLayout();
 
     // game systems
     const charDef = CHARACTERS.find((c) => c.id === this.save.data.selectedCharacter);
@@ -107,15 +106,17 @@ export class GameplayScene extends Phaser.Scene {
     // rendering pools
     this.createPools();
 
-    // HUD
-    this.hud = new HUD(this, this.boardX, this.boardY, Math.min(this.scaleS, 1));
-    this.hud.onPause = () => this.togglePause();
-    this.hud.onPowerUp = (id) => this.usePowerUp(id);
+    // HUD + on-screen touch controls (mobile)
+    this.buildHudAndControls();
+
+    // re-layout on viewport changes (rotation, resize)
+    this.scale.on('resize', this.onViewportResize, this);
 
     // intro banner
     this.showIntroBanner(world.emoji, world.nameId);
 
     this.events.once('shutdown', () => {
+      this.scale.off('resize', this.onViewportResize, this);
       this.inputMgr.destroy();
       audio.stopMusic();
     });
@@ -134,6 +135,94 @@ export class GameplayScene extends Phaser.Scene {
       this.pieceImgs.push(this.add.image(0, 0, 'block').setDepth(5));
       this.ghostImgs.push(this.add.image(0, 0, 'block').setDepth(4).setAlpha(0.25));
     }
+  }
+
+  private computeLayout(): void {
+    const w = this.scale.width;
+    const h = this.scale.height;
+    this.isMobile = w < 720;
+    if (this.isMobile) {
+      // reserve top strip (118px HUD) and bottom bars (controls + power-ups)
+      this.scaleS = Math.min((h - 235) / BOARD_H, (w - 16) / BOARD_W, 1.2);
+      this.boardX = (w - BOARD_W * this.scaleS) / 2;
+      this.boardY = 118;
+    } else {
+      this.scaleS = Math.min((h - 150) / BOARD_H, (w - 300) / BOARD_W, 1.35);
+      this.boardX = (w + 40 - BOARD_W * this.scaleS) / 2;
+      this.boardY = 110;
+    }
+  }
+
+  private buildHudAndControls(): void {
+    this.hud?.destroy();
+    this.hud = new HUD(this, this.boardX, this.boardY, Math.min(this.scaleS, 1), this.isMobile);
+    this.hud.onPause = () => this.togglePause();
+    this.hud.onPowerUp = (id) => this.usePowerUp(id);
+    this.buildTouchControls();
+    this.inputMgr?.setTouchFilter(this.buildTouchFilter());
+  }
+
+  private onViewportResize(): void {
+    if (this.ending) return;
+    this.computeLayout();
+    this.buildHudAndControls();
+  }
+
+  private buildTouchFilter(): (x: number, y: number) => boolean {
+    return (x: number, y: number) =>
+      this.touchZones.some((z) => x >= z.x && x <= z.x + z.w && y >= z.y && y <= z.y + z.h);
+  }
+
+  private clearTouchControls(): void {
+    this.holdRepeatEvents.forEach((ev) => ev.remove());
+    this.holdRepeatEvents = [];
+    this.touchControls.forEach((c) => c.destroy());
+    this.touchControls = [];
+    this.touchZones = this.hud ? this.hud.getTouchZones() : [];
+  }
+
+  private buildTouchControls(): void {
+    this.clearTouchControls();
+    if (!this.isMobile) return;
+    const w = this.scale.width;
+    const h = this.scale.height;
+    const y = h - 84;
+    const btn = (cx: number, cy: number, label: string, onPress: () => void, holdRepeat = false) => {
+      const c = this.add.container(cx, cy);
+      const bg = this.add.graphics();
+      bg.fillStyle(0x1e293b, 0.92);
+      bg.fillRoundedRect(-24, -20, 48, 40, 10);
+      bg.lineStyle(2, 0x475569, 1);
+      bg.strokeRoundedRect(-24, -20, 48, 40, 10);
+      const icon = this.add.text(0, 0, label, { fontSize: '18px', color: '#ffffff' }).setOrigin(0.5);
+      c.add([bg, icon]);
+      c.setSize(48, 40);
+      c.setInteractive({ useHandCursor: true });
+      c.on('pointerdown', () => {
+        audio.sfx('ui');
+        this.tweens.add({ targets: c, scale: 0.9, duration: 60, yoyo: true });
+        onPress();
+        if (holdRepeat) {
+          const ev = this.time.addEvent({ delay: 170, startAt: 170, loop: true, callback: onPress });
+          this.holdRepeatEvents.push(ev);
+        }
+      });
+      const cancelRepeat = () => {
+        this.holdRepeatEvents.forEach((ev) => ev.remove());
+        this.holdRepeatEvents = [];
+      };
+      c.on('pointerup', cancelRepeat);
+      c.on('pointerout', cancelRepeat);
+      this.touchControls.push(c);
+      this.touchZones.push({ x: cx - 28, y: cy - 22, w: 56, h: 44 });
+    };
+
+    // left cluster: move + rotate | right cluster: drop + hold
+    btn(w / 2 - 150, y, '◀', () => this.manager.moveLeft(), true);
+    btn(w / 2 - 95, y, '▶', () => this.manager.moveRight(), true);
+    btn(w / 2 - 30, y, '⟳', () => this.manager.rotate(true));
+    btn(w / 2 + 35, y, '⤓', () => this.manager.hardDrop());
+    btn(w / 2 + 105, y, '🅗', () => this.manager.hold());
   }
 
   private showIntroBanner(emoji: string, worldName: string): void {

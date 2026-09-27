@@ -49,7 +49,7 @@ export class MainMenuScene extends Phaser.Scene {
     });
 
     // logo with glow pulse
-    const logoFontSize = Math.min(64, width / 9);
+    const logoFontSize = Math.min(64, Math.floor(width / 10.5));
     const logoGlow = this.add.image(cx, height * 0.16 + 10, 'glow')
       .setDisplaySize(logoFontSize * 8, logoFontSize * 3.2)
       .setTint(0xfbbf24).setAlpha(0.18).setDepth(-5);
@@ -76,8 +76,9 @@ export class MainMenuScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // main buttons
-    const btnY = height * 0.42;
-    const gap = 58;
+    const narrow0 = width < 480;
+    const btnY = height * (narrow0 ? 0.36 : 0.42);
+    const gap = narrow0 ? 54 : 58;
     const adventureBtn = createButton(this, cx, btnY, '🗺️ ADVENTURE', () => {
       this.scene.start('WorldMapScene', { worldId: curWorld.id });
     }, { bgColor: 0x22c55e, width: 260 });
@@ -92,14 +93,16 @@ export class MainMenuScene extends Phaser.Scene {
       this.scene.start('DailyChallengeScene');
     }, { bgColor: dailyDone ? 0x475569 : 0x8b5cf6, width: 260 });
 
-    // row of secondary buttons
+    // secondary buttons - horizontal row on desktop, stacked on narrow screens
     const secY = btnY + gap * 3 + 12;
-    const secW = 142;
-    const modesBtn = createButton(this, cx - secW - 10, secY, '⏱️ MODES', () => this.showModesPanel(), { bgColor: 0x6366f1, width: secW, fontSize: 16 });
-    const shopBtn = createButton(this, cx, secY, '🛒 SHOP', () => this.scene.start('ShopScene'), { bgColor: 0xf59e0b, width: secW, fontSize: 16 });
-    const collBtn = createButton(this, cx + secW + 10, secY, '📦 COLLECTION', () => this.scene.start('CollectionScene'), { bgColor: 0x0ea5e9, width: secW + 10, fontSize: 16 });
+    const narrow = width < 480;
+    const secW = narrow ? 220 : 142;
+    const secGap = narrow ? 84 : 152;
+    const modesBtn = createButton(this, narrow ? cx : cx - secW - 10, secY, '⏱️ MODES', () => this.showModesPanel(), { bgColor: 0x6366f1, width: secW, fontSize: 16 });
+    const shopBtn = createButton(this, narrow ? cx : cx, narrow ? secY + secGap : secY, '🛒 SHOP', () => this.scene.start('ShopScene'), { bgColor: 0xf59e0b, width: secW, fontSize: 16 });
+    const collBtn = createButton(this, narrow ? cx : cx + secW + 10, narrow ? secY + secGap * 2 : secY, '📦 COLLECTION', () => this.scene.start('CollectionScene'), { bgColor: 0x0ea5e9, width: secW, fontSize: 16 });
 
-    const settingsBtn = createButton(this, cx, secY + 54, '⚙️ SETTINGS', () => this.scene.start('SettingsScene'), { bgColor: 0x475569, width: 200 });
+    const settingsBtn = createButton(this, cx, narrow ? secY + secGap * 3 : secY + 54, '⚙️ SETTINGS', () => this.scene.start('SettingsScene'), { bgColor: 0x475569, width: 200 });
 
     // staggered entrance
     staggerIn([adventureBtn, endlessBtn, dailyBtn, modesBtn, shopBtn, collBtn, settingsBtn], 0, 46, 70);

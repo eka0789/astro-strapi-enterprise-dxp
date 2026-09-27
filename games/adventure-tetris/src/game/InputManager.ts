@@ -22,6 +22,14 @@ export class InputManager {
   private touchThreshold = 28;
   private swipeThreshold = 60;
   private destroyed = false;
+  private touchFilter: ((x: number, y: number) => boolean) | null = null;
+  private skipGesture = false;
+
+  // When set, touches starting inside these screen regions are ignored by the
+  // gesture system (they belong to on-screen buttons handled by Phaser).
+  setTouchFilter(fn: ((x: number, y: number) => boolean) | null): void {
+    this.touchFilter = fn;
+  }
 
   constructor(private game: GameManager, private callbacks: InputCallbacks) {
     this.setupKeyboard();
@@ -98,6 +106,8 @@ export class InputManager {
   private onTouchStart = (e: TouchEvent): void => {
     if (this.destroyed || e.touches.length !== 1) return;
     const t = e.touches[0];
+    this.skipGesture = this.touchFilter ? this.touchFilter(t.clientX, t.clientY) : false;
+    if (this.skipGesture) return;
     this.touchStartX = t.clientX;
     this.touchStartY = t.clientY;
     this.lastTouchX = t.clientX;
@@ -107,7 +117,7 @@ export class InputManager {
   };
 
   private onTouchMove = (e: TouchEvent): void => {
-    if (this.destroyed || e.touches.length !== 1 || this.lastTouchX === null || this.lastTouchY === null) return;
+    if (this.destroyed || this.skipGesture || e.touches.length !== 1 || this.lastTouchX === null || this.lastTouchY === null) return;
     const t = e.touches[0];
     const dx = t.clientX - this.lastTouchX;
     const dy = t.clientY - this.lastTouchY;
@@ -125,7 +135,7 @@ export class InputManager {
   };
 
   private onTouchEnd = (_e: TouchEvent): void => {
-    if (this.destroyed || this.touchStartX === null || this.touchStartY === null || this.lastTouchX === null || this.lastTouchY === null) return;
+    if (this.destroyed || this.skipGesture || this.touchStartX === null || this.touchStartY === null || this.lastTouchX === null || this.lastTouchY === null) return;
     const dx = this.lastTouchX - this.touchStartX;
     const dy = this.lastTouchY - this.touchStartY;
     const duration = performance.now() - this.touchStartTime;
