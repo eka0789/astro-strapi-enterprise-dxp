@@ -29,3 +29,5 @@ Thumbs.db
 # Strapi runtime artifacts
 .strapi/
 .strapi-updater.json
+# ZCode session files
+.zcode/
