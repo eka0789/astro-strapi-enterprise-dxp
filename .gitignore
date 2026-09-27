@@ -31,3 +31,6 @@ Thumbs.db
 .strapi-updater.json
 # ZCode session files
 .zcode/
+
+# Netlify CLI local state
+.netlify/
