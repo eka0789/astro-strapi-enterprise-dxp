@@ -12,7 +12,8 @@ import { SettingsScene } from './scenes/SettingsScene.js';
 import { DailyChallengeScene } from './scenes/DailyChallengeScene.js';
 
 export const gameConfig: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
+  // ?canvas=1 forces the 2D renderer (used by the deterministic test harness)
+  type: new URLSearchParams(window.location.search).get('canvas') === '1' ? Phaser.CANVAS : Phaser.AUTO,
   width: window.innerWidth,
   height: window.innerHeight,
   parent: 'app',

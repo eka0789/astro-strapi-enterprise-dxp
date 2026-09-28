@@ -4,8 +4,10 @@ export const GRAVITY_TABLE = [
 ];
 
 export function getDropInterval(level: number): number {
+  // Casual-tuned curve: level 1 drops every 500ms (guideline's 1000ms reads as
+  // "the piece is stuck" to casual players) and ramps a step quicker.
   const frames = [
-    1000, 793, 618, 473, 355, 262, 190, 136, 96, 67, 47, 33, 23, 16, 11, 8, 6, 4, 3, 2
+    500, 430, 360, 300, 250, 210, 175, 145, 120, 95, 75, 60, 48, 38, 30, 24, 18, 14, 11, 8
   ];
   if (level >= frames.length) return 1;
   return frames[level] ?? 1;

@@ -150,3 +150,27 @@ describe('GameManager mechanics', () => {
     expect(m.dropInterval).toBeGreaterThan(base);
   });
 });
+
+describe('GameManager gravity', () => {
+  it('drops the piece automatically without any input', () => {
+    const m = new GameManager(makeConfig());
+    const y0 = m.currentPiece.y;
+    // level 1 gravity = 500ms/cell: feed 3 seconds of frame deltas
+    for (let i = 0; i < 180; i++) m.update(16.6);
+    const y1 = m.currentPiece.y;
+    expect(y1).toBeGreaterThan(y0 + 3);
+  });
+
+  it('level 1 gravity interval is casual-fast (500ms)', () => {
+    const m = new GameManager(makeConfig());
+    expect(m.dropInterval).toBe(500);
+  });
+
+  it('does not drop while paused', () => {
+    const m = new GameManager(makeConfig());
+    m.togglePause();
+    const y0 = m.currentPiece.y;
+    for (let i = 0; i < 180; i++) m.update(16.6);
+    expect(m.currentPiece.y).toBe(y0);
+  });
+});

@@ -162,16 +162,27 @@ export class HUD {
       this.powerZones.push({ x: bx - 26, y: btnY - 24, w: 52, h: 48 });
     });
 
-    // pause button
-    const pauseBtn = scene.add
-      .text(w - (isMobile ? 12 : 20), isMobile ? 8 : 20, '⏸', { fontSize: isMobile ? '22px' : '28px' })
-      .setOrigin(1, 0)
-      .setInteractive({ useHandCursor: true });
-    pauseBtn.on('pointerover', () => pauseBtn.setScale(1.15));
+    // pause button - drawn body (46x46) so the tap target is generous and
+    // never depends on a font glyph rendering
+    const pauseCx = w - (isMobile ? 40 : 44);
+    const pauseCy = isMobile ? 38 : 42;
+    const pauseBtn = scene.add.container(pauseCx, pauseCy);
+    const pauseBg = scene.add.graphics();
+    pauseBg.fillStyle(0x1e293b, 0.85);
+    pauseBg.fillRoundedRect(-23, -23, 46, 46, 12);
+    pauseBg.lineStyle(2, 0x475569, 1);
+    pauseBg.strokeRoundedRect(-23, -23, 46, 46, 12);
+    pauseBg.fillStyle(0xe2e8f0, 1);
+    pauseBg.fillRect(-9, -8, 6, 16);
+    pauseBg.fillRect(3, -8, 6, 16);
+    pauseBtn.add(pauseBg);
+    pauseBtn.setSize(46, 46);
+    pauseBtn.setInteractive(new Phaser.Geom.Rectangle(-23, -23, 46, 46), Phaser.Geom.Rectangle.Contains);
+    pauseBtn.on('pointerover', () => pauseBtn.setScale(1.1));
     pauseBtn.on('pointerout', () => pauseBtn.setScale(1));
     pauseBtn.on('pointerdown', () => this.onPause());
     this.container.add(pauseBtn);
-    this.pauseZone = { x: w - 52, y: 0, w: 52, h: 48 };
+    this.pauseZone = { x: pauseCx - 26, y: pauseCy - 26, w: 52, h: 52 };
   }
 
   private tweenEnergyShimmer(travel: number): void {
