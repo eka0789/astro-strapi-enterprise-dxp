@@ -64,13 +64,15 @@ export class ShopScene extends Phaser.Scene {
       ['companions', '🐾 COMPANIONS', 0x22c55e],
       ['chests', '🎁 CHESTS', 0xf59e0b],
     ];
+    const tabW = Math.min(160, Math.floor((width - 40) / 3));
+    const tabSpacing = tabW + 10;
     tabs.forEach(([id, label, color], i) => {
-      createButton(this, width / 2 + (i - 1) * 170, 64, label, () => {
+      createButton(this, width / 2 + (i - 1) * tabSpacing, 64, label, () => {
         this.tab = id;
         audio.sfx('ui');
         this.listContainer?.destroy();
         this.build();
-      }, { bgColor: this.tab === id ? color : 0x334155, fontSize: 14, width: 160 });
+      }, { bgColor: this.tab === id ? color : 0x334155, fontSize: width < 480 ? 12 : 14, width: tabW });
     });
 
     this.listContainer = this.add.container(0, 0);

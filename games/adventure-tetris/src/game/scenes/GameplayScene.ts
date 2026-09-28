@@ -56,6 +56,7 @@ export class GameplayScene extends Phaser.Scene {
   private scaleS = 1;
   private pauseOverlay: Phaser.GameObjects.Container | null = null;
   private isMobile = false;
+  private isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   private touchControls: Phaser.GameObjects.Container[] = [];
   private touchZones: Array<{ x: number; y: number; w: number; h: number }> = [];
   private holdRepeatEvents: Phaser.Time.TimerEvent[] = [];
@@ -141,13 +142,14 @@ export class GameplayScene extends Phaser.Scene {
     const w = this.scale.width;
     const h = this.scale.height;
     this.isMobile = w < 720;
+    // touch devices need bottom space for the control + power-up bars (landscape phones too)
+    const bottomReserve = this.isTouch ? 210 : 150;
     if (this.isMobile) {
-      // reserve top strip (118px HUD) and bottom bars (controls + power-ups)
       this.scaleS = Math.min((h - 235) / BOARD_H, (w - 16) / BOARD_W, 1.2);
       this.boardX = (w - BOARD_W * this.scaleS) / 2;
       this.boardY = 118;
     } else {
-      this.scaleS = Math.min((h - 150) / BOARD_H, (w - 300) / BOARD_W, 1.35);
+      this.scaleS = Math.min((h - bottomReserve) / BOARD_H, (w - 300) / BOARD_W, 1.35);
       this.boardX = (w + 40 - BOARD_W * this.scaleS) / 2;
       this.boardY = 110;
     }
@@ -183,7 +185,7 @@ export class GameplayScene extends Phaser.Scene {
 
   private buildTouchControls(): void {
     this.clearTouchControls();
-    if (!this.isMobile) return;
+    if (!this.isTouch) return;
     const w = this.scale.width;
     const h = this.scale.height;
     const y = h - 84;

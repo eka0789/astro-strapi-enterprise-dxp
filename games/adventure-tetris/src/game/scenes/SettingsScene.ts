@@ -56,13 +56,14 @@ export class SettingsScene extends Phaser.Scene {
   }
 
   private addSlider(cx: number, y: number, label: string, value: number, onChange: (v: number) => void): number {
+    const width = this.scale.width;
     const save = SaveSystem.get();
-    this.add.text(cx - 200, y - 8, label, { fontFamily: 'Nunito', fontSize: '16px', color: '#e2e8f0' });
-    const pct = this.add.text(cx + 200, y - 8, `${Math.round(value * 100)}%`, {
+    this.add.text(Math.max(16, cx - 200), y - 8, label, { fontFamily: 'Nunito', fontSize: '16px', color: '#e2e8f0' });
+    const pct = this.add.text(Math.min(width - 16, cx + 200), y - 8, `${Math.round(value * 100)}%`, {
       fontFamily: 'Nunito', fontSize: '14px', color: '#67e8f9',
     }).setOrigin(1, 0);
 
-    const barW = 300;
+    const barW = Math.min(300, width - 130);
     const bar = this.add.rectangle(cx, y + 18, barW, 10, 0x334155).setOrigin(0.5);
     const fill = this.add.rectangle(cx - barW / 2, y + 18, barW * value, 10, 0x00f0ff).setOrigin(0, 0.5);
     const knob = this.add.circle(cx - barW / 2 + barW * value, y + 18, 11, 0xffffff).setInteractive({ draggable: true });
@@ -83,9 +84,10 @@ export class SettingsScene extends Phaser.Scene {
   }
 
   private addToggle(cx: number, y: number, label: string, value: boolean, onChange: (v: boolean) => void): number {
+    const width = this.scale.width;
     const t = this.add.text(cx - 200, y, label, { fontFamily: 'Nunito', fontSize: '16px', color: '#e2e8f0' });
     let isOn = value;
-    const toggle = this.add.container(cx + 170, y + 8);
+    const toggle = this.add.container(Math.min(cx + 170, width - 42), y + 8);
     const bg = this.add.rectangle(0, 0, 56, 26, isOn ? 0x22c55e : 0x475569, 1).setOrigin(0.5);
     const knob = this.add.circle(isOn ? 14 : -14, 0, 10, 0xffffff);
     const check = this.add.text(0, 0, isOn ? '✓' : '', { fontSize: '12px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0.5);
