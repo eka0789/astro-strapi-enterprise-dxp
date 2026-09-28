@@ -50,7 +50,7 @@ export class GameOverScene extends Phaser.Scene {
     const almost = this.runData.progress >= 0.7;
     const title = almost ? 'ALMOST THERE!' : 'GAME OVER';
     this.add.text(cx, height * 0.18, title, {
-      fontFamily: 'Nunito', fontSize: '46px', color: almost ? '#fbbf24' : '#ef4444', fontStyle: 'bold',
+      fontFamily: 'Nunito', fontSize: `${Math.min(46, Math.floor(width / 10))}px`, color: almost ? '#fbbf24' : '#ef4444', fontStyle: 'bold',
     }).setOrigin(0.5);
 
     if (almost) {

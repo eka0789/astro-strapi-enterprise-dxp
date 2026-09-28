@@ -54,8 +54,8 @@ export const COMPANIONS: CompanionDef[] = [
 
 export const CHESTS: ChestDef[] = [
   { id: 'wood', name: 'Wood Chest', emoji: '🧰', priceCoins: 150, priceGems: 0, coinRange: [40, 120], gemChance: 0.05, gemRange: [1, 2], characterChance: 0.03, companionChance: 0.05, rarity: 'common' },
-  { id: 'silver', name: 'Silver Chest', emoji: '⚪', priceCoins: 400, priceGems: 0, coinRange: [120, 300], gemChance: 0.15, gemRange: [2, 5], characterChance: 0.08, companionChance: 0.12, rarity: 'rare' },
-  { id: 'gold', name: 'Gold Chest', emoji: '🟡', priceCoins: 900, priceGems: 5, coinRange: [300, 700], gemChance: 0.35, gemRange: [4, 10], characterChance: 0.15, companionChance: 0.2, rarity: 'epic' },
+  { id: 'silver', name: 'Silver Chest', emoji: '🥈', priceCoins: 400, priceGems: 0, coinRange: [120, 300], gemChance: 0.15, gemRange: [2, 5], characterChance: 0.08, companionChance: 0.12, rarity: 'rare' },
+  { id: 'gold', name: 'Gold Chest', emoji: '🥇', priceCoins: 900, priceGems: 5, coinRange: [300, 700], gemChance: 0.35, gemRange: [4, 10], characterChance: 0.15, companionChance: 0.2, rarity: 'epic' },
   { id: 'magic', name: 'Magic Chest', emoji: '🔮', priceCoins: 2000, priceGems: 12, coinRange: [700, 1500], gemChance: 0.6, gemRange: [8, 18], characterChance: 0.25, companionChance: 0.3, rarity: 'epic' },
   { id: 'legendary', name: 'Legendary Chest', emoji: '💎', priceCoins: 5000, priceGems: 30, coinRange: [1500, 3500], gemChance: 1.0, gemRange: [15, 40], characterChance: 0.45, companionChance: 0.5, rarity: 'legendary' },
 ];

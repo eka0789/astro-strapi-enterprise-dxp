@@ -49,7 +49,7 @@ export class MainMenuScene extends Phaser.Scene {
     });
 
     // logo with glow pulse
-    const logoFontSize = Math.min(64, Math.floor(width / 10.5));
+    const logoFontSize = Math.min(64, Math.floor(width / 12));
     const logoGlow = this.add.image(cx, height * 0.16 + 10, 'glow')
       .setDisplaySize(logoFontSize * 8, logoFontSize * 3.2)
       .setTint(0xfbbf24).setAlpha(0.18).setDepth(-5);
@@ -131,7 +131,7 @@ export class MainMenuScene extends Phaser.Scene {
     ];
     modes.forEach(([label, desc, color], i) => {
       const y = height / 2 - 70 + i * 62;
-      panel.add(this.add.text(width / 2 - 110, y - 18, desc, { fontFamily: 'Nunito', fontSize: '13px', color: '#94a3b8' }).setOrigin(0, 0.5));
+      panel.add(this.add.text(width / 2, y - 34, desc, { fontFamily: 'Nunito', fontSize: '13px', color: '#94a3b8' }).setOrigin(0.5));
       const btn = createButton(this, width / 2, y, label, () => {
         panel.destroy();
         const mode = i === 0 ? 'timeAttack' : i === 1 ? 'bossRush' : i === 2 ? 'puzzle' : 'survival';

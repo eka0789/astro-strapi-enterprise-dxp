@@ -49,13 +49,14 @@ export class ShopScene extends Phaser.Scene {
     const { width, height } = this.scale;
     this.add.rectangle(width / 2, height / 2, width, height, 0x0f172a);
 
-    // header
+    // header (compact on narrow screens so title and currency never collide)
+    const narrow = width < 560;
     this.add.text(16, 16, '◄', { fontSize: '30px', color: '#ffffff' })
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => { audio.sfx('ui'); this.scene.start('MainMenuScene'); });
-    this.add.text(width / 2, 24, '🛒 SHOP', { fontFamily: 'Nunito', fontSize: '24px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0.5);
-    this.add.text(width - 16, 18, `💰 ${formatNumber(save.data.coins)}   💎 ${save.data.gems}`, {
-      fontFamily: 'Nunito', fontSize: '16px', color: '#fbbf24', fontStyle: 'bold',
+    this.add.text(width / 2, 24, '🛒 SHOP', { fontFamily: 'Nunito', fontSize: narrow ? '18px' : '24px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0.5);
+    this.add.text(width - 16, narrow ? 26 : 18, `💰 ${formatNumber(save.data.coins)}   💎 ${save.data.gems}`, {
+      fontFamily: 'Nunito', fontSize: narrow ? '13px' : '16px', color: '#fbbf24', fontStyle: 'bold',
     }).setOrigin(1, 0);
 
     // tabs
@@ -66,17 +67,18 @@ export class ShopScene extends Phaser.Scene {
     ];
     const tabW = Math.min(160, Math.floor((width - 40) / 3));
     const tabSpacing = tabW + 10;
+    const tabY = narrow ? 80 : 64;
     tabs.forEach(([id, label, color], i) => {
-      createButton(this, width / 2 + (i - 1) * tabSpacing, 64, label, () => {
+      createButton(this, width / 2 + (i - 1) * tabSpacing, tabY, label, () => {
         this.tab = id;
         audio.sfx('ui');
         this.listContainer?.destroy();
         this.build();
-      }, { bgColor: this.tab === id ? color : 0x334155, fontSize: width < 480 ? 12 : 14, width: tabW });
+      }, { bgColor: this.tab === id ? color : 0x334155, fontSize: narrow ? 12 : 14, width: tabW });
     });
 
     this.listContainer = this.add.container(0, 0);
-    const startY = 110;
+    const startY = narrow ? 130 : 110;
     const rows: Phaser.GameObjects.Container[] = [];
     if (this.tab === 'characters') {
       CHARACTERS.forEach((c, i) => rows.push(this.characterRow(c, width / 2, startY + i * 66)));
@@ -90,6 +92,11 @@ export class ShopScene extends Phaser.Scene {
     void height;
   }
 
+  private rowGeom(x: number): { rowW: number; rowLeft: number; rowRight: number } {
+    const rowW = Math.min(480, this.scale.width - 40);
+    return { rowW, rowLeft: x - rowW / 2, rowRight: x + rowW / 2 };
+  }
+
   private rowBg(x: number, y: number, color = 0x1e293b): Phaser.GameObjects.Rectangle {
     return this.add.rectangle(x, y, Math.min(480, this.scale.width - 40), 58, color, 0.95)
       .setStrokeStyle(1, 0x334155, 1);
@@ -99,16 +106,17 @@ export class ShopScene extends Phaser.Scene {
     const save = SaveSystem.get();
     const owned = save.data.unlockedCharacters.includes(c.id);
     const equipped = save.data.selectedCharacter === c.id;
+    const { rowLeft, rowRight } = this.rowGeom(x);
     const row = this.add.container(0, 0);
     row.add(this.rowBg(x, y, equipped ? 0x14532d : 0x1e293b));
-    row.add(this.add.text(x - 230, y, `${c.emoji}`, { fontSize: '28px' }).setOrigin(0, 0.5));
-    row.add(this.add.text(x - 185, y - 10, c.name, { fontFamily: 'Nunito', fontSize: '16px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5));
-    row.add(this.add.text(x - 185, y + 10, c.desc, { fontFamily: 'Nunito', fontSize: '12px', color: '#94a3b8' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 10, y, `${c.emoji}`, { fontSize: '28px' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 52, y - 10, c.name, { fontFamily: 'Nunito', fontSize: '16px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 52, y + 10, c.desc, { fontFamily: 'Nunito', fontSize: '12px', color: '#94a3b8' }).setOrigin(0, 0.5));
 
     if (equipped) {
-      row.add(this.add.text(x + 150, y, '✓ EQUIPPED', { fontFamily: 'Nunito', fontSize: '14px', color: '#22c55e', fontStyle: 'bold' }).setOrigin(0.5));
+      row.add(this.add.text(rowRight - 66, y, '✓ EQUIPPED', { fontFamily: 'Nunito', fontSize: '14px', color: '#22c55e', fontStyle: 'bold' }).setOrigin(0.5));
     } else if (owned) {
-      row.add(createButton(this, x + 150, y, 'EQUIP', () => {
+      row.add(createButton(this, rowRight - 66, y, 'EQUIP', () => {
         save.data.selectedCharacter = c.id;
         save.save();
         audio.sfx('reward');
@@ -118,7 +126,7 @@ export class ShopScene extends Phaser.Scene {
     } else {
       const canBuy = c.gemPrice ? save.data.gems >= c.gemPrice : save.data.coins >= c.price;
       const label = c.gemPrice ? `💎 ${c.gemPrice}` : `💰 ${formatNumber(c.price)}`;
-      row.add(createButton(this, x + 150, y, label, () => this.buyCharacter(c), {
+      row.add(createButton(this, rowRight - 66, y, label, () => this.buyCharacter(c), {
         bgColor: canBuy ? 0xf59e0b : 0x475569, fontSize: 13, width: 110, enabled: canBuy,
       }));
     }
@@ -129,16 +137,17 @@ export class ShopScene extends Phaser.Scene {
     const save = SaveSystem.get();
     const owned = save.data.unlockedCompanions.includes(c.id);
     const equipped = save.data.selectedCompanion === c.id;
+    const { rowLeft, rowRight } = this.rowGeom(x);
     const row = this.add.container(0, 0);
     row.add(this.rowBg(x, y, equipped ? 0x14532d : 0x1e293b));
-    row.add(this.add.text(x - 230, y, `${c.emoji}`, { fontSize: '28px' }).setOrigin(0, 0.5));
-    row.add(this.add.text(x - 185, y - 10, c.name, { fontFamily: 'Nunito', fontSize: '16px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5));
-    row.add(this.add.text(x - 185, y + 10, c.desc, { fontFamily: 'Nunito', fontSize: '12px', color: '#94a3b8' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 10, y, `${c.emoji}`, { fontSize: '28px' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 52, y - 10, c.name, { fontFamily: 'Nunito', fontSize: '16px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 52, y + 10, c.desc, { fontFamily: 'Nunito', fontSize: '12px', color: '#94a3b8' }).setOrigin(0, 0.5));
 
     if (equipped) {
-      row.add(this.add.text(x + 150, y, '✓ EQUIPPED', { fontFamily: 'Nunito', fontSize: '14px', color: '#22c55e', fontStyle: 'bold' }).setOrigin(0.5));
+      row.add(this.add.text(rowRight - 66, y, '✓ EQUIPPED', { fontFamily: 'Nunito', fontSize: '14px', color: '#22c55e', fontStyle: 'bold' }).setOrigin(0.5));
     } else if (owned) {
-      row.add(createButton(this, x + 150, y, 'EQUIP', () => {
+      row.add(createButton(this, rowRight - 66, y, 'EQUIP', () => {
         save.data.selectedCompanion = c.id;
         save.save();
         audio.sfx('reward');
@@ -147,7 +156,7 @@ export class ShopScene extends Phaser.Scene {
       }, { bgColor: 0x22c55e, fontSize: 13, width: 110 }));
     } else {
       const canBuy = save.data.coins >= c.price;
-      row.add(createButton(this, x + 150, y, `💰 ${formatNumber(c.price)}`, () => this.buyCompanion(c), {
+      row.add(createButton(this, rowRight - 66, y, `💰 ${formatNumber(c.price)}`, () => this.buyCompanion(c), {
         bgColor: canBuy ? 0xf59e0b : 0x475569, fontSize: 13, width: 110,
       }));
     }
@@ -156,23 +165,38 @@ export class ShopScene extends Phaser.Scene {
 
   private chestRow(c: ChestDef, x: number, y: number): Phaser.GameObjects.Container {
     const save = SaveSystem.get();
+    const { rowLeft, rowRight } = this.rowGeom(x);
+    const narrow = this.scale.width < 560;
+    const desc = narrow
+      ? `Coins ${c.coinRange[0]}-${c.coinRange[1]}`
+      : `Coins ${c.coinRange[0]}-${c.coinRange[1]} · Char ${Math.round(c.characterChance * 100)}% · Buddy ${Math.round(c.companionChance * 100)}%`;
     const row = this.add.container(0, 0);
     row.add(this.rowBg(x, y));
-    row.add(this.add.text(x - 230, y, `${c.emoji}`, { fontSize: '28px' }).setOrigin(0, 0.5));
-    row.add(this.add.text(x - 185, y - 10, c.name, { fontFamily: 'Nunito', fontSize: '16px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5));
-    row.add(this.add.text(x - 185, y + 10, `Coins ${c.coinRange[0]}-${c.coinRange[1]} · Char ${Math.round(c.characterChance * 100)}% · Buddy ${Math.round(c.companionChance * 100)}%`, {
-      fontFamily: 'Nunito', fontSize: '11px', color: '#94a3b8',
-    }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 10, y, `${c.emoji}`, { fontSize: '28px' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 52, y - 10, c.name, { fontFamily: 'Nunito', fontSize: '16px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 52, y + 10, desc, { fontFamily: 'Nunito', fontSize: '11px', color: '#94a3b8' }).setOrigin(0, 0.5));
 
     const canCoins = save.data.coins >= c.priceCoins;
-    row.add(createButton(this, x + 110, y, `💰 ${formatNumber(c.priceCoins)}`, () => this.buyChest(c), {
-      bgColor: canCoins ? 0xf59e0b : 0x475569, fontSize: 13, width: 120,
-    }));
-    if (c.priceGems > 0) {
-      const canGems = save.data.gems >= c.priceGems;
-      row.add(createButton(this, x + 240, y, `💎 ${c.priceGems}`, () => this.buyChest(c, true), {
-        bgColor: canGems ? 0x8b5cf6 : 0x475569, fontSize: 13, width: 110,
+    if (narrow) {
+      row.add(createButton(this, rowRight - 60, y, `💰 ${formatNumber(c.priceCoins)}`, () => this.buyChest(c), {
+        bgColor: canCoins ? 0xf59e0b : 0x475569, fontSize: 13, width: 110,
       }));
+      if (c.priceGems > 0) {
+        const canGems = save.data.gems >= c.priceGems;
+        row.add(createButton(this, rowRight - 160, y, `💎 ${c.priceGems}`, () => this.buyChest(c, true), {
+          bgColor: canGems ? 0x8b5cf6 : 0x475569, fontSize: 11, width: 70,
+        }));
+      }
+    } else {
+      row.add(createButton(this, rowRight - 180, y, `💰 ${formatNumber(c.priceCoins)}`, () => this.buyChest(c), {
+        bgColor: canCoins ? 0xf59e0b : 0x475569, fontSize: 13, width: 120,
+      }));
+      if (c.priceGems > 0) {
+        const canGems = save.data.gems >= c.priceGems;
+        row.add(createButton(this, rowRight - 60, y, `💎 ${c.priceGems}`, () => this.buyChest(c, true), {
+          bgColor: canGems ? 0x8b5cf6 : 0x475569, fontSize: 13, width: 110,
+        }));
+      }
     }
     return row;
   }

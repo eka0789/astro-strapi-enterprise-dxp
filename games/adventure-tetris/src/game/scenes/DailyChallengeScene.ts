@@ -47,15 +47,15 @@ export class DailyChallengeScene extends Phaser.Scene {
 
     // quests section
     const qY = cardY + 160;
-    this.add.text(cx, qY - 16, 'DAILY QUESTS', { fontFamily: 'Nunito', fontSize: '15px', color: '#67e8f9', fontStyle: 'bold' }).setOrigin(0.5);
-    this.renderQuests(cx, qY + 8, DAILY_QUESTS.map((q) => ({
+    this.add.text(cx, qY - 24, 'DAILY QUESTS', { fontFamily: 'Nunito', fontSize: '15px', color: '#67e8f9', fontStyle: 'bold' }).setOrigin(0.5);
+    this.renderQuests(cx, qY + 6, DAILY_QUESTS.map((q) => ({
       desc: q.desc, target: q.target, counter: q.counter, reward: `💰${q.rewardCoins}+⭐${q.rewardXp}`,
       progress: this.progressOf(q.counter, 'daily'), id: q.id,
     })));
 
-    const wY = qY + 8 + DAILY_QUESTS.length * 44 + 30;
-    this.add.text(cx, wY - 16, 'WEEKLY QUESTS', { fontFamily: 'Nunito', fontSize: '15px', color: '#a78bfa', fontStyle: 'bold' }).setOrigin(0.5);
-    this.renderQuests(cx, wY + 8, WEEKLY_QUESTS.map((q) => ({
+    const wY = qY + 6 + DAILY_QUESTS.length * 44 + 26;
+    this.add.text(cx, wY - 24, 'WEEKLY QUESTS', { fontFamily: 'Nunito', fontSize: '15px', color: '#a78bfa', fontStyle: 'bold' }).setOrigin(0.5);
+    this.renderQuests(cx, wY + 6, WEEKLY_QUESTS.map((q) => ({
       desc: q.desc, target: q.target, counter: q.counter, reward: `💰${q.rewardCoins}+⭐${q.rewardXp}`,
       progress: this.progressOf(q.counter, 'weekly'), id: q.id,
     })));
@@ -68,21 +68,24 @@ export class DailyChallengeScene extends Phaser.Scene {
   }
 
   private renderQuests(cx: number, startY: number, quests: Array<{ desc: string; target: number; counter: string; reward: string; progress: number; id: string }>): void {
+    const rowW = Math.min(420, this.scale.width - 40);
+    const rowLeft = cx - rowW / 2;
     quests.forEach((q, i) => {
       const y = startY + i * 44;
       const pct = Math.min(100, Math.round((q.progress / q.target) * 100));
       const done = pct >= 100;
-      this.add.rectangle(cx, y, Math.min(420, this.scale.width - 40), 38, 0x1e293b, 0.95).setStrokeStyle(1, 0x334155, 1);
-      this.add.text(cx - 195, y - 8, `${done ? '✅' : '•'} ${q.desc}`, {
+      this.add.rectangle(cx, y, rowW, 38, 0x1e293b, 0.95).setStrokeStyle(1, 0x334155, 1);
+      this.add.text(rowLeft + 12, y - 8, `${done ? '✅' : '•'} ${q.desc}`, {
         fontFamily: 'Nunito', fontSize: '13px', color: done ? '#22c55e' : '#e2e8f0',
       }).setOrigin(0, 0.5);
-      this.add.text(cx - 195, y + 8, `${formatNumber(Math.min(q.progress, q.target))} / ${formatNumber(q.target)} · ${q.reward}`, {
+      this.add.text(rowLeft + 12, y + 8, `${formatNumber(Math.min(q.progress, q.target))} / ${formatNumber(q.target)} · ${q.reward}`, {
         fontFamily: 'Nunito', fontSize: '10px', color: '#94a3b8',
       }).setOrigin(0, 0.5);
       // mini progress bar
       const bw = 80;
-      this.add.rectangle(cx + 150, y, bw, 6, 0x334155).setOrigin(0.5);
-      this.add.rectangle(cx + 150 - bw / 2, y, Math.max(2, (bw * pct) / 100), 6, done ? 0x22c55e : 0x67e8f9).setOrigin(0, 0.5);
+      const barCx = cx + rowW / 2 - 50;
+      this.add.rectangle(barCx, y, bw, 6, 0x334155).setOrigin(0.5);
+      this.add.rectangle(barCx - bw / 2, y, Math.max(2, (bw * pct) / 100), 6, done ? 0x22c55e : 0x67e8f9).setOrigin(0, 0.5);
     });
   }
 }

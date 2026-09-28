@@ -29,17 +29,28 @@ export class WorldMapScene extends Phaser.Scene {
     makeWorldBackground(this, world.theme.bgTop, world.theme.bgBottom, world.theme.particle);
 
     // header
+    const narrow = width < 560;
     const header = this.add.container(0, 0).setDepth(50);
     header.add(this.add.text(16, 14, '◄', { fontSize: '30px', color: '#ffffff' }).setInteractive({ useHandCursor: true }).on('pointerdown', () => {
       audio.sfx('ui');
       this.scene.start('MainMenuScene');
     }));
-    header.add(this.add.text(width / 2, 22, `${world.emoji} ${world.name.toUpperCase()}`, {
-      fontFamily: 'Nunito', fontSize: '24px', color: '#ffffff', fontStyle: 'bold',
-    }).setOrigin(0.5, 0));
-    header.add(this.add.text(width - 16, 14, `💰 ${formatNumber(save.data.coins)} 💎 ${save.data.gems}`, {
-      fontFamily: 'Nunito', fontSize: '15px', color: '#fbbf24', fontStyle: 'bold',
-    }).setOrigin(1, 0));
+    if (narrow) {
+      // left-aligned title so it cannot collide with the currency counter
+      header.add(this.add.text(52, 20, `${world.emoji} ${world.name.toUpperCase()}`, {
+        fontFamily: 'Nunito', fontSize: '18px', color: '#ffffff', fontStyle: 'bold',
+      }).setOrigin(0, 0));
+      header.add(this.add.text(width - 16, 22, `💰 ${formatNumber(save.data.coins)} 💎 ${save.data.gems}`, {
+        fontFamily: 'Nunito', fontSize: '13px', color: '#fbbf24', fontStyle: 'bold',
+      }).setOrigin(1, 0));
+    } else {
+      header.add(this.add.text(width / 2, 22, `${world.emoji} ${world.name.toUpperCase()}`, {
+        fontFamily: 'Nunito', fontSize: '24px', color: '#ffffff', fontStyle: 'bold',
+      }).setOrigin(0.5, 0));
+      header.add(this.add.text(width - 16, 14, `💰 ${formatNumber(save.data.coins)} 💎 ${save.data.gems}`, {
+        fontFamily: 'Nunito', fontSize: '15px', color: '#fbbf24', fontStyle: 'bold',
+      }).setOrigin(1, 0));
+    }
 
     // world switcher
     const canPrev = this.worldIdx > 0 && (save.data.worldProgress[WORLDS[this.worldIdx - 1].id] ?? 0) >= 10;
@@ -66,13 +77,15 @@ export class WorldMapScene extends Phaser.Scene {
       header.add(dot);
     });
 
-    // level nodes - zigzag path
+    // level nodes - zigzag path that always alternates sides so a node circle
+    // can never cover the previous node's label
     const levels = getWorldLevels(world.id);
     const startY = 110;
-    const spacing = Math.min(62, (height - 220) / 10);
+    const spacing = Math.min(74, (height - 220) / 10);
+    const amp = Math.max(90, Math.min(width * 0.2, 240));
     const positions = levels.map((lvl, i) => ({
       lvl,
-      x: width / 2 + Math.sin(i * 1.1) * (width * 0.22),
+      x: width / 2 + (i % 2 === 0 ? -1 : 1) * amp * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.7))),
       y: startY + i * spacing,
     }));
 

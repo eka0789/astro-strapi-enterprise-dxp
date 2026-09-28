@@ -85,7 +85,7 @@ export class SettingsScene extends Phaser.Scene {
 
   private addToggle(cx: number, y: number, label: string, value: boolean, onChange: (v: boolean) => void): number {
     const width = this.scale.width;
-    const t = this.add.text(cx - 200, y, label, { fontFamily: 'Nunito', fontSize: '16px', color: '#e2e8f0' });
+    const t = this.add.text(Math.max(16, cx - 200), y, label, { fontFamily: 'Nunito', fontSize: '16px', color: '#e2e8f0' });
     let isOn = value;
     const toggle = this.add.container(Math.min(cx + 170, width - 42), y + 8);
     const bg = this.add.rectangle(0, 0, 56, 26, isOn ? 0x22c55e : 0x475569, 1).setOrigin(0.5);

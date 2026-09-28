@@ -64,15 +64,20 @@ export class HUD {
   private powerZones: TouchZone[] = [];
   private pauseZone: TouchZone = { x: 0, y: 0, w: 48, h: 44 };
 
-  constructor(scene: Phaser.Scene, boardX: number, boardY: number, scale: number, isMobile: boolean) {
+  constructor(scene: Phaser.Scene, boardX: number, boardY: number, scale: number, isMobile: boolean, hudScale = Math.max(0.8, Math.min(scale, 1))) {
     this.scene = scene;
     this.isMobile = isMobile;
     const w = scene.scale.width;
     const h = scene.scale.height;
     this.container = scene.add.container(0, 0).setDepth(50);
 
-    const sideL = isMobile ? 8 : boardX - 130 * scale;
-    const sideR = boardX + BOARD_W * scale + 10 * scale;
+    // side panels use a floored HUD scale so text stays readable when the board
+    // itself shrinks (landscape phones); preview slots get fixed offsets so the
+    // mini pieces never slide back over the board edge
+    const hs = hudScale;
+    const boardW = BOARD_W * scale;
+    const sideL = isMobile ? 8 : boardX - 164;
+    const sideR = boardX + boardW + 14;
 
     if (isMobile) {
       // ---- compact mobile top strip ----
@@ -97,24 +102,27 @@ export class HUD {
       this.tweenEnergyShimmer(76);
     } else {
       // ---- desktop / tablet layout ----
-      this.scoreText = scene.add.text(sideL, boardY, 'SCORE\n0', { fontFamily: 'Nunito', fontSize: `${20 * scale}px`, color: '#ffffff', fontStyle: 'bold', align: 'left', lineSpacing: 2 });
-      this.levelText = scene.add.text(sideL, boardY + 70 * scale, '', { fontFamily: 'Nunito', fontSize: `${16 * scale}px`, color: '#93c5fd' });
-      this.comboText = scene.add.text(sideL, boardY + 100 * scale, '', { fontFamily: 'Nunito', fontSize: `${24 * scale}px`, color: '#f59e0b', fontStyle: 'bold' });
-      this.objText = scene.add.text(sideL, boardY + 140 * scale, '', { fontFamily: 'Nunito', fontSize: `${13 * scale}px`, color: '#e2e8f0', wordWrap: { width: 130 * scale } });
+      this.scoreText = scene.add.text(sideL, boardY, 'SCORE\n0', { fontFamily: 'Nunito', fontSize: `${20 * hs}px`, color: '#ffffff', fontStyle: 'bold', align: 'left', lineSpacing: 2 });
+      this.levelText = scene.add.text(sideL, boardY + 70 * hs, '', { fontFamily: 'Nunito', fontSize: `${16 * hs}px`, color: '#93c5fd' });
+      this.comboText = scene.add.text(sideL, boardY + 100 * hs, '', { fontFamily: 'Nunito', fontSize: `${24 * hs}px`, color: '#f59e0b', fontStyle: 'bold' });
+      this.objText = scene.add.text(sideL, boardY + 140 * hs, '', { fontFamily: 'Nunito', fontSize: `${13 * hs}px`, color: '#e2e8f0', wordWrap: { width: 140 * hs } });
       this.objBar = scene.add.graphics();
-      this.energyText = scene.add.text(sideL, boardY + 245 * scale, 'ENERGY', { fontFamily: 'Nunito', fontSize: `${12 * scale}px`, color: '#67e8f9', fontStyle: 'bold' });
-      this.nextText = scene.add.text(sideR, boardY - 4 * scale, 'NEXT', { fontFamily: 'Nunito', fontSize: `${14 * scale}px`, color: '#94a3b8', fontStyle: 'bold' });
+      this.energyText = scene.add.text(sideL, boardY + 245 * hs, 'ENERGY', { fontFamily: 'Nunito', fontSize: `${12 * hs}px`, color: '#67e8f9', fontStyle: 'bold' });
+      this.nextText = scene.add.text(sideR, boardY - 4 * hs, 'NEXT', { fontFamily: 'Nunito', fontSize: `${14 * hs}px`, color: '#94a3b8', fontStyle: 'bold' });
       for (let i = 0; i < 3; i++) {
-        this.nextSlots.push(scene.add.container(sideR + 34 * scale, boardY + (34 + i * 62) * scale));
+        this.nextSlots.push(scene.add.container(sideR + 50, boardY + (34 + i * 62) * hs));
         this.container.add(this.nextSlots[i]);
       }
-      this.holdText = scene.add.text(sideR, boardY + BOARD_H * scale - 220 * scale, 'HOLD [C]', { fontFamily: 'Nunito', fontSize: `${14 * scale}px`, color: '#94a3b8', fontStyle: 'bold' });
-      this.holdSlot = scene.add.container(sideR + 34 * scale, boardY + BOARD_H * scale - 190 * scale);
-      this.timerText = scene.add.text(w / 2, boardY - 34 * scale, '', { fontFamily: 'Nunito', fontSize: `${22 * scale}px`, color: '#f43f5e', fontStyle: 'bold' }).setOrigin(0.5);
-      this.bossText = scene.add.text(w / 2, boardY - 92 * scale, '', { fontFamily: 'Nunito', fontSize: `${15 * scale}px`, color: '#fca5a5', fontStyle: 'bold' }).setOrigin(0.5);
-      this.bossEmoji = scene.add.text(w / 2 - 120 * scale, boardY - 96 * scale, '', { fontSize: `${30 * scale}px` });
+      // HOLD lives under the NEXT column on short boards so the two labels
+      // can never end up on the same line
+      const holdY = Math.max(boardY + BOARD_H * scale - 220 * hs, boardY + 226 * hs);
+      this.holdText = scene.add.text(sideR, holdY, 'HOLD [C]', { fontFamily: 'Nunito', fontSize: `${14 * hs}px`, color: '#94a3b8', fontStyle: 'bold' });
+      this.holdSlot = scene.add.container(sideR + 50, holdY + 30);
+      this.timerText = scene.add.text(w / 2, boardY - 34 * hs, '', { fontFamily: 'Nunito', fontSize: `${22 * hs}px`, color: '#f43f5e', fontStyle: 'bold' }).setOrigin(0.5);
+      this.bossText = scene.add.text(w / 2, boardY - 92 * hs, '', { fontFamily: 'Nunito', fontSize: `${15 * hs}px`, color: '#fca5a5', fontStyle: 'bold' }).setOrigin(0.5);
+      this.bossEmoji = scene.add.text(w / 2 - 120 * hs, boardY - 96 * hs, '', { fontSize: `${30 * hs}px` });
       this.bossBarWidth = 240;
-      this.energyShimmer = scene.add.rectangle(sideL + 65 * scale, boardY + 279 * scale, 26, 14 * scale, 0xffffff, 0.25);
+      this.energyShimmer = scene.add.rectangle(sideL + 65 * hs, boardY + 279 * hs, 26, 14 * hs, 0xffffff, 0.25);
       this.tweenEnergyShimmer(110);
     }
     this.bossBar = scene.add.graphics();
@@ -129,9 +137,9 @@ export class HUD {
 
     // power-up buttons along the bottom
     const btnY = h - (isMobile ? 36 : 42);
-    const spacing = isMobile ? 50 : 62 * scale;
+    const spacing = isMobile ? 50 : 56;
     const iconSize = isMobile ? 16 : 20;
-    const startX = isMobile ? w / 2 - 125 : boardX + 8;
+    const startX = isMobile ? w / 2 - 125 : boardX + (BOARD_W * scale) / 2 - (spacing * (POWER_UPS.length - 1)) / 2;
     POWER_UPS.forEach((pu, i) => {
       const bx = startX + i * spacing;
       const c = scene.add.container(bx, btnY);

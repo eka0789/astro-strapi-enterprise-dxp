@@ -54,9 +54,14 @@ export class GameplayScene extends Phaser.Scene {
   private boardX = 0;
   private boardY = 0;
   private scaleS = 1;
+  private hudScale = 1;
   private pauseOverlay: Phaser.GameObjects.Container | null = null;
   private isMobile = false;
-  private isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  // ?touch=1 lets the visual test harness force on-screen controls on desktop
+  private isTouch =
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    new URLSearchParams(window.location.search).get('touch') === '1';
   private touchControls: Phaser.GameObjects.Container[] = [];
   private touchZones: Array<{ x: number; y: number; w: number; h: number }> = [];
   private holdRepeatEvents: Phaser.Time.TimerEvent[] = [];
@@ -141,9 +146,11 @@ export class GameplayScene extends Phaser.Scene {
   private computeLayout(): void {
     const w = this.scale.width;
     const h = this.scale.height;
-    this.isMobile = w < 720;
+    // short viewports (landscape phones) use the compact top-strip layout too:
+    // the desktop side panels need ~300px of vertical room that isn't there
+    this.isMobile = w < 720 || h < 560;
     // touch devices need bottom space for the control + power-up bars (landscape phones too)
-    const bottomReserve = this.isTouch ? 210 : 150;
+    const bottomReserve = this.isTouch ? 216 : 150;
     if (this.isMobile) {
       this.scaleS = Math.min((h - 235) / BOARD_H, (w - 16) / BOARD_W, 1.2);
       this.boardX = (w - BOARD_W * this.scaleS) / 2;
@@ -153,11 +160,13 @@ export class GameplayScene extends Phaser.Scene {
       this.boardX = (w + 40 - BOARD_W * this.scaleS) / 2;
       this.boardY = 110;
     }
+    // HUD text/panels never shrink below 0.8 even when the board gets tiny
+    this.hudScale = Math.max(0.8, Math.min(this.scaleS, 1));
   }
 
   private buildHudAndControls(): void {
     this.hud?.destroy();
-    this.hud = new HUD(this, this.boardX, this.boardY, Math.min(this.scaleS, 1), this.isMobile);
+    this.hud = new HUD(this, this.boardX, this.boardY, this.scaleS, this.isMobile, this.hudScale);
     this.hud.onPause = () => this.togglePause();
     this.hud.onPowerUp = (id) => this.usePowerUp(id);
     this.buildTouchControls();

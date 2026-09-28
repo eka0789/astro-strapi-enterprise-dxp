@@ -21,12 +21,15 @@ export class CollectionScene extends Phaser.Scene {
     const { width, height } = this.scale;
     this.add.rectangle(width / 2, height / 2, width, height, 0x0f172a);
 
+    const narrow = width < 560;
     this.add.text(16, 16, '◄', { fontSize: '30px', color: '#ffffff' })
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => { audio.sfx('ui'); this.scene.start('MainMenuScene'); });
-    this.add.text(width / 2, 24, '📦 COLLECTION', { fontFamily: 'Nunito', fontSize: '24px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0.5);
-    this.add.text(width - 16, 18, `⭐ ${save.getTotalStars()} stars · LV ${save.data.playerLevel}`, {
-      fontFamily: 'Nunito', fontSize: '15px', color: '#93c5fd',
+    this.add.text(width / 2, 24, '📦 COLLECTION', { fontFamily: 'Nunito', fontSize: narrow ? '18px' : '24px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0.5);
+    this.add.text(width - 16, narrow ? 26 : 18, narrow
+      ? `⭐ ${save.getTotalStars()} · LV ${save.data.playerLevel}`
+      : `⭐ ${save.getTotalStars()} stars · LV ${save.data.playerLevel}`, {
+      fontFamily: 'Nunito', fontSize: narrow ? '12px' : '15px', color: '#93c5fd',
     }).setOrigin(1, 0);
 
     const tabs: Array<[typeof this.tab, string, number]> = [
@@ -36,17 +39,18 @@ export class CollectionScene extends Phaser.Scene {
     ];
     const tabW = Math.min(160, Math.floor((width - 40) / 3));
     const tabSpacing = tabW + 10;
+    const tabY = narrow ? 80 : 64;
     tabs.forEach(([id, label, color], i) => {
-      createButton(this, width / 2 + (i - 1) * tabSpacing, 64, label, () => {
+      createButton(this, width / 2 + (i - 1) * tabSpacing, tabY, label, () => {
         this.tab = id;
         audio.sfx('ui');
         this.listContainer?.destroy();
         this.build();
-      }, { bgColor: this.tab === id ? color : 0x334155, fontSize: width < 480 ? 12 : 14, width: tabW });
+      }, { bgColor: this.tab === id ? color : 0x334155, fontSize: narrow ? 12 : 14, width: tabW });
     });
 
     this.listContainer = this.add.container(0, 0);
-    const startY = 108;
+    const startY = narrow ? 130 : 108;
     const rows: Phaser.GameObjects.Container[] = [];
     if (this.tab === 'characters') {
       CHARACTERS.forEach((c, i) => {
@@ -85,16 +89,18 @@ export class CollectionScene extends Phaser.Scene {
         worldsCleared: save.getWorldsCleared(),
         playTimeSec: save.data.stats.playTimeSec,
       };
+      const rowW = Math.min(500, width - 40);
+      const rowLeft = width / 2 - rowW / 2;
       ACHIEVEMENTS.forEach((a, i) => {
         const done = save.data.achievements.includes(a.id) || a.check(stats);
         const row = this.add.container(0, 0);
-        row.add(this.add.rectangle(width / 2, startY + i * 60, Math.min(500, width - 40), 54, done ? 0x14532d : 0x1e293b, 0.95).setStrokeStyle(1, 0x334155, 1));
-        row.add(this.add.text(width / 2 - 230, startY + i * 60, done ? a.emoji : '🔒', { fontSize: '24px' }).setOrigin(0, 0.5));
-        row.add(this.add.text(width / 2 - 185, startY + i * 60 - 9, `${a.name} ${done ? '✓' : ''}`, {
+        row.add(this.add.rectangle(width / 2, startY + i * 60, rowW, 54, done ? 0x14532d : 0x1e293b, 0.95).setStrokeStyle(1, 0x334155, 1));
+        row.add(this.add.text(rowLeft + 10, startY + i * 60, done ? a.emoji : '🔒', { fontSize: '24px' }).setOrigin(0, 0.5));
+        row.add(this.add.text(rowLeft + 52, startY + i * 60 - 9, `${a.name} ${done ? '✓' : ''}`, {
           fontFamily: 'Nunito', fontSize: '15px', color: done ? '#22c55e' : '#ffffff', fontStyle: 'bold',
         }).setOrigin(0, 0.5));
-        row.add(this.add.text(width / 2 - 185, startY + i * 60 + 10, `${a.desc} · 💰${a.rewardCoins}`, {
-          fontFamily: 'Nunito', fontSize: '11px', color: '#94a3b8',
+        row.add(this.add.text(rowLeft + 52, startY + i * 60 + 10, `${a.desc} · 💰${a.rewardCoins}`, {
+          fontFamily: 'Nunito', fontSize: '11px', color: '#94a3b8', wordWrap: { width: rowW - 64 },
         }).setOrigin(0, 0.5));
         rows.push(row);
       });
@@ -108,15 +114,18 @@ export class CollectionScene extends Phaser.Scene {
     x: number, y: number, emoji: string, name: string, desc: string,
     owned: boolean, equipped: boolean, onEquip: () => void
   ): Phaser.GameObjects.Container {
+    const rowW = Math.min(500, this.scale.width - 40);
+    const rowLeft = x - rowW / 2;
+    const actionCx = x + rowW / 2 - 62;
     const row = this.add.container(0, 0);
-    row.add(this.add.rectangle(x, y, Math.min(500, this.scale.width - 40), 54, equipped ? 0x14532d : 0x1e293b, 0.95).setStrokeStyle(1, 0x334155, 1));
-    row.add(this.add.text(x - 230, y, owned ? emoji : '🔒', { fontSize: '24px' }).setOrigin(0, 0.5));
-    row.add(this.add.text(x - 185, y - 9, name, { fontFamily: 'Nunito', fontSize: '15px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5));
-    row.add(this.add.text(x - 185, y + 10, desc, { fontFamily: 'Nunito', fontSize: '11px', color: '#94a3b8' }).setOrigin(0, 0.5));
+    row.add(this.add.rectangle(x, y, rowW, 54, equipped ? 0x14532d : 0x1e293b, 0.95).setStrokeStyle(1, 0x334155, 1));
+    row.add(this.add.text(rowLeft + 10, y, owned ? emoji : '🔒', { fontSize: '24px' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 52, y - 9, name, { fontFamily: 'Nunito', fontSize: '15px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5));
+    row.add(this.add.text(rowLeft + 52, y + 10, desc, { fontFamily: 'Nunito', fontSize: '11px', color: '#94a3b8' }).setOrigin(0, 0.5));
     if (equipped) {
-      row.add(this.add.text(x + 160, y, '✓', { fontSize: '22px', color: '#22c55e' }).setOrigin(0.5));
+      row.add(this.add.text(actionCx, y, '✓', { fontSize: '22px', color: '#22c55e' }).setOrigin(0.5));
     } else if (owned) {
-      row.add(createButton(this, x + 160, y, 'EQUIP', onEquip, { bgColor: 0x22c55e, fontSize: 12, width: 100 }));
+      row.add(createButton(this, actionCx, y, 'EQUIP', onEquip, { bgColor: 0x22c55e, fontSize: 12, width: 100 }));
     }
     return row;
   }

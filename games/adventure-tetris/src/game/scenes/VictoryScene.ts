@@ -58,7 +58,7 @@ export class VictoryScene extends Phaser.Scene {
     void xpRes;
 
     this.add.text(cx, 60, this.runData.overrideLabel ?? 'LEVEL COMPLETE!', {
-      fontFamily: 'Nunito', fontSize: '40px', color: '#fbbf24', fontStyle: 'bold',
+      fontFamily: 'Nunito', fontSize: `${Math.min(40, Math.floor(width / 11))}px`, color: '#fbbf24', fontStyle: 'bold',
       stroke: '#78350f', strokeThickness: 5,
     }).setOrigin(0.5);
 
