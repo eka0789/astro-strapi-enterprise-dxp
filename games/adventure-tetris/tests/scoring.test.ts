@@ -174,3 +174,23 @@ describe('GameManager gravity', () => {
     expect(m.currentPiece.y).toBe(y0);
   });
 });
+
+describe('GameManager lock delay', () => {
+  it('locks a grounded piece within ~500ms real time and spawns the next one', () => {
+    const m = new GameManager(makeConfig());
+    while (m.moveDown()); // rest the current piece on the floor
+    const grounded = m.currentPiece;
+    // ~660ms of frame updates: lock delay (500ms) must elapse -> next piece
+    for (let i = 0; i < 40; i++) m.update(16.6);
+    expect(m.currentPiece).not.toBe(grounded);
+    expect(m.currentPiece.y).toBeLessThanOrEqual(2);
+  });
+
+  it('pressing down while grounded locks instantly and spawns the next piece', () => {
+    const m = new GameManager(makeConfig());
+    while (m.moveDown()); // rest the current piece on the floor
+    const before = m.currentPiece;
+    m.softDrop(40);
+    expect(m.currentPiece).not.toBe(before);
+  });
+});

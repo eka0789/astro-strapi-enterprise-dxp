@@ -81,19 +81,21 @@ export class HUD {
 
     if (isMobile) {
       // ---- compact mobile top strip ----
+      // NEXT/HOLD columns sit left of the pause button (which occupies the
+      // top-right 64x52), so nothing overlaps
       this.scoreText = scene.add.text(8, 6, 'SCORE\n0', { fontFamily: 'Nunito', fontSize: '13px', color: '#ffffff', fontStyle: 'bold', lineSpacing: 1 });
       this.levelText = scene.add.text(8, 50, '', { fontFamily: 'Nunito', fontSize: '10px', color: '#93c5fd' });
       this.comboText = scene.add.text(8, 64, '', { fontFamily: 'Nunito', fontSize: '15px', color: '#f59e0b', fontStyle: 'bold' });
       this.objText = scene.add.text(w / 2, 6, '', { fontFamily: 'Nunito', fontSize: '10px', color: '#e2e8f0', align: 'center', wordWrap: { width: 150 } }).setOrigin(0.5, 0);
       this.objBar = scene.add.graphics();
       this.energyText = scene.add.text(8, 86, 'ENERGY', { fontFamily: 'Nunito', fontSize: '9px', color: '#67e8f9', fontStyle: 'bold' });
-      this.nextText = scene.add.text(w - 56, 6, 'NEXT', { fontFamily: 'Nunito', fontSize: '10px', color: '#94a3b8', fontStyle: 'bold' }).setOrigin(1, 0);
+      this.nextText = scene.add.text(w - 100, 4, 'NEXT', { fontFamily: 'Nunito', fontSize: '10px', color: '#94a3b8', fontStyle: 'bold' }).setOrigin(1, 0);
       for (let i = 0; i < 3; i++) {
-        this.nextSlots.push(scene.add.container(w - 68 - i * 38, 40));
+        this.nextSlots.push(scene.add.container(w - 112 - i * 38, 40));
         this.container.add(this.nextSlots[i]);
       }
-      this.holdText = scene.add.text(w - 56, 64, 'HOLD', { fontFamily: 'Nunito', fontSize: '9px', color: '#94a3b8', fontStyle: 'bold' }).setOrigin(1, 0);
-      this.holdSlot = scene.add.container(w - 68, 88);
+      this.holdText = scene.add.text(w - 100, 72, 'HOLD', { fontFamily: 'Nunito', fontSize: '9px', color: '#94a3b8', fontStyle: 'bold' }).setOrigin(1, 0);
+      this.holdSlot = scene.add.container(w - 112, 96);
       this.timerText = scene.add.text(w / 2, 58, '', { fontFamily: 'Nunito', fontSize: '14px', color: '#f43f5e', fontStyle: 'bold' }).setOrigin(0.5);
       this.bossText = scene.add.text(w / 2, boardY - 68, '', { fontFamily: 'Nunito', fontSize: '12px', color: '#fca5a5', fontStyle: 'bold' }).setOrigin(0.5);
       this.bossEmoji = scene.add.text(w / 2 - 110, boardY - 72, '', { fontSize: '22px' });
@@ -162,27 +164,27 @@ export class HUD {
       this.powerZones.push({ x: bx - 26, y: btnY - 24, w: 52, h: 48 });
     });
 
-    // pause button - drawn body (46x46) so the tap target is generous and
-    // never depends on a font glyph rendering
-    const pauseCx = w - (isMobile ? 40 : 44);
-    const pauseCy = isMobile ? 38 : 42;
+    // pause button - same body style as the on-screen control row (64x52),
+    // drawn so the tap target is generous and never depends on a font glyph
+    const pauseCx = w - 44;
+    const pauseCy = 42;
     const pauseBtn = scene.add.container(pauseCx, pauseCy);
     const pauseBg = scene.add.graphics();
-    pauseBg.fillStyle(0x1e293b, 0.85);
-    pauseBg.fillRoundedRect(-23, -23, 46, 46, 12);
+    pauseBg.fillStyle(0x1e293b, 0.92);
+    pauseBg.fillRoundedRect(-32, -26, 64, 52, 10);
     pauseBg.lineStyle(2, 0x475569, 1);
-    pauseBg.strokeRoundedRect(-23, -23, 46, 46, 12);
+    pauseBg.strokeRoundedRect(-32, -26, 64, 52, 10);
     pauseBg.fillStyle(0xe2e8f0, 1);
-    pauseBg.fillRect(-9, -8, 6, 16);
-    pauseBg.fillRect(3, -8, 6, 16);
+    pauseBg.fillRect(-10, -10, 7, 20);
+    pauseBg.fillRect(3, -10, 7, 20);
     pauseBtn.add(pauseBg);
-    pauseBtn.setSize(46, 46);
-    pauseBtn.setInteractive(new Phaser.Geom.Rectangle(-23, -23, 46, 46), Phaser.Geom.Rectangle.Contains);
-    pauseBtn.on('pointerover', () => pauseBtn.setScale(1.1));
+    pauseBtn.setSize(64, 52);
+    pauseBtn.setInteractive(new Phaser.Geom.Rectangle(-32, -26, 64, 52), Phaser.Geom.Rectangle.Contains);
+    pauseBtn.on('pointerover', () => pauseBtn.setScale(1.08));
     pauseBtn.on('pointerout', () => pauseBtn.setScale(1));
     pauseBtn.on('pointerdown', () => this.onPause());
     this.container.add(pauseBtn);
-    this.pauseZone = { x: pauseCx - 26, y: pauseCy - 26, w: 52, h: 52 };
+    this.pauseZone = { x: pauseCx - 34, y: pauseCy - 28, w: 68, h: 60 };
   }
 
   private tweenEnergyShimmer(travel: number): void {

@@ -165,6 +165,16 @@ export class GameManager {
       guard++;
       if (!this.moveDown()) break;
     }
+    // lock delay accumulates in real time while the piece rests on the stack,
+    // so the next piece spawns after 500ms instead of one gravity tick each
+    if (!this.gameOver && this.isGrounded()) {
+      this.lockTimer += delta;
+      if (this.lockTimer >= LOCK_DELAY_MS) this.lockPiece();
+    }
+  }
+
+  private isGrounded(): boolean {
+    return !this.board.isValidPosition(this.currentPiece, 0, 1);
   }
 
   moveDown(): boolean {
@@ -174,15 +184,7 @@ export class GameManager {
       this.lockResets = 0;
       return true;
     }
-    this.tickLock();
     return false;
-  }
-
-  private tickLock(): void {
-    this.lockTimer += 16;
-    if (this.lockTimer >= LOCK_DELAY_MS) {
-      this.lockPiece();
-    }
   }
 
   lockPiece(): void {
@@ -308,6 +310,10 @@ export class GameManager {
         this.dropTimer = 0;
         return true;
       }
+      // pressing down while resting on the stack locks instantly, so the next
+      // piece comes out immediately
+      this.lockPiece();
+      return false;
     }
     return false;
   }

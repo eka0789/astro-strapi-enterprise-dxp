@@ -198,17 +198,17 @@ export class GameplayScene extends Phaser.Scene {
     const w = this.scale.width;
     const h = this.scale.height;
     const y = h - (this.isMobile ? 90 : 94);
-    // directional buttons are the most-used controls, so they get a bigger body
-    const btn = (cx: number, cy: number, label: string, onPress: () => void, big = false, holdRepeat = false) => {
-      const bw = big ? 64 : 48;
-      const bh = big ? 52 : 40;
-      const c = this.add.container(cx, cy);
+    // one uniform row of five equal buttons, centered, 8px apart
+    const btn = (cx: number, label: string, onPress: () => void, holdRepeat = false) => {
+      const bw = 64;
+      const bh = 52;
+      const c = this.add.container(cx, y);
       const bg = this.add.graphics();
       bg.fillStyle(0x1e293b, 0.92);
       bg.fillRoundedRect(-bw / 2, -bh / 2, bw, bh, 10);
       bg.lineStyle(2, 0x475569, 1);
       bg.strokeRoundedRect(-bw / 2, -bh / 2, bw, bh, 10);
-      const icon = this.add.text(0, 0, label, { fontSize: big ? '22px' : '18px', color: '#ffffff' }).setOrigin(0.5);
+      const icon = this.add.text(0, 0, label, { fontSize: '22px', color: '#ffffff' }).setOrigin(0.5);
       c.add([bg, icon]);
       c.setSize(bw, bh);
       c.setInteractive({ useHandCursor: true });
@@ -228,15 +228,15 @@ export class GameplayScene extends Phaser.Scene {
       c.on('pointerup', cancelRepeat);
       c.on('pointerout', cancelRepeat);
       this.touchControls.push(c);
-      this.touchZones.push({ x: cx - bw / 2 - 2, y: cy - bh / 2 - 4, w: bw + 4, h: bh + 12 });
+      this.touchZones.push({ x: cx - bw / 2 - 2, y: y - bh / 2 - 4, w: bw + 4, h: bh + 12 });
     };
 
     // left cluster: move + rotate | right cluster: drop + hold
-    btn(w / 2 - 165, y, '◀', () => this.manager.moveLeft(), true, true);
-    btn(w / 2 - 95, y, '▶', () => this.manager.moveRight(), true, true);
-    btn(w / 2 - 24, y, '⟳', () => this.manager.rotate(true));
-    btn(w / 2 + 42, y, '⤓', () => this.manager.hardDrop(), true);
-    btn(w / 2 + 110, y, '🅗', () => this.manager.hold());
+    btn(w / 2 - 144, '◀', () => this.manager.moveLeft(), true);
+    btn(w / 2 - 72, '▶', () => this.manager.moveRight(), true);
+    btn(w / 2, '⟳', () => this.manager.rotate(true));
+    btn(w / 2 + 72, '⤓', () => this.manager.hardDrop());
+    btn(w / 2 + 144, '🅗', () => this.manager.hold());
   }
 
   private showIntroBanner(emoji: string, worldName: string): void {
