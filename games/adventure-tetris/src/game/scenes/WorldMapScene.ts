@@ -135,7 +135,7 @@ export class WorldMapScene extends Phaser.Scene {
     bottom.add(this.add.text(16, height - 30, `${charDef?.emoji ?? '🧑'} ${charDef?.name ?? ''}`, {
       fontFamily: 'Nunito', fontSize: '14px', color: '#ffffff',
     }).setInteractive({ useHandCursor: true }).on('pointerdown', () => this.scene.start('CollectionScene')));
-    bottom.add(createButton(this, width - 90, height - 26, '🛒 SHOP', () => this.scene.start('ShopScene'), { bgColor: 0xf59e0b, fontSize: 15, width: 130 }));
+    bottom.add(createButton(this, width - 90, height - 48, '🛒 SHOP', () => this.scene.start('ShopScene'), { bgColor: 0xf59e0b, fontSize: 15, width: 130 }));
   }
 
   private flowT = 0;
