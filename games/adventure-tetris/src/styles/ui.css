@@ -28,3 +28,9 @@ body {
 .ui-overlay .interactive {
   pointer-events: auto;
 }
+
+/* Netlify injects its optional badge iframe at the bottom-right, where it
+   overlaps the power-up bar on phones and intercepts taps on it. */
+#nl-badge-frame {
+  display: none !important;
+}
