@@ -1,0 +1,24 @@
+# Netlify config untuk Bola Energi Positif.
+# Sengaja terpisah dari netlify.toml di root repo, karena file root itu
+# dipakai untuk Adventure Tetris (adventris.netlify.app) dan tidak boleh tersentuh.
+
+[build]
+  publish = "dist"
+
+# Site ini statis murni — tidak ada build step, tidak ada dependency install.
+[build.environment]
+  NODE_VERSION = "20"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Shader dan Three.js dimuat dari CDN, jadi index.html sendiri boleh di-cache
+# sebentar — tapi tidak terlalu lama supaya update cepat terasa.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
