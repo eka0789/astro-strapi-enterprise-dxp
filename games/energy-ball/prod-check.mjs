@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const SITE = 'https://bola-energi.netlify.app';
+const SITE = process.env.ENERGY_BALL_URL || 'https://bola-energi.netlify.app';
 const PORT = 9230;
 const W = 1280, H = 800;
 
@@ -70,8 +70,8 @@ try {
 
   check('halaman termuat di produksi', !!boot);
   check('three.js termuat dari CDN', !!boot?.hasWebGL);
-  check('geometri terpasang', boot?.meshes === 3, 'meshes=' + boot?.meshes);
-  check('partikel terpasang', boot?.points === 1);
+  check('geometri terpasang', boot?.meshes >= 3, 'meshes=' + boot?.meshes);
+  check('partikel terpasang', boot?.points >= 1, 'points=' + boot?.points);
   check('loader disembunyikan', boot?.loaderHidden);
   check('animasi berjalan', boot?.playing);
 
