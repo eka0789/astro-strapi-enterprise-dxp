@@ -7,7 +7,7 @@
 <style>
   :root { color-scheme: dark; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { width:100%; height:100%; overflow:hidden; background:#03040a; }
+  html, body { width:100%; height:100%; overflow:hidden; background:#020308; }
   body {
     font-family: "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
     color:#fff; -webkit-font-smoothing:antialiased; user-select:none;
@@ -17,33 +17,33 @@
 
   #loader {
     position:fixed; inset:0; z-index:60; display:grid; place-items:center;
-    background:radial-gradient(circle at 50% 45%, #0a1030 0%, #03040a 70%);
+    background:radial-gradient(circle at 50% 45%, #0a1236 0%, #020308 70%);
     transition:opacity .9s ease, visibility .9s;
   }
   #loader.done { opacity:0; visibility:hidden; }
   .load-wrap { text-align:center; }
   .load-ring {
-    width:86px; height:86px; margin:0 auto 26px; border-radius:50%;
-    background:conic-gradient(from 0deg, #ff5f6d, #ffc371, #7ef8a0, #4fc3f7, #b28dff, #ff5f6d);
-    filter:blur(.4px); animation:spin 1.7s linear infinite;
+    width:92px; height:92px; margin:0 auto 28px; border-radius:50%;
+    background:conic-gradient(from 0deg, #ff5f6d, #ffc371, #7ef8a0, #4fc3f7, #b28dff, #ff8fd0, #ff5f6d);
+    filter:blur(.5px); animation:spin 1.6s linear infinite;
     -webkit-mask:radial-gradient(circle, transparent 52%, #000 54%);
             mask:radial-gradient(circle, transparent 52%, #000 54%);
   }
   @keyframes spin { to { transform:rotate(360deg); } }
-  .load-txt { font-size:13px; letter-spacing:.34em; text-transform:uppercase; opacity:.72; }
+  .load-txt { font-size:13px; letter-spacing:.36em; text-transform:uppercase; opacity:.75; }
 
   /* ---------- HUD ---------- */
   .hud { position:fixed; z-index:20; pointer-events:none; }
 
   #topbar {
-    top:0; left:0; right:0; padding:26px 30px 0;
+    top:0; left:0; right:0; padding:26px 32px 0;
     display:flex; align-items:flex-start; justify-content:space-between; gap:18px;
   }
-  .brand { font-size:12px; letter-spacing:.3em; text-transform:uppercase; opacity:.62; }
-  .brand b { display:block; font-size:15px; letter-spacing:.16em; opacity:.95; font-weight:600; margin-bottom:6px; }
+  .brand { font-size:12px; letter-spacing:.32em; text-transform:uppercase; opacity:.65; }
+  .brand b { display:block; font-size:15px; letter-spacing:.18em; opacity:.96; font-weight:600; margin-bottom:6px; }
   .counter {
     text-align:right; font-variant-numeric:tabular-nums;
-    font-size:13px; letter-spacing:.18em; opacity:.8;
+    font-size:13px; letter-spacing:.18em; opacity:.82;
   }
   .counter .bar {
     width:150px; height:2px; margin-top:9px; border-radius:2px;
@@ -51,7 +51,7 @@
   }
   .counter .bar i { display:block; height:100%; width:0%; border-radius:2px;
     background:linear-gradient(90deg,#7ef8a0,#4fc3f7,#b28dff,#ffc371,#ff5f6d);
-    box-shadow:0 0 12px rgba(140,200,255,.75); }
+    box-shadow:0 0 14px rgba(140,200,255,.8); }
 
   #chapter {
     left:0; right:0; bottom:118px; text-align:center;
@@ -59,137 +59,138 @@
   }
   #chapter .rule {
     width:0; height:1px; margin:0 auto 20px;
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);
     transition:width 1.5s cubic-bezier(.2,.7,.2,1);
   }
-  #chapter.show .rule { width:190px; }
+  #chapter.show .rule { width:210px; }
   #chapter .idx {
-    font-size:10px; letter-spacing:.42em; text-transform:uppercase;
+    font-size:10px; letter-spacing:.44em; text-transform:uppercase;
     opacity:0; transition:opacity .9s ease .25s;
   }
-  #chapter.show .idx { opacity:.55; }
+  #chapter.show .idx { opacity:.58; }
   #chapter .ttl {
-    margin-top:12px; font-size:30px; font-weight:300; letter-spacing:.06em;
-    text-shadow:0 0 34px rgba(150,210,255,.55);
+    margin-top:12px; font-size:32px; font-weight:300; letter-spacing:.08em;
+    text-shadow:0 0 38px rgba(150,210,255,.6);
     opacity:0; transform:translateY(14px);
     transition:opacity 1.15s ease .35s, transform 1.15s cubic-bezier(.2,.8,.2,1) .35s;
   }
   #chapter.show .ttl { opacity:1; transform:translateY(0); }
   #chapter .sub {
-    margin-top:12px; font-size:13px; font-weight:300; letter-spacing:.1em;
+    margin-top:12px; font-size:13.5px; font-weight:300; letter-spacing:.11em;
     opacity:0; transition:opacity 1.1s ease .7s;
   }
-  #chapter.show .sub { opacity:.72; }
+  #chapter.show .sub { opacity:.75; }
 
   #affirm {
     left:0; right:0; bottom:44px; text-align:center;
-    font-size:15px; font-weight:300; letter-spacing:.13em;
-    text-shadow:0 0 26px rgba(180,230,255,.5);
+    font-size:15px; font-weight:300; letter-spacing:.14em;
+    text-shadow:0 0 28px rgba(180,230,255,.55);
     opacity:0; transition:opacity 1.1s ease;
   }
-  #affirm.show { opacity:.92; }
+  #affirm.show { opacity:.94; }
 
-  /* Breath guide */
+  /* Breath guide HUD */
   #breath {
     position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
-    width:260px; height:260px; z-index:25; pointer-events:none;
+    width:270px; height:270px; z-index:25; pointer-events:none;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     transition:opacity .6s ease;
   }
   #breath.hidden { opacity:0; }
   #breath .ring {
     position:absolute; inset:0; border-radius:50%;
-    border:1px solid rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 0 30px rgba(120,200,255,.12);
     transition:transform .12s linear;
   }
   #breath .ring.fill {
-    background:radial-gradient(circle, rgba(255,255,255,.16) 0%, transparent 70%);
+    background:radial-gradient(circle, rgba(255,255,255,.18) 0%, transparent 72%);
     border:none;
     transform:scale(0.35);
   }
   #breath .label {
-    position:relative; text-align:center; margin-top:12px;
-    font-size:12px; letter-spacing:.28em; text-transform:uppercase; opacity:.85;
-    text-shadow:0 0 12px rgba(120,200,255,.6);
+    position:relative; text-align:center; margin-top:14px;
+    font-size:12px; letter-spacing:.3em; text-transform:uppercase; opacity:.88;
+    text-shadow:0 0 14px rgba(140,210,255,.7);
   }
   #breath .count {
-    position:relative; font-size:42px; font-weight:200; letter-spacing:.04em;
+    position:relative; font-size:44px; font-weight:200; letter-spacing:.04em;
     line-height:1; margin-top:-4px;
-    text-shadow:0 0 20px rgba(180,230,255,.6);
+    text-shadow:0 0 22px rgba(180,235,255,.7);
   }
   #breath .cycle {
-    position:relative; margin-top:8px; font-size:11px; letter-spacing:.22em;
-    text-transform:uppercase; opacity:.55;
+    position:relative; margin-top:8px; font-size:11px; letter-spacing:.24em;
+    text-transform:uppercase; opacity:.58;
   }
 
   /* Energy meter */
   #energyMeter {
-    position:fixed; left:30px; top:50%; transform:translateY(-50%);
-    z-index:20; pointer-events:none; width:4px; height:120px;
-    background:rgba(255,255,255,.08); border-radius:4px; overflow:hidden;
+    position:fixed; left:32px; top:50%; transform:translateY(-50%);
+    z-index:20; pointer-events:none; width:4px; height:130px;
+    background:rgba(255,255,255,.09); border-radius:4px; overflow:hidden;
   }
   #energyMeter i {
     display:block; width:100%; height:0%; border-radius:4px;
-    background:linear-gradient(180deg,#7ef8a0,#4fc3f7,#b28dff,#ffc371);
-    box-shadow:0 0 14px rgba(140,200,255,.55);
+    background:linear-gradient(180deg,#7ef8a0,#4fc3f7,#b28dff,#ffc371,#ff5f6d);
+    box-shadow:0 0 16px rgba(140,200,255,.65);
     transition:height .15s linear;
   }
-  @media (max-width:640px){ #energyMeter{left:14px;height:90px;} #breath{width:200px;height:200px;} }
+  @media (max-width:640px){ #energyMeter{left:14px;height:90px;} #breath{width:210px;height:210px;} }
 
-  /* vignette + warm wash + final flood */
+  /* Vignette & Full Screen Light Flood */
   #vignette {
     position:fixed; inset:0; z-index:10; pointer-events:none;
-    background:radial-gradient(ellipse at 50% 50%, transparent 38%, rgba(0,0,0,.62) 100%);
+    background:radial-gradient(ellipse at 50% 50%, transparent 34%, rgba(0,0,0,.68) 100%);
   }
   #flood {
     position:fixed; inset:0; z-index:45; pointer-events:none;
-    background:radial-gradient(circle at 50% 50%, rgba(255,250,230,1) 0%, rgba(255,240,200,.75) 30%, transparent 70%);
-    opacity:0; transition:opacity 5.5s ease-in;
+    background:radial-gradient(circle at 50% 50%, rgba(255,252,240,1) 0%, rgba(255,242,205,.85) 35%, rgba(255,225,170,.4) 65%, transparent 90%);
+    opacity:0; transition:opacity 5.5s cubic-bezier(.2,.8,.2,1);
   }
 
   /* ---------- Controls ---------- */
   #panel {
     position:fixed; z-index:30; left:50%; bottom:26px; transform:translateX(-50%);
     display:flex; gap:10px; align-items:center;
-    background:rgba(10,14,32,.55); backdrop-filter:blur(16px);
-    border:1px solid rgba(255,255,255,.11); border-radius:999px; padding:9px 10px;
+    background:rgba(8,12,28,.6); backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:9px 11px;
     opacity:0; transition:opacity .6s ease, transform .6s ease;
   }
   #panel.show { opacity:1; }
   #panel button {
     font:inherit; font-size:12px; letter-spacing:.11em; text-transform:uppercase;
-    color:#e9f1ff; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
-    padding:9px 17px; border-radius:999px; cursor:pointer;
+    color:#edf3ff; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15);
+    padding:9px 18px; border-radius:999px; cursor:pointer;
     transition:background .22s, border-color .22s, transform .12s;
   }
-  #panel button:hover { background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.3); }
+  #panel button:hover { background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.34); }
   #panel button:active { transform:scale(.95); }
   #panel button.primary {
     background:linear-gradient(100deg,#7ef8a0,#4fc3f7 45%,#b28dff);
-    color:#04121f; border-color:transparent; font-weight:600;
+    color:#030f1c; border-color:transparent; font-weight:600;
   }
   #panel .div { width:1px; height:22px; background:rgba(255,255,255,.16); }
 
   #finale {
     position:fixed; inset:0; z-index:50; display:grid; place-items:center; text-align:center;
-    background:radial-gradient(ellipse at 50% 50%, rgba(10,18,44,.5) 0%, rgba(2,3,8,.9) 75%);
-    backdrop-filter:blur(3px);
+    background:radial-gradient(ellipse at 50% 50%, rgba(10,18,48,.6) 0%, rgba(2,3,8,.94) 75%);
+    backdrop-filter:blur(4px);
     opacity:0; visibility:hidden; transition:opacity 1.4s ease, visibility 1.4s;
     padding:24px;
   }
   #finale.show { opacity:1; visibility:visible; }
   #finale .badge {
-    font-size:10px; letter-spacing:.44em; text-transform:uppercase; opacity:.55; margin-bottom:22px;
+    font-size:10px; letter-spacing:.46em; text-transform:uppercase; opacity:.58; margin-bottom:22px;
   }
   #finale h1 {
-    font-size:clamp(34px,7.4vw,74px); font-weight:200; letter-spacing:.05em; line-height:1.1;
+    font-size:clamp(34px,7.5vw,76px); font-weight:200; letter-spacing:.05em; line-height:1.1;
     background:linear-gradient(100deg,#7ef8a0,#4fc3f7 32%,#b28dff 62%,#ffc371);
     -webkit-background-clip:text; background-clip:text; color:transparent;
-    filter:drop-shadow(0 0 42px rgba(120,200,255,.35));
+    filter:drop-shadow(0 0 46px rgba(120,205,255,.4));
   }
   #finale p {
     margin-top:24px; font-size:15px; font-weight:300; letter-spacing:.09em;
-    line-height:2; color:rgba(255,255,255,.76); max-width:620px;
+    line-height:2.05; color:rgba(255,255,255,.78); max-width:630px;
   }
   #finale .actions { margin-top:42px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
 
@@ -197,7 +198,7 @@
     #topbar { padding:18px 18px 0; }
     .counter .bar { width:96px; }
     #chapter { bottom:132px; }
-    #chapter .ttl { font-size:21px; }
+    #chapter .ttl { font-size:22px; }
     #affirm { bottom:52px; font-size:12.5px; padding:0 20px; }
   }
 </style>
@@ -286,9 +287,9 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
 /* ══════════════════════════════════════════════════════════════
-   KONSTANTA
+   KONSTANTA & STRUKTUR BABAK
    ══════════════════════════════════════════════════════════════ */
-const DURATION = 60;                 // detik total
+const DURATION = 60; // detik total
 const EL = {
   loader:   document.getElementById('loader'),
   clock:    document.getElementById('clock'),
@@ -313,26 +314,24 @@ const EL = {
   energy: document.getElementById('energyFill')
 };
 
-/* Lima babak — energi naik perlahan dari keheningan menuju ledakan kedamaian */
 const CHAPTERS = [
-  { at: 0,  ttl: 'Bangkitnya Cahaya', sub: 'Inti energi terbangun dari kedalaman keheningan',      aff: 'Tarik napas dalam…',                     color: 0x6fb4ff, intensity: 0.35, speed: 0.30, exposure: 0.82 },
-  { at: 11, ttl: 'Aliran Warna',      sub: 'Aurora berputar, membawa niat baik ke setiap arah',  aff: 'Biarkan cahaya mengalir ke hatimu.',     color: 0x9d7bff, intensity: 0.55, speed: 0.52, exposure: 0.86 },
-  { at: 24, ttl: 'Berkembang',        sub: 'Partikel energi tersedot masuk, membawa kelimpahan', aff: 'Rasakan energi yang berlimpah.',         color: 0x64e6a8, intensity: 0.75, speed: 0.75, exposure: 0.86 },
-  { at: 37, ttl: 'Puncak Kedamaian',  sub: 'Bola melimpah, cahayanya tersebar ke seluruh alam',  aff: 'Kamu berlimpah dalam cahaya hangat.',     color: 0xffb36b, intensity: 0.92, speed: 0.95, exposure: 0.84 },
-  { at: 50, ttl: 'Kedamaian Abadi',   sub: 'Energi menetap di dalam — kehangatan yang tinggal',  aff: 'Tenang. Kehangatan sudah menjadi berkah.', color: 0xff8fb1, intensity: 1.00, speed: 0.72, exposure: 0.88 }
+  { at: 0,  ttl: 'Bangkitnya Cahaya', sub: 'Inti energi terbangun dari kedalaman keheningan',      aff: 'Tarik napas dalam…',                     color: 0x6fb4ff, intensity: 0.38, speed: 0.32, exposure: 0.84 },
+  { at: 11, ttl: 'Aliran Warna',      sub: 'Aurora berputar, membawa niat baik ke setiap arah',  aff: 'Biarkan cahaya mengalir ke hatimu.',     color: 0x9d7bff, intensity: 0.58, speed: 0.54, exposure: 0.88 },
+  { at: 24, ttl: 'Berkembang',        sub: 'Partikel energi tersedot masuk, membawa kelimpahan', aff: 'Rasakan energi yang berlimpah.',         color: 0x64e6a8, intensity: 0.78, speed: 0.76, exposure: 0.88 },
+  { at: 37, ttl: 'Puncak Kedamaian',  sub: 'Bola melimpah, cahayanya tersebar ke seluruh alam',  aff: 'Kamu berlimpah dalam cahaya hangat.',     color: 0xffb36b, intensity: 0.94, speed: 0.96, exposure: 0.86 },
+  { at: 50, ttl: 'Kedamaian Abadi',   sub: 'Energi menetap di dalam — kehangatan yang tinggal',  aff: 'Tenang. Kehangatan sudah menjadi berkah.', color: 0xff8fb1, intensity: 1.00, speed: 0.74, exposure: 0.90 }
 ];
 
 const BREATH_CYCLE = 12;
 const BREATH_LABELS = { inhale: 'Tarik napas', hold: 'Tahan', exhale: 'Hembuskan' };
 
-/* Palet aurora — warna-warna kegembiraan & kemakmuran */
 const PALETTE = [
   new THREE.Color(0xff5f6d), new THREE.Color(0xffa552), new THREE.Color(0xffd166),
   new THREE.Color(0x7ef8a0), new THREE.Color(0x4fc3f7), new THREE.Color(0x7c6bff), new THREE.Color(0xff8fd0)
 ];
 
 /* ══════════════════════════════════════════════════════════════
-   RENDERER / SCENE
+   RENDERER & SCENE SETUP
    ══════════════════════════════════════════════════════════════ */
 const renderer = new THREE.WebGLRenderer({ antialias:true, powerPreference:'high-performance' });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -342,7 +341,7 @@ renderer.toneMappingExposure = 0.88;
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x05060f, 0.028);
+scene.fog = new THREE.FogExp2(0x04060f, 0.026);
 
 const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 200);
 camera.position.set(0, 0.6, 7.4);
@@ -359,7 +358,7 @@ controls.autoRotate = true;
 controls.autoRotateSpeed = 0.5;
 
 /* ══════════════════════════════════════════════════════════════
-   SHADER PEREKAT
+   SHARED SHADER UTILITIES: NOISE, PALETTE & FBM
    ══════════════════════════════════════════════════════════════ */
 const GLSL_NOISE = /* glsl */`
   vec3 hash3(vec3 p){
@@ -380,6 +379,7 @@ const GLSL_NOISE = /* glsl */`
     return s;
   }
 `;
+
 const GLSL_PALETTE = /* glsl */`
   vec3 palette(float t){
     t = fract(t) * 7.0;
@@ -393,172 +393,381 @@ const GLSL_PALETTE = /* glsl */`
 `;
 
 /* ══════════════════════════════════════════════════════════════
-   BOLA ENERGI UTAMA
+   1. FLUID CORE & MANTLE PLASMA (VERTEX UNDULATION + DOMAIN WARP)
    ══════════════════════════════════════════════════════════════ */
-const sphereUniforms = { uTime:{value:0}, uIntensity:{value:0.35}, uSpeed:{value:0.30}, uCharge:{value:0}, uCoreCol:{value:new THREE.Color(0x7fd8ff)} };
+const sphereUniforms = {
+  uTime:     { value: 0 },
+  uIntensity:{ value: 0.38 },
+  uSpeed:    { value: 0.32 },
+  uCharge:   { value: 0 },
+  uBreath:   { value: 0 },
+  uCoreCol:  { value: new THREE.Color(0x7fd8ff) }
+};
+
 const ballMat = new THREE.ShaderMaterial({
   uniforms: sphereUniforms,
   vertexShader: /* glsl */`
-    varying vec3 vNormalW; varying vec3 vPosW; varying vec2 vUv;
-    void main(){ vUv=uv; vNormalW=normalize(mat3(modelMatrix)*normal); vec4 wp=modelMatrix*vec4(position,1.0); vPosW=wp.xyz; gl_Position=projectionMatrix*viewMatrix*wp; }
+    uniform float uTime, uSpeed, uBreath, uIntensity, uCharge;
+    varying vec3 vNormalW; varying vec3 vPosW; varying vec2 vUv; varying float vDisp;
+    ${GLSL_NOISE}
+    void main(){
+      vUv = uv;
+      vec3 N = normalize(normal);
+      float t = uTime * (0.8 + 0.4 * uSpeed);
+      // Domain-displaced organic wave breathing mantle
+      float wave = sin(N.x*3.5 + t*1.6) * cos(N.y*3.5 + t*1.4) * sin(N.z*3.5 + t*1.2);
+      float micro = fbm(N*4.0 + vec3(0.0, t*0.4, 0.0)) * 0.5;
+      float disp = (wave * 0.055 + micro * 0.035) * (0.6 + 0.4*uIntensity) * (1.0 + 0.2*uBreath);
+      vDisp = disp;
+
+      vec3 displacedPos = position + N * disp;
+      vNormalW = normalize(mat3(modelMatrix) * normal);
+      vec4 wp = modelMatrix * vec4(displacedPos, 1.0);
+      vPosW = wp.xyz;
+      gl_Position = projectionMatrix * viewMatrix * wp;
+    }
   `,
   fragmentShader: /* glsl */`
-    uniform float uTime,uIntensity,uSpeed,uCharge; uniform vec3 uCoreCol;
-    varying vec3 vNormalW; varying vec3 vPosW; varying vec2 vUv;
-    ${GLSL_NOISE} ${GLSL_PALETTE}
+    uniform float uTime, uIntensity, uSpeed, uCharge, uBreath;
+    uniform vec3 uCoreCol;
+    varying vec3 vNormalW; varying vec3 vPosW; varying vec2 vUv; varying float vDisp;
+    ${GLSL_NOISE}
+    ${GLSL_PALETTE}
     void main(){
-      vec3 N=normalize(vNormalW), V=normalize(cameraPosition-vPosW);
-      float fres=pow(1.0-max(dot(N,V),0.0),2.4);
-      float t=uTime*uSpeed;
-      float aurora=fbm(N*1.7+vec3(0.0,t*0.6,t*0.35));
-      float detail=fbm(N*5.0-vec3(t*0.8,0.0,t*0.5));
-      float flow=aurora*0.72+detail*0.34;
-      float hueA=flow*0.9+t*0.06+0.02;
-      float hueB=flow*1.6+0.45+t*0.04;
-      vec3 col=palette(hueA)*0.72+palette(hueB)*0.46;
-      float lum0=dot(col,vec3(0.2126,0.7152,0.0722));
-      col=mix(vec3(lum0),col,1.55); col=clamp(col,0.0,1.4);
-      vec3 core=uCoreCol*(0.12+0.22*uCharge)*(0.6+0.4*detail); col+=core;
-      vec3 L=normalize(vec3(0.5,0.8,1.0));
-      float diff=0.62+0.38*max(dot(N,L),0.0); col*=diff;
-      vec3 rim=palette(hueA+0.12)*fres*(0.55+0.75*uCharge); col+=rim;
-      float pulse=1.0+0.07*sin(uTime*2.0+aurora*3.0)+0.04*sin(uTime*3.7);
-      col*=pulse*(0.76+0.16*uIntensity);
-      col=col/(1.0+col*0.30); col=pow(col,vec3(0.95));
-      gl_FragColor=vec4(col,1.0);
+      vec3 N = normalize(vNormalW);
+      vec3 V = normalize(cameraPosition - vPosW);
+      float fres = pow(1.0 - max(dot(N, V), 0.0), 2.3);
+
+      float t = uTime * uSpeed;
+      // High-end multi-octave domain-warped turbulence
+      vec3 q = vec3(
+        fbm(N * 2.2 + vec3(0.0, t*0.5, t*0.25)),
+        fbm(N * 2.2 + vec3(5.2, 1.3, 2.8)),
+        fbm(N * 2.2 + vec3(1.8, 3.1, 9.2))
+      );
+      vec3 r = vec3(
+        fbm(N * 3.4 + 3.0*q + vec3(1.7, 9.2, 0.4)),
+        fbm(N * 3.4 + 3.0*q + vec3(8.3, 2.8, 1.1)),
+        fbm(N * 3.4 + 3.0*q + vec3(4.5, 6.7, 3.3))
+      );
+      float plasma = fbm(N * 4.8 + 3.2*r);
+
+      // Multi-spectral chromatic layering
+      float hueA = plasma * 0.85 + t * 0.05 + 0.03;
+      float hueB = plasma * 1.65 + 0.42 + t * 0.035;
+      vec3 col = palette(hueA) * 0.74 + palette(hueB) * 0.48;
+
+      // Thin-film dielectric optical iridescence
+      vec3 spectral = 0.5 + 0.5 * cos(6.28318 * (vec3(1.0, 0.66, 0.33) * fres * 2.5 + uTime * 0.08));
+      col = mix(col, col * spectral * 2.1, 0.35 + 0.25*uCharge);
+
+      // Preserve rich chroma saturation
+      float lum = dot(col, vec3(0.2126, 0.7152, 0.0722));
+      col = mix(vec3(lum), col, 1.58);
+      col = clamp(col, 0.0, 1.5);
+
+      // Deep celestial core singularity
+      vec3 core = uCoreCol * (0.16 + 0.28*uCharge) * (0.7 + 0.5*plasma);
+      col += core;
+
+      // Soft directional lighting for tactile volume
+      vec3 L = normalize(vec3(0.4, 0.8, 1.0));
+      float diff = 0.64 + 0.36*max(dot(N, L), 0.0);
+      col *= diff;
+
+      // Ethereal rim radiance
+      vec3 rim = palette(hueA + 0.14) * fres * (0.65 + 0.85*uCharge);
+      col += rim;
+
+      // Living organic pulse
+      float pulse = 1.0 + 0.08*sin(uTime*2.2 + plasma*3.2) + 0.05*vDisp*10.0;
+      col *= pulse * (0.78 + 0.20*uIntensity);
+
+      // Highlight compression
+      col = col / (1.0 + col * 0.28);
+      col = pow(col, vec3(0.96));
+
+      gl_FragColor = vec4(col, 1.0);
     }
   `
 });
-const ball = new THREE.Mesh(new THREE.SphereGeometry(1.55,128,128), ballMat);
+const ball = new THREE.Mesh(new THREE.SphereGeometry(1.55, 128, 128), ballMat);
 scene.add(ball);
 
-/* Aura */
-const auraUniforms = { uTime:{value:0}, uIntensity:{value:0.35}, uCharge:{value:0}, uColorA:{value:new THREE.Color(0x7fd8ff)}, uColorB:{value:new THREE.Color(0xff8fd0)} };
+/* ══════════════════════════════════════════════════════════════
+   2. VOLUMETRIC CORONAL AURA (DUAL-SHELL ATMOSPHERIC SCATTERING)
+   ══════════════════════════════════════════════════════════════ */
+const auraUniforms = {
+  uTime:     { value: 0 },
+  uIntensity:{ value: 0.38 },
+  uCharge:   { value: 0 },
+  uBreath:   { value: 0 },
+  uColorA:   { value: new THREE.Color(0x7fd8ff) },
+  uColorB:   { value: new THREE.Color(0xff8fd0) }
+};
 const auraMat = new THREE.ShaderMaterial({
-  uniforms: auraUniforms, transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.BackSide,
-  vertexShader: `varying vec3 vN; varying vec3 vP; void main(){ vN=normalize(mat3(modelMatrix)*normal); vP=(modelMatrix*vec4(position,1.0)).xyz; gl_Position=projectionMatrix*viewMatrix*vec4(vP,1.0); }`,
+  uniforms: auraUniforms,
+  transparent: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+  side: THREE.BackSide,
+  vertexShader: /* glsl */`
+    varying vec3 vN; varying vec3 vP;
+    void main(){
+      vN = normalize(mat3(modelMatrix) * normal);
+      vec4 wp = modelMatrix * vec4(position, 1.0);
+      vP = wp.xyz;
+      gl_Position = projectionMatrix * viewMatrix * wp;
+    }
+  `,
   fragmentShader: /* glsl */`
-    uniform float uTime,uIntensity,uCharge; uniform vec3 uColorA,uColorB;
+    uniform float uTime, uIntensity, uCharge, uBreath;
+    uniform vec3 uColorA, uColorB;
     varying vec3 vN; varying vec3 vP;
     ${GLSL_PALETTE}
     void main(){
-      vec3 V=normalize(cameraPosition-vP);
-      float fres=pow(1.0-max(dot(-vN,V),0.0),3.0);
-      vec3 col=mix(uColorA,uColorB,0.5+0.5*sin(uTime*0.5));
-      col=mix(col,palette(uTime*0.05),0.35);
-      float a=fres*(0.35+0.65*uIntensity)*(0.5+0.6*uCharge);
-      gl_FragColor=vec4(col,a);
+      vec3 V = normalize(cameraPosition - vP);
+      float fres = pow(1.0 - max(dot(-vN, V), 0.0), 2.8);
+      float t = uTime;
+      vec3 col = mix(uColorA, uColorB, 0.5 + 0.5*sin(t*0.5));
+      col = mix(col, palette(t*0.06), 0.35);
+
+      // Rayleigh & Mie scattering corona
+      float mie = pow(max(dot(vN, V), 0.0), 6.0) * 0.45;
+      col += vec3(1.0, 0.95, 0.8) * mie;
+
+      float a = fres * (0.38 + 0.65*uIntensity) * (0.55 + 0.65*uCharge) * (1.0 + 0.2*uBreath);
+      gl_FragColor = vec4(col, a);
     }
   `
 });
-const aura = new THREE.Mesh(new THREE.SphereGeometry(1.95,96,96), auraMat);
+const aura = new THREE.Mesh(new THREE.SphereGeometry(2.0, 96, 96), auraMat);
 scene.add(aura);
 
-/* Partikel */
-const PARTICLE_COUNT = 2200;
+/* ══════════════════════════════════════════════════════════════
+   3. QUANTUM VORTEX ACCRETION & TOROIDAL DIPOLE PARTICLE STREAMS
+   ══════════════════════════════════════════════════════════════ */
+const PARTICLE_COUNT = 2400;
 const pGeo = new THREE.BufferGeometry();
-const pPos = new Float32Array(PARTICLE_COUNT*3);
-const pSeed = new Float32Array(PARTICLE_COUNT*3);
-for(let i=0;i<PARTICLE_COUNT;i++){
-  const r=2.4+Math.pow(Math.random(),0.7)*3.4, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
-  pPos[i*3+0]=r*Math.sin(ph)*Math.cos(th); pPos[i*3+1]=r*Math.sin(ph)*Math.sin(th); pPos[i*3+2]=r*Math.cos(ph);
-  pSeed[i*3+0]=r; pSeed[i*3+1]=0.6+Math.random()*1.6; pSeed[i*3+2]=Math.random()*Math.PI*2;
+const pPos = new Float32Array(PARTICLE_COUNT * 3);
+const pSeed = new Float32Array(PARTICLE_COUNT * 3); // x: radius/base, y: spd, z: phase/type
+
+for(let i=0; i<PARTICLE_COUNT; i++){
+  const isDipole = i % 3 === 0; // 33% magnetic flux lines, 67% golden spiral accretion
+  if(isDipole){
+    // Toroidal magnetic dipole configuration
+    const theta = Math.random() * Math.PI;
+    const phi = Math.random() * Math.PI * 2;
+    const r = 2.0 + Math.pow(Math.sin(theta), 2.0) * (2.0 + Math.random()*2.5);
+    pPos[i*3+0] = r * Math.sin(theta) * Math.cos(phi);
+    pPos[i*3+1] = r * Math.cos(theta) * 1.3; // elongated along poles
+    pPos[i*3+2] = r * Math.sin(theta) * Math.sin(phi);
+    pSeed[i*3+0] = r;
+    pSeed[i*3+1] = 0.8 + Math.random()*1.8;
+    pSeed[i*3+2] = 10.0 + Math.random()*Math.PI*2; // type tag > 5.0
+  } else {
+    // Logarithmic golden spiral accretion disk
+    const r = 2.3 + Math.pow(Math.random(), 0.65) * 3.8;
+    const th = Math.random() * Math.PI * 2;
+    const zWobble = (Math.random() - 0.5) * 1.2;
+    pPos[i*3+0] = r * Math.cos(th);
+    pPos[i*3+1] = zWobble;
+    pPos[i*3+2] = r * Math.sin(th);
+    pSeed[i*3+0] = r;
+    pSeed[i*3+1] = 0.5 + Math.random()*1.5;
+    pSeed[i*3+2] = Math.random() * Math.PI * 2; // type tag < 5.0
+  }
 }
-pGeo.setAttribute('position', new THREE.BufferAttribute(pPos,3));
-pGeo.setAttribute('aSeed', new THREE.BufferAttribute(pSeed,3));
-const pUniforms = { uTime:{value:0}, uCharge:{value:0}, uSize:{value:40*Math.min(devicePixelRatio,2)}, uBallR:{value:1.55}, uBreath:{value:0} };
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+pGeo.setAttribute('aSeed', new THREE.BufferAttribute(pSeed, 3));
+
+const pUniforms = {
+  uTime:  { value: 0 },
+  uCharge:{ value: 0 },
+  uSize:  { value: 42 * Math.min(devicePixelRatio, 2) },
+  uBallR: { value: 1.55 },
+  uBreath:{ value: 0 }
+};
+
 const pMat = new THREE.ShaderMaterial({
-  uniforms: pUniforms, transparent:true, blending:THREE.AdditiveBlending, depthWrite:false,
+  uniforms: pUniforms,
+  transparent: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
   vertexShader: /* glsl */`
-    attribute vec3 aSeed; uniform float uTime,uCharge,uSize,uBallR,uBreath;
-    varying float vAlpha; varying float vHue;
+    attribute vec3 aSeed;
+    uniform float uTime, uCharge, uSize, uBallR, uBreath;
+    varying float vAlpha; varying float vHue; varying float vGlow;
     void main(){
-      float r0=aSeed.x, spd=aSeed.y, phase=aSeed.z;
-      float t=uTime;
-      float ang=phase+t*spd*0.35*(1.0+uBreath*0.5);
-      float shrink=mix(1.0,0.32,uCharge);
-      float r=mix(r0,uBallR*(1.15+0.35*fract(phase*3.0)),uCharge);
-      r*=shrink;
-      float ph=phase*1.7+sin(t*0.4+phase)*0.4;
-      vec3 p=vec3(sin(ph)*cos(ang)*r, cos(ph*0.9)*r*0.85, sin(ph)*sin(ang)*r);
-      p*=1.0+0.05*sin(t*2.0+phase*4.0)+0.04*uBreath;
-      vec4 mv=modelViewMatrix*vec4(p,1.0);
-      gl_Position=projectionMatrix*mv;
-      gl_PointSize=uSize/(-mv.z)*(0.6+0.8*uCharge);
-      vAlpha=(0.35+0.65*uCharge)*(0.5+0.5*sin(t*1.5+phase*6.0));
-      vHue=fract(phase*0.16+t*0.03);
+      float r0 = aSeed.x, spd = aSeed.y, phase = aSeed.z;
+      float t = uTime;
+      bool isDipole = phase > 5.0;
+
+      vec3 p = vec3(0.0);
+      if(isDipole){
+        // Dynamic magnetic dipole looping motion
+        float loop = fract(t * spd * 0.18 + phase * 0.1);
+        float th = loop * 3.14159;
+        float r = mix(r0, uBallR * 1.1, uCharge) * (0.8 + 0.2*sin(th));
+        float azim = phase + t * 0.2;
+        p = vec3(r * sin(th) * cos(azim), r * cos(th) * 1.4, r * sin(th) * sin(azim));
+      } else {
+        // Accretion spiral flow with violent inward suction on inhale
+        float suction = mix(1.0, 0.28, uCharge) * (1.0 - 0.18*max(0.0, uBreath));
+        float ang = phase + t * spd * 0.38 * (1.0 + 0.6*uBreath);
+        float r = mix(r0, uBallR * (1.12 + 0.35*fract(phase*3.0)), uCharge) * suction;
+        float height = (sin(phase*4.0 + t*0.8) * 0.6) * (1.0 - uCharge*0.5);
+        p = vec3(cos(ang)*r, height, sin(ang)*r);
+      }
+
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      gl_Position = projectionMatrix * mv;
+      gl_PointSize = uSize / (-mv.z) * (0.65 + 0.85*uCharge) * (1.0 + 0.2*max(0.0, uBreath));
+      vAlpha = (0.4 + 0.6*uCharge) * (0.55 + 0.45*sin(t*2.0 + phase*5.0));
+      vHue = fract(phase*0.15 + t*0.035);
+      vGlow = isDipole ? 1.4 : 1.0;
     }
   `,
   fragmentShader: /* glsl */`
-    varying float vAlpha; varying float vHue;
+    varying float vAlpha; varying float vHue; varying float vGlow;
     ${GLSL_PALETTE}
-    void main(){ vec2 uv=gl_PointCoord-0.5; if(length(uv)>0.5) discard; float glow=pow(smoothstep(0.5,0.0,length(uv)),2.2); gl_FragColor=vec4(palette(vHue+0.12),glow*vAlpha); }
+    void main(){
+      vec2 uv = gl_PointCoord - 0.5;
+      float d = length(uv);
+      if(d > 0.5) discard;
+      float glow = pow(smoothstep(0.5, 0.0, d), 2.1) * vGlow;
+      vec3 col = palette(vHue + 0.12);
+      gl_FragColor = vec4(col, glow * vAlpha);
+    }
   `
 });
-const particles = new THREE.Points(pGeo,pMat);
+const particles = new THREE.Points(pGeo, pMat);
 scene.add(particles);
 
-/* Ring platform */
-const ringGeo = new THREE.RingGeometry(2.6,3.2,128);
-ringGeo.rotateX(-Math.PI/2);
-const ringUniforms = { uTime:{value:0}, uIntensity:{value:0.35} };
-const ringMat = new THREE.ShaderMaterial({
-  uniforms: ringUniforms, transparent:true, side:THREE.DoubleSide, depthWrite:false, blending:THREE.AdditiveBlending,
-  vertexShader: `varying vec2 vUv; void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
-  fragmentShader: /* glsl */`
-    uniform float uTime,uIntensity; varying vec2 vUv;
-    ${GLSL_PALETTE}
-    void main(){ float pulse=0.5+0.5*sin(uTime*1.4); vec3 col=palette(uTime*0.04+0.3); float a=(0.20+0.35*uIntensity)*pulse; gl_FragColor=vec4(col,a); }
-  `
-});
-const ring = new THREE.Mesh(ringGeo, ringMat);
-ring.position.y=-2.3;
-scene.add(ring);
-
 /* ══════════════════════════════════════════════════════════════
-   VISUAL ABSORPTION LAYERS
+   4. SACRED GEOMETRY MANDALA RINGS (PROCEDURAL POLAR ROSETTE)
    ══════════════════════════════════════════════════════════════ */
-
-// 3 tilted mandala rings
 const mandalaGroup = new THREE.Group();
 const mandalaMats = [];
-for(let i=0;i<3;i++){
-  const torus = new THREE.TorusGeometry(2.8+i*0.7, 0.025, 16, 128);
+for(let i=0; i<3; i++){
+  const torus = new THREE.TorusGeometry(2.9 + i*0.75, 0.035, 16, 128);
   const mat = new THREE.ShaderMaterial({
-    uniforms:{ uTime:{value:0}, uIdx:{value:i}, uCharge:{value:0} },
-    transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide,
-    vertexShader: `varying vec2 vUv; void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
-    fragmentShader: /* glsl */`
-      uniform float uTime; uniform int uIdx; varying vec2 vUv;
+    uniforms:{
+      uTime:  { value: 0 },
+      uIdx:   { value: i },
+      uCharge:{ value: 0 },
+      uBreath:{ value: 0 }
+    },
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    vertexShader: /* glsl */`
+      varying vec2 vUv;
       void main(){
-        float t=uTime*(uIdx==0?0.3:uIdx==1?-0.25:0.18);
-        float a=1.0-abs(vUv.x-0.5)*2.0;
-        vec3 col=vec3(0.6+0.4*sin(t),0.7+0.3*cos(t*1.3),0.9+0.1*sin(t*1.7));
-        gl_FragColor=vec4(col, a*0.25);
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: /* glsl */`
+      uniform float uTime, uCharge, uBreath; uniform int uIdx;
+      varying vec2 vUv;
+      ${GLSL_PALETTE}
+      void main(){
+        float dir = (uIdx == 0 ? 0.35 : uIdx == 1 ? -0.28 : 0.22);
+        float t = uTime * dir;
+        // Sacred harmonic polar petals
+        float petals = float(6 + uIdx * 6);
+        float wave = sin(vUv.x * 3.14159 * petals + t * 4.0) * 0.5 + 0.5;
+        float edge = 1.0 - abs(vUv.y - 0.5) * 2.0;
+
+        vec3 col = palette(float(uIdx)*0.33 + t*0.08);
+        float a = edge * (0.2 + 0.4*wave) * (0.3 + 0.5*uCharge) * (1.0 + 0.25*uBreath);
+        gl_FragColor = vec4(col, a);
       }
     `
   });
   const m = new THREE.Mesh(torus, mat);
-  m.rotation.x = Math.PI/2 + (i-1)*0.25;
-  m.rotation.y = i*0.4;
+  m.rotation.x = Math.PI/2 + (i - 1) * 0.3;
+  m.rotation.y = i * 0.45;
   mandalaGroup.add(m);
   mandalaMats.push(mat);
 }
 scene.add(mandalaGroup);
 
-// Radial light disk
-const diskGeo = new THREE.RingGeometry(3.0, 7.0, 128);
+/* ══════════════════════════════════════════════════════════════
+   5. VOLUMETRIC GOD RAYS (DIVINE LIGHT SHAFTS PIERCING SPACE)
+   ══════════════════════════════════════════════════════════════ */
+const RAY_COUNT = 16;
+const rayGeo = new THREE.CylinderGeometry(0.1, 1.2, 8.0, 16, 1, true);
+rayGeo.translate(0, 4.0, 0);
+rayGeo.rotateX(-Math.PI/2);
+
+const rayMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uTime:  { value: 0 },
+    uCharge:{ value: 0 },
+    uBreath:{ value: 0 }
+  },
+  transparent: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+  side: THREE.DoubleSide,
+  vertexShader: /* glsl */`
+    varying vec2 vUv; varying float vDist;
+    void main(){
+      vUv = uv;
+      vec4 wp = modelMatrix * vec4(position, 1.0);
+      vDist = length(wp.xyz);
+      gl_Position = projectionMatrix * viewMatrix * wp;
+    }
+  `,
+  fragmentShader: /* glsl */`
+    uniform float uTime, uCharge, uBreath;
+    varying vec2 vUv; varying float vDist;
+    ${GLSL_PALETTE}
+    void main(){
+      float falloff = pow(1.0 - vUv.y, 2.0);
+      float rim = sin(vUv.x * 3.14159);
+      float shimmer = sin(uTime*3.0 + vUv.x*20.0)*0.2 + 0.8;
+      vec3 col = palette(uTime*0.04 + vUv.y*0.2);
+      float a = falloff * rim * shimmer * (0.04 + 0.12*uCharge) * (1.0 + 0.4*max(0.0, uBreath));
+      gl_FragColor = vec4(col, a);
+    }
+  `
+});
+
+const godRays = new THREE.InstancedMesh(rayGeo, rayMat, RAY_COUNT);
+godRays.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+const rayDummy = new THREE.Object3D();
+for(let i=0; i<RAY_COUNT; i++){
+  const th = (i / RAY_COUNT) * Math.PI * 2;
+  const ph = (Math.sin(i * 1.7) * 0.5);
+  rayDummy.position.set(0, 0, 0);
+  rayDummy.rotation.set(ph, th, 0);
+  rayDummy.updateMatrix();
+  godRays.setMatrixAt(i, rayDummy.matrix);
+}
+godRays.instanceMatrix.needsUpdate = true;
+scene.add(godRays);
+
+/* ══════════════════════════════════════════════════════════════
+   6. RADIAL RESONANCE DISK & GROUND RING PLATFORM
+   ══════════════════════════════════════════════════════════════ */
+const diskGeo = new THREE.RingGeometry(3.0, 7.5, 128);
 const diskMat = new THREE.ShaderMaterial({
-  uniforms:{ uTime:{value:0}, uCharge:{value:0} },
-  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide,
+  uniforms: { uTime:{value:0}, uCharge:{value:0}, uBreath:{value:0} },
+  transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
   vertexShader: `varying vec2 vUv; void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
   fragmentShader: /* glsl */`
-    uniform float uTime,uCharge; varying vec2 vUv;
+    uniform float uTime, uCharge, uBreath; varying vec2 vUv;
+    ${GLSL_PALETTE}
     void main(){
-      float r=vUv.y;
-      float wave=sin(r*20.0-uTime*2.0)*0.5+0.5;
-      float a=(0.06+0.10*uCharge)*wave*smoothstep(1.0,0.0,r);
-      gl_FragColor=vec4(vec3(1.0,0.95,0.85),a);
+      float r = vUv.y;
+      float wave = sin(r * 24.0 - uTime * 2.4) * 0.5 + 0.5;
+      float a = (0.07 + 0.12*uCharge) * wave * smoothstep(1.0, 0.0, r) * (1.0 + 0.3*uBreath);
+      vec3 col = palette(uTime*0.03 + r*0.3);
+      gl_FragColor = vec4(col, a);
     }
   `
 });
@@ -567,343 +776,438 @@ radialDisk.rotation.x = -Math.PI/2;
 radialDisk.position.y = -0.5;
 scene.add(radialDisk);
 
-// Halo spokes
-const SPOKE_COUNT = 16;
-const spokesGeo = new THREE.BufferGeometry();
-const spPos = [], spIdx = [];
-for(let i=0;i<SPOKE_COUNT;i++){
-  spPos.push(0,0,0, Math.cos(i/SPOKE_COUNT*Math.PI*2)*3.5, Math.sin(i/SPOKE_COUNT*Math.PI*2)*3.5, 0);
-  spIdx.push(i*2, i*2+1);
-}
-spokesGeo.setAttribute('position', new THREE.Float32BufferAttribute(spPos,3));
-spokesGeo.setIndex(spIdx);
-const spokesMat = new THREE.LineBasicMaterial({ color:0xffffff, transparent:true, opacity:0.08, blending:THREE.AdditiveBlending });
-const spokes = new THREE.LineSegments(spokesGeo, spokesMat);
-scene.add(spokes);
-
-// 14 comet pillars
-const COMET_COUNT = 14;
-const cometGeo = new THREE.CylinderGeometry(0.03,0.12,3.5,8,1,true);
-cometGeo.translate(0,1.75,0);
-cometGeo.rotateX(-Math.PI/2);
-const cometMat = new THREE.ShaderMaterial({
-  uniforms:{ uTime:{value:0}, uCharge:{value:0} },
-  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide,
-  vertexShader: `varying float vAlpha; void main(){ vAlpha=1.0-uv.y; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
-  fragmentShader: `varying float vAlpha; uniform float uTime,uCharge; void main(){ float a=(0.2+0.6*uCharge)*vAlpha; gl_FragColor=vec4(vec3(1.0,0.95,0.8),a); }`
+const ringGeo = new THREE.RingGeometry(2.6, 3.2, 128);
+ringGeo.rotateX(-Math.PI/2);
+const ringUniforms = { uTime:{value:0}, uIntensity:{value:0.38} };
+const ringMat = new THREE.ShaderMaterial({
+  uniforms: ringUniforms, transparent:true, side:THREE.DoubleSide, depthWrite:false, blending:THREE.AdditiveBlending,
+  vertexShader: `varying vec2 vUv; void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+  fragmentShader: /* glsl */`
+    uniform float uTime, uIntensity; varying vec2 vUv;
+    ${GLSL_PALETTE}
+    void main(){
+      float pulse = 0.5 + 0.5*sin(uTime*1.4);
+      vec3 col = palette(uTime*0.04 + 0.3);
+      float a = (0.22 + 0.35*uIntensity) * pulse;
+      gl_FragColor = vec4(col, a);
+    }
+  `
 });
-const comets = new THREE.InstancedMesh(new THREE.ConeGeometry(0.08,1.8,8,1,true), cometMat, COMET_COUNT);
+const ring = new THREE.Mesh(ringGeo, ringMat);
+ring.position.y = -2.3;
+scene.add(ring);
+
+/* ══════════════════════════════════════════════════════════════
+   7. 14 COMET PILLARS SPIRALING INTO CORE
+   ══════════════════════════════════════════════════════════════ */
+const COMET_COUNT = 14;
+const cometGeo = new THREE.ConeGeometry(0.09, 2.0, 8, 1, true);
+cometGeo.translate(0, 1.0, 0);
+cometGeo.rotateX(-Math.PI/2);
+
+const cometMat = new THREE.ShaderMaterial({
+  uniforms: { uTime:{value:0}, uCharge:{value:0} },
+  transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+  vertexShader: `varying float vAlpha; void main(){ vAlpha = 1.0 - uv.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: /* glsl */`
+    varying float vAlpha; uniform float uTime, uCharge;
+    ${GLSL_PALETTE}
+    void main(){
+      vec3 col = palette(uTime*0.05 + vAlpha*0.2);
+      float a = (0.25 + 0.65*uCharge) * vAlpha;
+      gl_FragColor = vec4(col, a);
+    }
+  `
+});
+const comets = new THREE.InstancedMesh(cometGeo, cometMat, COMET_COUNT);
 comets.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 scene.add(comets);
+const cometDummy = new THREE.Object3D();
 
-// Starfield
-const STAR_COUNT = 800;
+/* ══════════════════════════════════════════════════════════════
+   8. MULTI-SPECTRAL TWINKLING STARFIELD
+   ══════════════════════════════════════════════════════════════ */
+const STAR_COUNT = 900;
 const starGeo = new THREE.BufferGeometry();
-const starPos = new Float32Array(STAR_COUNT*3);
+const starPos = new Float32Array(STAR_COUNT * 3);
 const starSeed = new Float32Array(STAR_COUNT);
-for(let i=0;i<STAR_COUNT;i++){
-  const r=20+Math.random()*40, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
-  starPos[i*3+0]=r*Math.sin(ph)*Math.cos(th); starPos[i*3+1]=r*Math.sin(ph)*Math.sin(th); starPos[i*3+2]=r*Math.cos(ph);
-  starSeed[i]=Math.random()*10;
+for(let i=0; i<STAR_COUNT; i++){
+  const r = 22 + Math.random()*45;
+  const th = Math.random()*Math.PI*2;
+  const ph = Math.acos(2*Math.random()-1);
+  starPos[i*3+0] = r*Math.sin(ph)*Math.cos(th);
+  starPos[i*3+1] = r*Math.sin(ph)*Math.sin(th);
+  starPos[i*3+2] = r*Math.cos(ph);
+  starSeed[i] = Math.random() * 12.0;
 }
-starGeo.setAttribute('position', new THREE.BufferAttribute(starPos,3));
-starGeo.setAttribute('aSeed', new THREE.BufferAttribute(starSeed,1));
-const starUniforms = { uTime:{value:0} };
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+starGeo.setAttribute('aSeed', new THREE.BufferAttribute(starSeed, 1));
 const starMat = new THREE.ShaderMaterial({
-  uniforms: starUniforms, transparent:true, blending:THREE.AdditiveBlending, depthWrite:false,
-  vertexShader: `attribute float aSeed; uniform float uTime; varying float vAlpha; void main(){ vec3 p=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0); gl_PointSize=2.0+1.5*sin(uTime*2.0+aSeed); vAlpha=0.5+0.5*sin(uTime*3.0+aSeed*2.0); }`,
-  fragmentShader: `varying float vAlpha; void main(){ vec2 uv=gl_PointCoord-0.5; if(length(uv)>0.5) discard; gl_FragColor=vec4(1.0,1.0,1.0,vAlpha*0.7); }`
+  uniforms: { uTime:{value:0} },
+  transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+  vertexShader: `attribute float aSeed; uniform float uTime; varying float vAlpha; void main(){ vec3 p=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0); gl_PointSize=2.2+1.8*sin(uTime*2.2+aSeed); vAlpha=0.5+0.5*sin(uTime*3.2+aSeed*2.0); }`,
+  fragmentShader: `varying float vAlpha; void main(){ vec2 uv=gl_PointCoord-0.5; if(length(uv)>0.5) discard; gl_FragColor=vec4(1.0,1.0,1.0,vAlpha*0.75); }`
 });
 const starfield = new THREE.Points(starGeo, starMat);
 scene.add(starfield);
 
-/* Cahaya ambient */
-scene.add(new THREE.AmbientLight(0x6677aa,0.4));
-const keyLight = new THREE.PointLight(0xffd9a0,1.2,0,2);
-keyLight.position.set(3,4,4);
+/* Lighting */
+scene.add(new THREE.AmbientLight(0x6677aa, 0.45));
+const keyLight = new THREE.PointLight(0xffd9a0, 1.4, 0, 2);
+keyLight.position.set(3, 4, 4);
 scene.add(keyLight);
 
 /* ══════════════════════════════════════════════════════════════
-   POST-PROCESSING (BLOOM)
+   9. POST-PROCESSING: CHROMATIC ABERRATION, STREAK & CORRECTED HDR
    ══════════════════════════════════════════════════════════════ */
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.42, 0.72, 0.72);
-composer.addPass(bloom);
-composer.addPass(new OutputPass());
 
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.45, 0.72, 0.70);
+composer.addPass(bloom);
+
+// Linear HDR Color Grading & Anamorphic Streak Pass (BEFORE OutputPass)
 const gradeShader = {
-  uniforms:{ tDiffuse:{value:null}, uSat:{value:1.38}, uContrast:{value:1.10}, uLift:{value:0.012}, uWarm:{value:0.10} },
+  uniforms: {
+    tDiffuse: { value: null },
+    uSat:     { value: 1.38 },
+    uContrast:{ value: 1.10 },
+    uLift:    { value: 0.012 },
+    uWarm:    { value: 0.10 },
+    uCharge:  { value: 0 },
+    uFlood:   { value: 0 }
+  },
   vertexShader: `varying vec2 vUv; void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
   fragmentShader: /* glsl */`
-    uniform sampler2D tDiffuse; uniform float uSat,uContrast,uLift,uWarm; varying vec2 vUv;
+    uniform sampler2D tDiffuse;
+    uniform float uSat, uContrast, uLift, uWarm, uCharge, uFlood;
+    varying vec2 vUv;
     void main(){
-      vec4 tex=texture2D(tDiffuse,vUv); vec3 c=tex.rgb;
-      float l=dot(c,vec3(0.2126,0.7152,0.0722)); c=mix(vec3(l),c,uSat);
-      c.r*=1.0+uWarm*0.16; c.b*=1.0-uWarm*0.10; c.g*=1.0+uWarm*0.03;
-      c=(c-0.5)*uContrast+0.5; c+=uLift*(1.0-c);
-      gl_FragColor=vec4(clamp(c,0.0,1.0),tex.a);
+      // Optical chromatic dispersion at edge of field
+      float dist = length(vUv - 0.5);
+      vec2 offset = normalize(vUv - 0.5) * dist * dist * (0.005 + 0.012 * uFlood);
+      float r = texture2D(tDiffuse, vUv + offset).r;
+      float g = texture2D(tDiffuse, vUv).g;
+      float b = texture2D(tDiffuse, vUv - offset).b;
+      vec3 c = vec3(r, g, b);
+
+      // Anamorphic horizontal lens flare streak from singularity core
+      float centerY = abs(vUv.y - 0.5);
+      float streak = exp(-centerY * 60.0) * (0.04 + 0.22*uCharge) * max(0.0, 1.0 - abs(vUv.x - 0.5)*1.4);
+      c += vec3(0.55, 0.85, 1.0) * streak;
+
+      // HDR Saturation & warmth
+      float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+      c = mix(vec3(l), c, uSat);
+      c.r *= 1.0 + uWarm*0.16;
+      c.b *= 1.0 - uWarm*0.10;
+      c.g *= 1.0 + uWarm*0.03;
+      c = (c - 0.5) * uContrast + 0.5;
+      c += uLift * (1.0 - c);
+
+      gl_FragColor = vec4(clamp(c, 0.0, 1.0), 1.0);
     }
   `
 };
 const gradePass = new ShaderPass(gradeShader);
 composer.addPass(gradePass);
 
+// Terminal OutputPass for tone mapping and sRGB display
+composer.addPass(new OutputPass());
+
 /* ══════════════════════════════════════════════════════════════
-   AUDIO
+   10. AUDIO HARMONICS (528HZ DRONE, CHIMES, WHOOSH & BREATH PAD)
    ══════════════════════════════════════════════════════════════ */
 let audioCtx = null, masterGain = null, soundOn = false, shimmerNodes = [];
 let drone528 = null, droneGain = null;
 let whooshNode = null, whooshGain = null;
 let padGain = null;
 const chimesHeard = new Set();
+
 function initAudio(){
   if(audioCtx) return;
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  masterGain = audioCtx.createGain(); masterGain.gain.value=0; masterGain.connect(audioCtx.destination);
-  const baseFreqs=[110,165,220,330];
-  baseFreqs.forEach((f,i)=>{
-    const o=audioCtx.createOscillator(); o.type=i%2?'sine':'triangle'; o.frequency.value=f;
-    const g=audioCtx.createGain(); g.gain.value=0.12/(i+1);
-    const lfo=audioCtx.createOscillator(); lfo.frequency.value=0.05+i*0.03;
-    const lfoGain=audioCtx.createGain(); lfoGain.gain.value=0.05;
+  masterGain = audioCtx.createGain(); masterGain.gain.value = 0; masterGain.connect(audioCtx.destination);
+
+  const baseFreqs = [110, 165, 220, 330];
+  baseFreqs.forEach((f, i) => {
+    const o = audioCtx.createOscillator(); o.type = i % 2 ? 'sine' : 'triangle'; o.frequency.value = f;
+    const g = audioCtx.createGain(); g.gain.value = 0.12 / (i+1);
+    const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.05 + i*0.03;
+    const lfoGain = audioCtx.createGain(); lfoGain.gain.value = 0.05;
     lfo.connect(lfoGain).connect(g.gain); o.connect(g).connect(masterGain); o.start(); lfo.start();
   });
-  const sub=audioCtx.createOscillator(); sub.type='sine'; sub.frequency.value=55;
-  const subG=audioCtx.createGain(); subG.gain.value=0.07; sub.connect(subG).connect(masterGain); sub.start();
-  const len=audioCtx.sampleRate*2; const buf=audioCtx.createBuffer(1,len,audioCtx.sampleRate); const data=buf.getChannelData(0);
-  for(let i=0;i<len;i++) data[i]=(Math.random()*2-1)*0.5;
-  const noise=audioCtx.createBufferSource(); noise.buffer=buf; noise.loop=true;
-  const filt=audioCtx.createBiquadFilter(); filt.type='bandpass'; filt.frequency.value=900; filt.Q.value=0.7;
-  const nG=audioCtx.createGain(); nG.gain.value=0.03; noise.connect(filt).connect(nG).connect(masterGain); noise.start();
+
+  const sub = audioCtx.createOscillator(); sub.type = 'sine'; sub.frequency.value = 55;
+  const subG = audioCtx.createGain(); subG.gain.value = 0.07; sub.connect(subG).connect(masterGain); sub.start();
+
+  const len = audioCtx.sampleRate * 2; const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate); const data = buf.getChannelData(0);
+  for(let i=0; i<len; i++) data[i] = (Math.random()*2 - 1) * 0.5;
+  const noise = audioCtx.createBufferSource(); noise.buffer = buf; noise.loop = true;
+  const filt = audioCtx.createBiquadFilter(); filt.type = 'bandpass'; filt.frequency.value = 900; filt.Q.value = 0.7;
+  const nG = audioCtx.createGain(); nG.gain.value = 0.03; noise.connect(filt).connect(nG).connect(masterGain); noise.start();
   shimmerNodes.push(noise);
-  // 528Hz love drone
-  drone528=audioCtx.createOscillator(); drone528.type='sine'; drone528.frequency.value=528;
-  droneGain=audioCtx.createGain(); droneGain.gain.value=0;
+
+  // 528Hz pure frequency drone
+  drone528 = audioCtx.createOscillator(); drone528.type = 'sine'; drone528.frequency.value = 528;
+  droneGain = audioCtx.createGain(); droneGain.gain.value = 0;
   drone528.connect(droneGain).connect(masterGain); drone528.start();
-  // whoosh noise
-  const wLen=audioCtx.sampleRate*3; const wBuf=audioCtx.createBuffer(1,wLen,audioCtx.sampleRate); const wData=wBuf.getChannelData(0);
-  for(let i=0;i<wLen;i++) wData[i]=(Math.random()*2-1)*0.6;
-  whooshNode=audioCtx.createBufferSource(); whooshNode.buffer=wBuf; whooshNode.loop=true;
-  const wFilt=audioCtx.createBiquadFilter(); wFilt.type='lowpass'; wFilt.frequency.value=400;
-  whooshGain=audioCtx.createGain(); whooshGain.gain.value=0;
+
+  // Whoosh noise on exhale
+  const wLen = audioCtx.sampleRate * 3; const wBuf = audioCtx.createBuffer(1, wLen, audioCtx.sampleRate); const wData = wBuf.getChannelData(0);
+  for(let i=0; i<wLen; i++) wData[i] = (Math.random()*2 - 1) * 0.6;
+  whooshNode = audioCtx.createBufferSource(); whooshNode.buffer = wBuf; whooshNode.loop = true;
+  const wFilt = audioCtx.createBiquadFilter(); wFilt.type = 'lowpass'; wFilt.frequency.value = 420;
+  whooshGain = audioCtx.createGain(); whooshGain.gain.value = 0;
   whooshNode.connect(wFilt).connect(whooshGain).connect(masterGain); whooshNode.start();
-  padGain = audioCtx.createGain(); padGain.gain.value=1;
-  // reconnect pad via padGain (already through individual gains)
+
+  padGain = audioCtx.createGain(); padGain.gain.value = 1;
 }
-function playChime(freq=528, dur=0.8, vol=0.12){
+
+function playChime(freq = 528, dur = 0.8, vol = 0.12){
   if(!audioCtx) return;
-  const now=audioCtx.currentTime;
-  const o=audioCtx.createOscillator(); o.type='sine'; o.frequency.value=freq;
-  const g=audioCtx.createGain(); g.gain.setValueAtTime(0,now); g.gain.linearRampToValueAtTime(vol,now+0.05); g.gain.exponentialRampToValueAtTime(0.001,now+dur);
-  o.connect(g).connect(masterGain); o.start(now); o.stop(now+dur);
+  const now = audioCtx.currentTime;
+  const o = audioCtx.createOscillator(); o.type = 'sine'; o.frequency.value = freq;
+  const g = audioCtx.createGain(); g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(vol, now + 0.05); g.gain.exponentialRampToValueAtTime(0.001, now + dur);
+  o.connect(g).connect(masterGain); o.start(now); o.stop(now + dur);
 }
-const PENTA=[528,594,666,792,888,528,594];
+
+const PENTA = [528, 594, 666, 792, 888, 528, 594];
 function triggerChapterChime(idx){
   if(!soundOn || chimesHeard.has(idx)) return;
   chimesHeard.add(idx);
-  const note=PENTA[idx % PENTA.length];
-  playChime(note,1.2,0.14);
+  const note = PENTA[idx % PENTA.length];
+  playChime(note, 1.2, 0.14);
 }
-let lastExhale = false;
+
 function updateAudio(t, breath){
   if(!audioCtx) return;
-  const now=audioCtx.currentTime;
-  const prog=t/DURATION;
-  if(droneGain) droneGain.gain.setTargetAtTime(soundOn?(0.06+0.09*prog):0, now, 0.3);
-  // pad envelope per breath
-  const padTarget = breath.phase==='inhale'?0.9: breath.phase==='hold'?0.75:0.5;
-  if(padGain) padGain.gain.setTargetAtTime(soundOn?padTarget:0, now, 0.4);
-  // whoosh on exhale start
-  const isExhale = breath.phase==='exhale';
-  if(whooshGain) whooshGain.gain.setTargetAtTime(soundOn?(isExhale?0.07:0):0, now, 0.6);
-  // chime per chapter
-  const c=sampleChapters(t); const idx=CHAPTERS.indexOf(c); if(idx>=0 && t>=c.at && t<c.at+0.3) triggerChapterChime(idx);
+  const now = audioCtx.currentTime;
+  const prog = t / DURATION;
+  if(droneGain) droneGain.gain.setTargetAtTime(soundOn ? (0.06 + 0.09*prog) : 0, now, 0.3);
+  const padTarget = breath.phase === 'inhale' ? 0.9 : breath.phase === 'hold' ? 0.75 : 0.5;
+  if(padGain) padGain.gain.setTargetAtTime(soundOn ? padTarget : 0, now, 0.4);
+  const isExhale = breath.phase === 'exhale';
+  if(whooshGain) whooshGain.gain.setTargetAtTime(soundOn ? (isExhale ? 0.07 : 0) : 0, now, 0.6);
+  const c = sampleChapters(t); const idx = CHAPTERS.indexOf(c);
+  if(idx >= 0 && t >= c.at && t < c.at + 0.3) triggerChapterChime(idx);
 }
+
 function setSound(on){
-  soundOn=on;
-  if(on){ initAudio(); if(audioCtx.state==='suspended') audioCtx.resume(); }
-  if(masterGain) masterGain.gain.linearRampToValueAtTime(on?0.5:0, audioCtx.currentTime+0.6);
+  soundOn = on;
+  if(on){ initAudio(); if(audioCtx.state === 'suspended') audioCtx.resume(); }
+  if(masterGain) masterGain.gain.linearRampToValueAtTime(on ? 0.5 : 0, audioCtx.currentTime + 0.6);
 }
 
 /* ══════════════════════════════════════════════════════════════
-   STATE & KOREOGRAFI
+   11. STATE, BREATH SYSTEM & KOREOGRAFI
    ══════════════════════════════════════════════════════════════ */
-let playing=false;
-let startTime=0;
-let elapsed=0;
-let lastChapter=-1;
+let playing = false;
+let startTime = 0;
+let elapsed = 0;
+let lastChapter = -1;
 
-function currentProgress(){ return playing ? Math.min(1, elapsed/DURATION) : 0; }
+function currentProgress(){ return playing ? Math.min(1, elapsed / DURATION) : 0; }
 
 function getBreathState(t){
   const cycleTime = Math.max(0, Math.min(t % BREATH_CYCLE, BREATH_CYCLE));
   const cycleIndex = Math.min(4, Math.floor(t / BREATH_CYCLE));
-  let phase='inhale', phaseTime=cycleTime, remaining=Math.ceil(4-cycleTime);
-  if(cycleTime>=4 && cycleTime<8){ phase='hold'; phaseTime=cycleTime-4; remaining=Math.ceil(8-cycleTime); }
-  else if(cycleTime>=8){ phase='exhale'; phaseTime=cycleTime-8; remaining=Math.ceil(12-cycleTime); }
-  return { cycleIndex, cycleNumber: cycleIndex+1, phase, phaseTime, remaining, cycleProgress: cycleTime/BREATH_CYCLE, totalProgress: t/DURATION };
+  let phase = 'inhale', phaseTime = cycleTime, remaining = Math.ceil(4 - cycleTime);
+  if(cycleTime >= 4 && cycleTime < 8){ phase = 'hold'; phaseTime = cycleTime - 4; remaining = Math.ceil(8 - cycleTime); }
+  else if(cycleTime >= 8){ phase = 'exhale'; phaseTime = cycleTime - 8; remaining = Math.ceil(12 - cycleTime); }
+  return { cycleIndex, cycleNumber: cycleIndex + 1, phase, phaseTime, remaining, cycleProgress: cycleTime / BREATH_CYCLE, totalProgress: t / DURATION };
 }
+
 function getBreathEnvelope(t){
   const s = getBreathState(t);
-  let inhale=0, hold=0, exhale=0, ringScale=0.35;
-  if(s.phase==='inhale'){ inhale = s.phaseTime/4; ringScale = 0.35 + 0.65*(s.phaseTime/4); }
-  else if(s.phase==='hold'){ inhale=1; hold=1; ringScale=1.0; }
-  else { inhale=1; hold=1; exhale=1-(s.phaseTime/4); ringScale=1.0-0.35*(s.phaseTime/4); }
+  let inhale = 0, hold = 0, exhale = 0, ringScale = 0.35;
+  if(s.phase === 'inhale'){ inhale = s.phaseTime / 4; ringScale = 0.35 + 0.65 * (s.phaseTime / 4); }
+  else if(s.phase === 'hold'){ inhale = 1; hold = 1; ringScale = 1.0; }
+  else { inhale = 1; hold = 1; exhale = 1 - (s.phaseTime / 4); ringScale = 1.0 - 0.35 * (s.phaseTime / 4); }
   return { ...s, inhale, hold, exhale, ringScale };
 }
 
-function sampleChapters(t){ let cur=CHAPTERS[0]; for(const c of CHAPTERS) if(t>=c.at) cur=c; return cur; }
+function sampleChapters(t){ let cur = CHAPTERS[0]; for(const c of CHAPTERS) if(t >= c.at) cur = c; return cur; }
 
 function updateHUD(t){
-  const mm=String(Math.floor(t/60)).padStart(2,'0');
-  const ss=String(Math.floor(t%60)).padStart(2,'0');
-  EL.clock.textContent=`${mm}:${ss} / 01:00`;
-  EL.prog.style.width=(t/DURATION*100).toFixed(2)+'%';
-  EL.energy.style.height=(Math.min(100, t/DURATION*100)).toFixed(2)+'%';
+  const mm = String(Math.floor(t/60)).padStart(2, '0');
+  const ss = String(Math.floor(t%60)).padStart(2, '0');
+  EL.clock.textContent = `${mm}:${ss} / 01:00`;
+  EL.prog.style.width = (t / DURATION * 100).toFixed(2) + '%';
+  EL.energy.style.height = (Math.min(100, t / DURATION * 100)).toFixed(2) + '%';
 }
+
 function updateBreathUI(b){
   EL.breath.wrap.classList.remove('hidden');
   EL.breath.label.textContent = BREATH_LABELS[b.phase];
   EL.breath.count.textContent = Math.max(1, b.remaining);
   EL.breath.cycle.textContent = `Siklus ${b.cycleNumber} / 5`;
-  EL.breath.ring.style.transform = `scale(${0.8 + 0.2 * Math.sin(b.cycleProgress*Math.PI*2)})`;
+  EL.breath.ring.style.transform = `scale(${0.82 + 0.18 * Math.sin(b.cycleProgress * Math.PI * 2)})`;
   EL.breath.fill.style.transform = `scale(${b.ringScale})`;
 }
 
 function showChapter(idx){
-  const c=CHAPTERS[idx]; lastChapter=idx;
-  EL.chIdx.textContent=`Babak ${idx+1} dari ${CHAPTERS.length}`;
-  EL.chTtl.textContent=c.ttl; EL.chSub.textContent=c.sub; EL.affirm.innerHTML=c.aff;
+  const c = CHAPTERS[idx]; lastChapter = idx;
+  EL.chIdx.textContent = `Babak ${idx+1} dari ${CHAPTERS.length}`;
+  EL.chTtl.textContent = c.ttl; EL.chSub.textContent = c.sub; EL.affirm.innerHTML = c.aff;
   EL.chapter.classList.remove('show'); EL.affirm.classList.remove('show');
   void EL.chapter.offsetWidth;
   EL.chapter.classList.add('show'); EL.affirm.classList.add('show');
-  const c3=new THREE.Color(c.color); auraUniforms.uColorA.value.lerp(c3,0.6);
+  const c3 = new THREE.Color(c.color); auraUniforms.uColorA.value.lerp(c3, 0.6);
 }
 
 function play(){
-  EL.finale.classList.remove('show'); EL.loader.classList.add('done'); EL.panel.classList.add('show'); EL.flood.style.opacity=0;
+  EL.finale.classList.remove('show'); EL.loader.classList.add('done'); EL.panel.classList.add('show'); EL.flood.style.opacity = 0;
   if(playing) return;
-  playing=true; startTime=performance.now(); lastChapter=-1;
-  if(soundOn){ initAudio(); if(audioCtx.state==='suspended') audioCtx.resume(); }
-  if(masterGain) masterGain.gain.linearRampToValueAtTime(soundOn?0.5:0, audioCtx.currentTime+0.4);
-  setTimeout(()=>showChapter(0),200);
+  playing = true; startTime = performance.now(); lastChapter = -1;
+  if(soundOn){ initAudio(); if(audioCtx.state === 'suspended') audioCtx.resume(); }
+  if(masterGain) masterGain.gain.linearRampToValueAtTime(soundOn ? 0.5 : 0, audioCtx.currentTime + 0.4);
+  setTimeout(() => showChapter(0), 200);
 }
 function pause(){
   if(!playing) return;
-  elapsed+=(performance.now()-startTime)/1000; playing=false;
-  if(masterGain) masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime+0.3);
+  elapsed += (performance.now() - startTime) / 1000; playing = false;
+  if(masterGain) masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
 }
-function toggle(){ playing?pause():play(); }
+function toggle(){ playing ? pause() : play(); }
 function restart(){
-  elapsed=0; playing=false; ball.scale.setScalar(1); aura.scale.setScalar(1); EL.finale.classList.remove('show');
-  EL.flood.style.opacity=0; chimesHeard.clear();
-  camera.position.set(0,0.6,7.4); camera.fov=50; camera.updateProjectionMatrix();
+  elapsed = 0; playing = false; ball.scale.setScalar(1); aura.scale.setScalar(1); EL.finale.classList.remove('show');
+  EL.flood.style.opacity = 0; chimesHeard.clear();
+  camera.position.set(0, 0.6, 7.4); camera.fov = 50; camera.updateProjectionMatrix();
   play();
 }
 function finish(){
-  playing=false; elapsed=DURATION;
+  playing = false; elapsed = DURATION;
   EL.affirm.classList.remove('show'); EL.chapter.classList.remove('show');
-  if(masterGain) masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime+1.2);
-  setTimeout(()=>{ EL.finale.classList.add('show'); },900);
+  if(masterGain) masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.2);
+  setTimeout(() => { EL.finale.classList.add('show'); }, 900);
 }
 
-/* UI WIRING */
+/* UI EVENT LISTENERS */
 document.getElementById('btnPlay').addEventListener('click', toggle);
 document.getElementById('btnRestart').addEventListener('click', restart);
-document.getElementById('btnAgain').addEventListener('click', ()=>{ EL.finale.classList.remove('show'); restart(); });
-document.getElementById('btnClose').addEventListener('click', ()=>{ EL.finale.classList.remove('show'); restart(); });
-const btnSound=document.getElementById('btnSound');
-btnSound.addEventListener('click', ()=>{ setSound(!soundOn); btnSound.textContent=soundOn?'Suara: Nyala':'Suara: Mati'; });
-addEventListener('keydown', e=>{ if(e.code==='Space'){ e.preventDefault(); toggle(); } if(e.code==='KeyR') restart(); });
-addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); composer.setSize(innerWidth,innerHeight); });
+document.getElementById('btnAgain').addEventListener('click', () => { EL.finale.classList.remove('show'); restart(); });
+document.getElementById('btnClose').addEventListener('click', () => { EL.finale.classList.remove('show'); restart(); });
+const btnSound = document.getElementById('btnSound');
+btnSound.addEventListener('click', () => { setSound(!soundOn); btnSound.textContent = soundOn ? 'Suara: Nyala' : 'Suara: Mati'; });
+addEventListener('keydown', e => { if(e.code === 'Space'){ e.preventDefault(); toggle(); } if(e.code === 'KeyR') restart(); });
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight); });
 
 /* ══════════════════════════════════════════════════════════════
-   LOOP UTAMA
+   12. MAIN ANIMATION LOOP
    ══════════════════════════════════════════════════════════════ */
-let last=performance.now();
-let rawTime=0;
-const baseCam = new THREE.Vector3(0,0.6,7.4);
-const cometDummy = new THREE.Object3D();
+let last = performance.now();
+let rawTime = 0;
+const baseCam = new THREE.Vector3(0, 0.6, 7.4);
 
 function step(dt, nowMs){
   rawTime += dt;
-  if(playing){ elapsed += dt; if(elapsed >= DURATION - 1e-3){ elapsed=DURATION; finish(); } }
+  if(playing){ elapsed += dt; if(elapsed >= DURATION - 1e-3){ elapsed = DURATION; finish(); } }
   const t = elapsed;
   const b = getBreathEnvelope(t);
   const c = sampleChapters(t);
   const prog = currentProgress();
-  const floodAmt = t > 54 ? Math.min(1, (t-54)/6) : 0;
+  const floodAmt = t > 54 ? Math.min(1, (t - 54) / 6) : 0;
 
-  // update uniforms
-  sphereUniforms.uTime.value=rawTime; sphereUniforms.uCharge.value=prog; sphereUniforms.uSpeed.value=c.speed; sphereUniforms.uIntensity.value=c.intensity;
-  const coreTarget=new THREE.Color(c.color).lerp(new THREE.Color(0xfff2c9),0.4);
-  sphereUniforms.uCoreCol.value.lerp(coreTarget,0.02);
-  auraUniforms.uTime.value=rawTime; auraUniforms.uCharge.value=prog; auraUniforms.uIntensity.value=c.intensity;
-  pUniforms.uTime.value=rawTime; pUniforms.uCharge.value=prog; pUniforms.uBreath.value=(b.phase==='inhale'?1.0:b.phase==='hold'?0.5:-0.5);
-  ringUniforms.uTime.value=rawTime; ringUniforms.uIntensity.value=c.intensity;
+  // Update uniforms
+  sphereUniforms.uTime.value = rawTime;
+  sphereUniforms.uCharge.value = prog;
+  sphereUniforms.uSpeed.value = c.speed;
+  sphereUniforms.uIntensity.value = c.intensity;
+  sphereUniforms.uBreath.value = (b.phase === 'inhale' ? b.inhale : b.phase === 'hold' ? 1.0 : -b.exhale);
+  const coreTarget = new THREE.Color(c.color).lerp(new THREE.Color(0xfff5d2), 0.45);
+  sphereUniforms.uCoreCol.value.lerp(coreTarget, 0.025);
 
-  // rotate layers
-  ball.rotation.y=rawTime*0.12*c.speed; ball.rotation.x=Math.sin(rawTime*0.16)*0.08;
-  aura.rotation.y=-rawTime*0.06; particles.rotation.y=rawTime*0.03; ring.rotation.z=rawTime*0.1;
-  mandalaGroup.rotation.y=rawTime*0.04; mandalaGroup.rotation.z=rawTime*0.02;
-  starfield.rotation.y=rawTime*0.01; spokes.rotation.z=-rawTime*0.06; radialDisk.rotation.z=rawTime*0.05;
+  auraUniforms.uTime.value = rawTime;
+  auraUniforms.uCharge.value = prog;
+  auraUniforms.uIntensity.value = c.intensity;
+  auraUniforms.uBreath.value = b.inhale;
 
-  // breath-scaled ball/aura
-  const breathScale = 1.0 + (b.inhale*0.05 + b.exhale*0.02) * (0.5+0.5*prog);
-  ball.scale.lerp(new THREE.Vector3(breathScale,breathScale,breathScale),0.05);
-  aura.scale.lerp(new THREE.Vector3((1+0.04*c.intensity)*(1+b.inhale*0.15),(1+0.04*c.intensity)*(1+b.inhale*0.15),(1+0.04*c.intensity)*(1+b.inhale*0.15)),0.05);
+  pUniforms.uTime.value = rawTime;
+  pUniforms.uCharge.value = prog;
+  pUniforms.uBreath.value = (b.phase === 'inhale' ? 1.0 : b.phase === 'hold' ? 0.5 : -0.5);
 
-  // mandala rings pulse
-  mandalaMats.forEach((m,i)=>{ m.uniforms.uTime.value=rawTime; m.uniforms.uCharge.value=prog; });
-  mandalaGroup.scale.setScalar(1.0 + b.inhale*0.08 + 0.04*Math.sin(rawTime*0.5));
+  ringUniforms.uTime.value = rawTime;
+  ringUniforms.uIntensity.value = c.intensity;
 
-  // radial disk
-  diskMat.uniforms.uTime.value=rawTime; diskMat.uniforms.uCharge.value=prog;
-  radialDisk.scale.setScalar(1.0 + b.inhale*0.1);
+  // Gentle rotations
+  ball.rotation.y = rawTime * 0.14 * c.speed;
+  ball.rotation.x = Math.sin(rawTime * 0.16) * 0.08;
+  aura.rotation.y = -rawTime * 0.07;
+  particles.rotation.y = rawTime * 0.035;
+  ring.rotation.z = rawTime * 0.1;
+  mandalaGroup.rotation.y = rawTime * 0.05;
+  mandalaGroup.rotation.z = rawTime * 0.025;
+  starfield.rotation.y = rawTime * 0.01;
+  radialDisk.rotation.z = rawTime * 0.05;
 
-  // spokes opacity
-  spokesMat.opacity = 0.06 + 0.14*b.inhale + 0.1*prog;
-  spokes.scale.setScalar(1.0 + b.inhale*0.2);
+  // Organic breath-expanded scaling
+  const breathScale = 1.0 + (b.inhale * 0.06 + b.exhale * 0.02) * (0.5 + 0.5*prog);
+  ball.scale.lerp(new THREE.Vector3(breathScale, breathScale, breathScale), 0.05);
+  const auraScale = (1 + 0.05*c.intensity) * (1 + b.inhale*0.16);
+  aura.scale.lerp(new THREE.Vector3(auraScale, auraScale, auraScale), 0.05);
 
-  // comets orbit then fall
-  for(let i=0;i<COMET_COUNT;i++){
-    const angle=(i/COMET_COUNT)*Math.PI*2 + rawTime*(0.2+i*0.02) + b.cycleProgress*Math.PI;
-    const radius=5.0 - prog*2.5 + Math.sin(rawTime*0.5+i)*0.5;
-    const x=Math.cos(angle)*radius, z=Math.sin(angle)*radius, y=Math.sin(rawTime*0.3+i)*0.8;
-    cometDummy.position.set(x,y,z);
-    cometDummy.lookAt(0,0,0);
-    const s=1.0+0.5*prog+0.3*b.inhale;
-    cometDummy.scale.set(s,s,s);
+  // Mandala rosettes
+  mandalaMats.forEach((m) => {
+    m.uniforms.uTime.value = rawTime;
+    m.uniforms.uCharge.value = prog;
+    m.uniforms.uBreath.value = b.inhale;
+  });
+  mandalaGroup.scale.setScalar(1.0 + b.inhale*0.09 + 0.04*Math.sin(rawTime*0.6));
+
+  // Radial disk & god rays
+  diskMat.uniforms.uTime.value = rawTime;
+  diskMat.uniforms.uCharge.value = prog;
+  diskMat.uniforms.uBreath.value = b.inhale;
+  radialDisk.scale.setScalar(1.0 + b.inhale*0.12);
+
+  rayMat.uniforms.uTime.value = rawTime;
+  rayMat.uniforms.uCharge.value = prog;
+  rayMat.uniforms.uBreath.value = b.inhale;
+  godRays.scale.setScalar(1.0 + b.inhale*0.15 + prog*0.25);
+  godRays.rotation.y = rawTime * 0.03;
+
+  // Spiraling comets
+  for(let i=0; i<COMET_COUNT; i++){
+    const angle = (i / COMET_COUNT) * Math.PI * 2 + rawTime*(0.22 + i*0.02) + b.cycleProgress*Math.PI;
+    const radius = 5.2 - prog*2.6 + Math.sin(rawTime*0.5 + i)*0.5;
+    const x = Math.cos(angle) * radius, z = Math.sin(angle) * radius, y = Math.sin(rawTime*0.35 + i)*0.85;
+    cometDummy.position.set(x, y, z);
+    cometDummy.lookAt(0, 0, 0);
+    const s = 1.0 + 0.5*prog + 0.3*b.inhale;
+    cometDummy.scale.set(s, s, s);
     cometDummy.updateMatrix();
     comets.setMatrixAt(i, cometDummy.matrix);
   }
-  comets.instanceMatrix.needsUpdate=true;
+  comets.instanceMatrix.needsUpdate = true;
 
-  // camera dolly + FOV + breath push
-  const dolly = prog*0.55 + b.inhale*0.08 - b.exhale*0.02;
-  const targetZ = baseCam.z - dolly*(baseCam.z-controls.minDistance);
+  // Cinematic telescopic camera dolly & FOV
+  const dolly = prog * 0.56 + b.inhale * 0.08 - b.exhale * 0.02;
+  const targetZ = baseCam.z - dolly * (baseCam.z - controls.minDistance);
   camera.position.lerp(new THREE.Vector3(baseCam.x, baseCam.y, targetZ), 0.03);
-  const targetFOV = 50 - prog*13;
-  camera.fov += (targetFOV - camera.fov)*0.02;
+  const targetFOV = 50 - prog * 13;
+  camera.fov += (targetFOV - camera.fov) * 0.02;
   camera.updateProjectionMatrix();
 
-  // exposure / bloom / grade ramp
-  const targetExp = c.exposure * (0.9+0.15*Math.sin(rawTime*0.7)) * (1.0 + floodAmt*0.35);
-  renderer.toneMappingExposure += (targetExp - renderer.toneMappingExposure)*0.02;
-  bloom.strength = 0.30 + 0.34*c.intensity + 0.07*Math.sin(rawTime*1.1) + floodAmt*0.5;
-  const satTarget=1.18+0.42*c.intensity+floodAmt*0.3;
-  const warmTarget=0.04+0.16*c.intensity+floodAmt*0.2;
-  gradePass.uniforms.uSat.value      += (satTarget - gradePass.uniforms.uSat.value)*0.03;
-  gradePass.uniforms.uWarm.value     += (warmTarget - gradePass.uniforms.uWarm.value)*0.03;
-  gradePass.uniforms.uContrast.value += ((1.04+0.10*c.intensity) - gradePass.uniforms.uContrast.value)*0.03;
+  // Exposure, bloom & color grading
+  const targetExp = c.exposure * (0.9 + 0.15*Math.sin(rawTime*0.7)) * (1.0 + floodAmt*0.38);
+  renderer.toneMappingExposure += (targetExp - renderer.toneMappingExposure) * 0.025;
+  bloom.strength = 0.32 + 0.36*c.intensity + 0.08*Math.sin(rawTime*1.1) + floodAmt*0.55;
 
-  // final flood
+  const satTarget = 1.20 + 0.44*c.intensity + floodAmt*0.3;
+  const warmTarget = 0.05 + 0.18*c.intensity + floodAmt*0.22;
+  gradePass.uniforms.uSat.value      += (satTarget - gradePass.uniforms.uSat.value) * 0.03;
+  gradePass.uniforms.uWarm.value     += (warmTarget - gradePass.uniforms.uWarm.value) * 0.03;
+  gradePass.uniforms.uContrast.value += ((1.05 + 0.10*c.intensity) - gradePass.uniforms.uContrast.value) * 0.03;
+  gradePass.uniforms.uCharge.value    = prog;
+  gradePass.uniforms.uFlood.value     = floodAmt;
+
+  // Full screen climax flood
   EL.flood.style.opacity = floodAmt;
 
-  // HUD
-  const chIdx=CHAPTERS.indexOf(c);
-  if(playing && chIdx!==lastChapter) showChapter(chIdx);
+  // Chapter HUD & UI updates
+  const chIdx = CHAPTERS.indexOf(c);
+  if(playing && chIdx !== lastChapter) showChapter(chIdx);
   if(playing){ updateHUD(t); updateBreathUI(b); }
   updateAudio(t, b);
 
@@ -913,26 +1217,28 @@ function step(dt, nowMs){
 
 function animate(){
   requestAnimationFrame(animate);
-  const now=performance.now();
-  const dt=Math.min(0.05,(now-last)/1000);
-  last=now;
-  step(dt,now);
+  const now = performance.now();
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  step(dt, now);
 }
 
 composer.render();
 animate();
-setTimeout(()=>{ EL.loader.classList.add('done'); play(); },350);
+setTimeout(() => { EL.loader.classList.add('done'); play(); }, 350);
 
-/* expose untuk debug/testing */
-window.__setElapsed = (v)=>{ elapsed=Math.max(0,Math.min(DURATION,v)); if(playing){ playing=false; startTime=performance.now()-elapsed*1000; } };
-window.__renderAt = (t, dt=0.05)=>{
-  elapsed=Math.max(0,Math.min(DURATION,t)); rawTime=elapsed;
-  step(0,performance.now());
+/* Expose hooks for testing and verification */
+window.__setElapsed = (v) => { elapsed = Math.max(0, Math.min(DURATION, v)); if(playing){ playing = false; startTime = performance.now() - elapsed*1000; } };
+window.__renderAt = (t, dt = 0.05) => {
+  elapsed = Math.max(0, Math.min(DURATION, t)); rawTime = elapsed;
+  step(0, performance.now());
   composer.render();
   return { elapsed, rawTime, chapter: sampleChapters(elapsed).ttl, breath: getBreathEnvelope(elapsed) };
 };
-window.__energyBall = { play, pause, toggle, restart, finish, scene, camera, renderer, step, getBreathState, getBreathEnvelope,
-  get elapsed(){return elapsed;}, get playing(){return playing;} };
+window.__energyBall = {
+  play, pause, toggle, restart, finish, scene, camera, renderer, step, getBreathState, getBreathEnvelope,
+  get elapsed(){ return elapsed; }, get playing(){ return playing; }
+};
 </script>
 </body>
 </html>
